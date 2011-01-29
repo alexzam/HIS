@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Hibernate">
+    <CLASSES>
+      <root url="file://G:/glassfishv3/glassfish/lib/hibernate" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file://G:/glassfishv3/glassfish/lib/hibernate" recursive="false" />
+  </library>
+</component>

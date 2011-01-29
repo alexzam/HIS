@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Java EE 6">
+    <CLASSES>
+      <root url="jar://G:/glassfishv3/glassfish/modules/javax.servlet.jsp.jstl.jar!/" />
+      <root url="jar://G:/glassfishv3/glassfish/modules/javax.jms.jar!/" />
+      <root url="jar://G:/glassfishv3/glassfish/modules/javax.resource.jar!/" />
+      <root url="jar://G:/glassfishv3/glassfish/modules/javax.annotation.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
