@@ -1,5 +1,9 @@
 package az.his;
 
+import az.his.ejb.ContentManager;
+import az.his.persist.TestEntity;
+
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,11 +20,26 @@ import java.io.IOException;
  */
 @WebServlet(name = "TestServlet", urlPatterns = {"/serv"})
 public class TestServlet extends HttpServlet {
+    @EJB(name = "java:module/ContMan")
+    private ContentManager cm;
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        TestEntity ent = new TestEntity();
+        ent.name = "Haba!";
+
+        cm.persist(ent);
+
+//        EntityManagerFactory emf = Persistence.createEntityManagerFactory("main");
+//        EntityManager em = emf.createEntityManager();
+//
+//
+//
+//        em.close();
+//        emf.close();
         response.getWriter().append("Servlet Works!");
     }
 }

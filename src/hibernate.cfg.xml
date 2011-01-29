@@ -4,11 +4,9 @@
         "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
-        <property name="connection.url"/>
-        <property name="connection.driver_class"/>
-        <property name="connection.username"/>
-        <property name="connection.password"/>
-        <!-- DB schema will be updated if needed -->
+        <property name="hibernate.connection.datasource">jdbc/hisPool</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
         <property name="hbm2ddl.auto">update</property>
+        <mapping package="az.his.persist"/>
     </session-factory>
 </hibernate-configuration>
