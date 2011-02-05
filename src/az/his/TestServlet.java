@@ -1,7 +1,6 @@
 package az.his;
 
 import az.his.ejb.ContentManager;
-import az.his.persist.TestEntity;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -28,18 +27,6 @@ public class TestServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        TestEntity ent = new TestEntity();
-        ent.name = "Haba!";
-
-        cm.persist(ent);
-
-//        EntityManagerFactory emf = Persistence.createEntityManagerFactory("main");
-//        EntityManager em = emf.createEntityManager();
-//
-//
-//
-//        em.close();
-//        emf.close();
         response.getWriter().append("Servlet Works!");
     }
 }
