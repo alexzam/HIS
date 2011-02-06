@@ -17,7 +17,7 @@ import java.io.IOException;
  * Time: 0:47
  * To change this template use File | Settings | File Templates.
  */
-@WebServlet(name = "TestServlet", urlPatterns = {"/serv"})
+@WebServlet(name = "TestServlet", urlPatterns = {"/serv/*"})
 public class TestServlet extends HttpServlet {
     @EJB(name = "java:module/ContMan")
     private ContentManager cm;
