@@ -1,0 +1,26 @@
+.login_user {
+    border: 1px solid #999;
+    background: #EEE;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 40px;
+    display: inline;
+}
+
+.login_user a {
+    color: black;
+    font-weight: bold;
+    font-size: 40px;
+    font-family: "Lucida Grande", Calibri, Verdana, sans-serif;
+    text-decoration: none;
+}
+
+.login_user:hover {
+    border-bottom: 5px solid #cc99ff;
+}
+
+/*
+Use Corbel for headers
+*/

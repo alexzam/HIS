@@ -1,8 +1,12 @@
 package az.his.ejb;
 
+import az.his.persist.User;
+
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import java.util.List;
 
 /**
  * Manages persistency
@@ -46,6 +50,12 @@ public class ContentManagerImpl implements ContentManager {
     public void persist(Object object) {
         em.persist(object);
         em.flush();
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        TypedQuery<User> q = em.createQuery("from az.his.persist.User", User.class);
+        return q.getResultList();
     }
 
 //    public void update(Object object) {
