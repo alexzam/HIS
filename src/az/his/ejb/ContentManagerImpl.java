@@ -1,5 +1,6 @@
 package az.his.ejb;
 
+import az.his.persist.Transaction;
 import az.his.persist.User;
 
 import javax.ejb.Stateless;
@@ -58,7 +59,13 @@ public class ContentManagerImpl implements ContentManager {
         return q.getResultList();
     }
 
-//    public void update(Object object) {
+    @Override
+    public List<Transaction> getAllTransactions() {
+        TypedQuery<Transaction> q = em.createQuery("from az.his.persist.Transaction ", Transaction.class);
+        return q.getResultList();
+    }
+
+    //    public void update(Object object) {
 //        factory.getCurrentSession().saveOrUpdate(object);
 //        factory.getCurrentSession().flush();
 //    }

@@ -1,2 +1,8 @@
-INSERT INTO user(name) VALUES ("AlexZam");
-INSERT INTO user(name) VALUES ("Anitra");
+INSERT INTO user(name) VALUES ('AlexZam');
+INSERT INTO user(name) VALUES ('Anitra');
+
+INSERT INTO transcategory(name,type)VALUES('test category',1);
+
+INSERT INTO account(name,value) VALUES ('Казна', 123);
+
+INSERT INTO `transaction`(amount,`comment`,timestmp,account_id,actor_id,category_id) VALUES(654,'Comment here',now(),1,1,1);

@@ -1,12 +1,15 @@
 package az.his.persist;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import javax.persistence.*;
 import java.util.Date;
 
 /**
  * Transaction to track.
  */
-@Entity(name="transaction")
+@Entity(name = "transaction")
 public class Transaction {
     private int id;
     private float amount;
@@ -76,5 +79,20 @@ public class Transaction {
 
     public void setCategory(TransactionCategory category) {
         this.category = category;
+    }
+
+    @Transient
+    public JSONObject getJson() throws JSONException {
+        JSONObject ret = new JSONObject();
+
+        ret.put("id", getId());
+        ret.put("amount", getAmount());
+        ret.put("timestamp", getTimestmp());
+        ret.put("actor_id", getActor().getId());
+        ret.put("actor_name", getActor().getName());
+        ret.put("category_name", getCategory().getName());
+        ret.put("comment", getComment());
+
+        return ret;
     }
 }
