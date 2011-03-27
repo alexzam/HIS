@@ -4,6 +4,8 @@ body, html {
     margin: 0;
     padding: 0;
     overflow: hidden;
+    font-family: "Lucida Grande", Calibri, Verdana, sans-serif;
+    font-size: 16px;
 }
 
 .login_user {
@@ -21,7 +23,6 @@ body, html {
     color: black;
     font-weight: bold;
     font-size: 40px;
-    font-family: "Lucida Grande", Calibri, Verdana, sans-serif;
     text-decoration: none;
 }
 
@@ -36,6 +37,32 @@ body, html {
 
 .dojoxGrid table {
     margin: 0;
+}
+
+.form_column {
+    float: left;
+    margin-left: 10px;
+}
+
+.form_column:first-of-type {
+    margin-left: 0;
+}
+
+#frmAddTrans .date, #frmAddTrans .sum {
+    width: 150px;
+}
+
+.form_column h1 {
+    font-family: "Lucida Grande", Corbel, Verdana, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0 0 10px 0;
+}
+
+#account_amount {
+    font-size: 40px;
+    font-weight: bold;
+    color: #00cc00;
 }
 
 /*

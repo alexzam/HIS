@@ -4,6 +4,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.persistence.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -84,10 +86,11 @@ public class Transaction {
     @Transient
     public JSONObject getJson() throws JSONException {
         JSONObject ret = new JSONObject();
+        DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
 
         ret.put("id", getId());
         ret.put("amount", getAmount());
-        ret.put("timestamp", getTimestmp());
+        ret.put("timestamp", df.format(getTimestmp()));
         ret.put("actor_id", getActor().getId());
         ret.put("actor_name", getActor().getName());
         ret.put("category_name", getCategory().getName());

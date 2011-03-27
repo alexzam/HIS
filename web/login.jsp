@@ -18,6 +18,7 @@
 <%
     List<User> users = cm.getAllUsers();
 %>
+<!DOCTYPE HTML>
 <html>
 <head>
     <title>HIS Login</title>
