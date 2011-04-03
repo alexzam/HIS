@@ -46,7 +46,9 @@
         dojo.require("dijit.layout.BorderContainer");
         dojo.require("dijit.layout.ContentPane");
         dojo.require("dojox.grid.DataGrid");
+        dojo.require("dojox.grid.cells.dijit");
         dojo.require("dojo.data.ItemFileReadStore");
+        dojo.require("dojo.data.ItemFileWriteStore");
         dojo.require("dijit.form.Form");
         dojo.require("dijit.form.RadioButton");
         dojo.require("dijit.form.DateTextBox");
@@ -125,15 +127,15 @@
     </div>
     <div dojoType="dijit.layout.ContentPane" region="right" style="width: 200px;">Filters will be here</div>
     <div dojoType="dijit.layout.ContentPane" region="center">
-        <table dojoType="dojox.grid.DataGrid" store="transStore" id="tabTrans"
+        <table dojoType="dojox.grid.DataGrid" store="transStore" id="tabTrans" query="{id:'*'}"
                onResizeColumn="account.onTableColResize();">
             <thead>
             <tr>
-                <th field="timestamp" width="200px">Когда</th>
+                <th field="timestamp" width="200px" cellType="dojox.grid.cells.DateTextBox" editable="true">Когда</th>
                 <th field="actor_name" width="200px">Кто</th>
-                <th field="amount" width="200px">Сколько</th>
+                <th field="amount" width="200px" editable="true">Сколько</th>
                 <th field="category_name" width="200px">Категория</th>
-                <th field="comment" width="100%">Комментарий</th>
+                <th field="comment" width="100%" editable="true">Комментарий</th>
             </tr>
             </thead>
         </table>

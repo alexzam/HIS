@@ -72,7 +72,7 @@ var account = {
 };
 
 dojo.addOnLoad(function() {
-    transStore = new dojo.data.ItemFileReadStore({
+    transStore = new dojo.data.ItemFileWriteStore({
         url: transStoreUrl,
         clearOnClose: true,
         urlPreventCache: true
