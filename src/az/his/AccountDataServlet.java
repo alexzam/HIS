@@ -16,7 +16,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
@@ -28,16 +30,6 @@ public class AccountDataServlet extends HttpServlet {
     private ContentManager cm;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
-            request.setCharacterEncoding("UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new ServletException(e);
-        }
-        String action = request.getParameter("act");
-
-        if (action == null) throw new ServletException("No action");
-        if (action.equals("addtr")) addTransaction(request);
-        else throw new ServletException("Unnown action");
     }
 
     private void addTransaction(HttpServletRequest request) throws ServletException {
@@ -81,8 +73,6 @@ public class AccountDataServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         JSONObject ret = new JSONObject();
-        JSONArray items = new JSONArray();
-        List<Transaction> transactions = cm.getAllTransactions();
 
         String act = request.getParameter("act");
 
@@ -90,6 +80,34 @@ public class AccountDataServlet extends HttpServlet {
             if ("getamount".equals(act)) {
                 ret.put("amount", cm.getAccountAmountPrintable(Account.ACC_COMMON));
             } else {
+                Calendar calFrom = new GregorianCalendar();
+                calFrom.set(Calendar.DAY_OF_MONTH, 1);
+                Date fromDate = calFrom.getTime();
+
+                calFrom.add(Calendar.MONTH, 1);
+                Date toDate = calFrom.getTime();
+
+                int cat = 0;
+
+                String param = request.getParameter("from");
+                if (param != null && !param.equals("")) {
+                    fromDate = new Date(Long.parseLong(param));
+                }
+
+                param = request.getParameter("to");
+                if (param != null && !param.equals("")) {
+                    // Plus day to include "to" date to filter
+                    toDate = new Date(Long.parseLong(param) + 24 * 3600 * 1000);
+                }
+
+                param = request.getParameter("cat");
+                if (param != null && !param.equals("")) {
+                    cat = Integer.parseInt(param);
+                }
+
+                List<Transaction> transactions = cm.getTransactionsFiltered(fromDate, toDate, cat);
+                JSONArray items = new JSONArray();
+
                 ret.put("identifier", "id");
 
                 for (Transaction transaction : transactions) {
@@ -106,4 +124,17 @@ public class AccountDataServlet extends HttpServlet {
         response.setContentType("application/json");
         response.getWriter().append(ret.toString());
     }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try {
+            req.setCharacterEncoding("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new ServletException(e);
+        }
+
+        addTransaction(req);
+    }
+
+
 }

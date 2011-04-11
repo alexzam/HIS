@@ -6,6 +6,7 @@ import az.his.persist.TransactionCategory;
 import az.his.persist.User;
 
 import javax.ejb.Remote;
+import java.util.Date;
 import java.util.List;
 
 @Remote
@@ -27,4 +28,9 @@ public interface ContentManager {
     <E> E merge(E object);
 
     String getAccountAmountPrintable(int id);
+
+    @SuppressWarnings({"unchecked"})
+    <E> List<E> findAll(Class<E> entityClass);
+
+    List<Transaction> getTransactionsFiltered(Date from, Date to, int category);
 }

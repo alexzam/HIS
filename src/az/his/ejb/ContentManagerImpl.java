@@ -8,8 +8,11 @@ import az.his.persist.User;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaQuery;
 import java.text.DecimalFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,12 +23,15 @@ public class ContentManagerImpl implements ContentManager {
     @PersistenceContext(unitName = "main")
     private EntityManager em;
 
-    //    @SuppressWarnings({"unchecked"})
-//    public <E> List<E> findAll(Class<E> entityClass) {
-//        Criteria query = factory.getCurrentSession().createCriteria(entityClass);
-//        return query.setCacheable(true).list();
-//    }
-//
+    @Override
+    @SuppressWarnings({"unchecked"})
+    public <E> List<E> findAll(Class<E> entityClass) {
+        CriteriaQuery query = em.getCriteriaBuilder().createQuery(entityClass);
+        query.from(entityClass);
+        return em.createQuery(query).getResultList();
+    }
+
+    //
 //    @SuppressWarnings({"unchecked"})
 //    public <E> E findByNaturalKey(Class<E> entityClass, String propertyName, Object propertyValue) {
 //        Criteria query = factory.getCurrentSession().createCriteria(entityClass);
@@ -70,8 +76,21 @@ public class ContentManagerImpl implements ContentManager {
 
     @Override
     public List<Transaction> getAllTransactions() {
-        TypedQuery<Transaction> q = em.createQuery("from az.his.persist.Transaction ", Transaction.class);
+        TypedQuery<Transaction> q = em.createQuery("from az.his.persist.Transaction", Transaction.class);
         return q.getResultList();
+    }
+
+    @Override
+    public List<Transaction> getTransactionsFiltered(Date from, Date to, int category) {
+        String q = "from az.his.persist.Transaction where timestmp >= :from and timestmp <= :to"
+                + ((category > 0) ? " and category = :cat" : "");
+        TypedQuery<Transaction> query = em.createQuery(q, Transaction.class)
+                .setParameter("from", from, TemporalType.DATE)
+                .setParameter("to", to, TemporalType.DATE);
+        if (category > 0) {
+            query.setParameter("cat", em.find(TransactionCategory.class, category));
+        }
+        return query.getResultList();
     }
 
     @Override

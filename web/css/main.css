@@ -65,6 +65,13 @@ body, html {
     color: #00cc00;
 }
 
-/*
-Use Corbel for headers
-*/
+#filter_pane .input {
+    width: 100px;
+}
+
+#filter_pane h1 {
+    font-family: "Lucida Grande", Corbel, Verdana, sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0 0 10px 0;
+}

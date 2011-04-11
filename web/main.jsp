@@ -56,9 +56,10 @@
         dojo.require("dijit.form.ComboBox");
         dojo.require("dijit.form.SimpleTextarea");
         dojo.require("dijit.form.Button");
+        dojo.require("dijit.form.Select");
 
         var transStoreUrl = '<%=pathRoot%>account-data';
-        var catStoreUrl = '<%=pathRoot%>trcategory-data?type=';
+        var catStoreUrl = '<%=pathRoot%>trcategory-data';
         var uid = <%=AuthFilter.getUid(session)%>;
     </script>
     <script type="text/javascript" src="js/account.js"></script>
@@ -125,7 +126,33 @@
             </nav>
         </div>
     </div>
-    <div dojoType="dijit.layout.ContentPane" region="right" style="width: 200px;">Filters will be here</div>
+    <div dojoType="dijit.layout.ContentPane" region="right" style="width: 200px;" id="filter_pane">
+        <h1>Фильтровать</h1>
+
+        <form id="frmFilter" dojoType="dijit.form.Form">
+            <table>
+                <tr>
+                    <td><label for="filter_datefrom">С</label></td>
+                    <td>
+                        <input dojotype='dijit.form.DateTextBox' class="input" name="from" id="filter_datefrom"
+                               onchange="account.onFilterChange();"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="filter_dateto">По</label></td>
+                    <td>
+                        <input dojotype='dijit.form.DateTextBox' class="input" name="to" id="filter_dateto"
+                               onchange="account.onFilterChange();"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="filter_сategory">Категория</label></td>
+                    <td><select dojotype="dijit.form.Select" name="cat" id="filter_category" store="catStore"
+                                class="input" value="0" onchange="account.onFilterChange();"></select></td>
+                </tr>
+            </table>
+        </form>
+    </div>
     <div dojoType="dijit.layout.ContentPane" region="center">
         <table dojoType="dojox.grid.DataGrid" store="transStore" id="tabTrans" query="{id:'*'}"
                onResizeColumn="account.onTableColResize();">

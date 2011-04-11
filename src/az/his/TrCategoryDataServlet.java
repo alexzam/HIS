@@ -30,7 +30,7 @@ public class TrCategoryDataServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String type = request.getParameter("type");
 
-        if (type == null) throw new ServletException("No type param");
+        if (type == null) type = "a";
 
         List<TransactionCategory> cats;
         JSONObject ret = new JSONObject();
@@ -40,18 +40,27 @@ public class TrCategoryDataServlet extends HttpServlet {
         } else if (type.equals("i")) {
             cats = cm.getTransactionCategories(TransactionCategory.CatType.INC);
         } else {
-            throw new ServletException("Incorrect type");
+            cats = cm.findAll(TransactionCategory.class);
         }
 
         try {
             ret.put("identifier", "id");
             ret.put("label", "name");
 
+            JSONObject item = new JSONObject();
+
+            item.put("id", "0");
+            item.put("name", "(Все)");
+            item.put("type", "null");
+
+            items.put(item);
+
             for (TransactionCategory cat : cats) {
-                JSONObject item = new JSONObject();
+                item = new JSONObject();
 
                 item.put("id", cat.getId());
                 item.put("name", cat.getName());
+                item.put("type", (cat.getType() == TransactionCategory.CatType.INC) ? "i" : "e");
 
                 items.put(item);
             }

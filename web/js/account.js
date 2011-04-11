@@ -4,19 +4,43 @@ var catStore;
 var account = {
     loadTransactions:function() {
         transStore.close();
+
+        var frm = dijit.byId('frmFilter');
+        if (!frm.validate()) return;
+
+        var q = frm.getValues();
+        if (q.from != null) {
+            q.from = q.from.getTime();
+        }
+        if (q.to != null) {
+            q.to = q.to.getTime();
+        }
+
+        transStore.url = transStoreUrl + '?' + dojo.objectToQuery(q);
+        console.dir(transStore.url);
         transStore.fetch({
             onComplete:function() {
+                // When transaction store is updated
                 dijit.byId('tabTrans').setStore(transStore);
             }
         });
     },
 
-    loadCategories:function() {
+    loadCategories:function(firstTime) {
         catStore.close();
-        catStore.url = catStoreUrl + (dijit.byId('rbTypeExp').checked ? 'e' : 'i');
+        catStore.url = catStoreUrl;
         catStore.fetch({
             onComplete:function() {
-                dijit.byId('cbCategory').store = catStore;
+                var cbCat = dijit.byId('cbCategory');
+                cbCat.store = catStore;
+                cbCat.query = {"type":dijit.byId('rbTypeExp').checked ? 'e' : 'i'};
+                var selFilterCat = dijit.byId('filter_category');
+                if (firstTime) {
+                    selFilterCat.setStore(catStore, 0);
+                    account.loadTransactions();
+                } else {
+                    selFilterCat.setStore(catStore);
+                }
             }
         });
     },
@@ -39,14 +63,13 @@ var account = {
         }
 
         if (data.actor == 0) data.actor = uid;
-        data.act = 'addtr';
 
-        dojo.xhrPost({
+        dojo.xhrPut({
             content:data,
             url:transStoreUrl,
             load:function() {
                 account.loadTransactions();
-                account.loadCategories();
+                account.loadCategories(false);
                 account.updateAccountAmount();
 
                 dijit.byId('taAddComment').set('value', '');
@@ -67,7 +90,10 @@ var account = {
     },
 
     onTableColResize:function() {
-        // TODO Make last column 100% width
+    },
+
+    onFilterChange:function() {
+        account.loadTransactions();
     }
 };
 
@@ -83,10 +109,9 @@ dojo.addOnLoad(function() {
         urlPreventCache: true
     });
 
-    account.loadTransactions();
-    account.loadCategories();
+    account.loadCategories(true);
 
     dijit.byId('rbTypeExp').onChange = function() {
-        account.loadCategories();
+        dijit.byId('cbCategory').query = {"type":this.checked ? 'e' : 'i'};
     };
 });
