@@ -20,6 +20,7 @@ public class Transaction {
     private User actor;
     private Account account;
     private TransactionCategory category;
+    private boolean common;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,6 +55,15 @@ public class Transaction {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    @Basic
+    public boolean isCommon() {
+        return common;
+    }
+
+    public void setCommon(boolean common) {
+        this.common = common;
     }
 
     @ManyToOne

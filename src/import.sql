@@ -7,4 +7,4 @@ INSERT INTO transcategory(name,type)VALUES('Food',0);
 
 INSERT INTO account(name,value) VALUES ('Казна', 123);
 
-INSERT INTO `transaction`(amount,`comment`,timestmp,account_id,actor_id,category_id) VALUES(654,'Comment here',now(),1,1,1);
+INSERT INTO `transaction`(amount,`comment`,timestmp,account_id,actor_id,category_id,common) VALUES(654,'Comment here',now(),1,1,1,1);
