@@ -1,9 +1,10 @@
 package az.his.persist;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import az.his.DBUtil;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.Set;
 
 /**
@@ -16,6 +17,7 @@ public class Account {
     private float value;
     private String name;
     private Set<Transaction> transactions;
+    public static final Serializable COMMON_ACC = 1;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,5 +52,16 @@ public class Account {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Transient
+    public String getAmountPrintable() {
+        java.text.NumberFormat f = new DecimalFormat("#,###.##");
+        return f.format(getValue());
+    }
+
+    @Transient
+    public static Account getCommon() {
+        return DBUtil.get(Account.class, Account.COMMON_ACC);
     }
 }

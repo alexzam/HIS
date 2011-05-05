@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="/his">
+    <Resource
+            name="jdbc/his"
+            scope="Shareable"
+            auth="Container"
+            type="javax.sql.DataSource"
+            username="his"
+            password="his"
+            driverClassName="com.mysql.jdbc.Driver"
+            url="jdbc:mysql://localhost:3306/his"
+            maxActive="15"
+            maxIdle="3"/>
+</Context>

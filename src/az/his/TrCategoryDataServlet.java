@@ -1,14 +1,11 @@
 package az.his;
 
-import az.his.ejb.ContentManager;
 import az.his.persist.TransactionCategory;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import javax.ejb.EJB;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,11 +15,7 @@ import java.util.List;
 /**
  * For fetching transaction category data in JSON
  */
-@WebServlet(name = "TrCategoryDataServlet", value = "/trcategory-data")
 public class TrCategoryDataServlet extends HttpServlet {
-    @EJB(name = "java:module/ContMan")
-    private ContentManager cm;
-
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
     }
@@ -36,11 +29,11 @@ public class TrCategoryDataServlet extends HttpServlet {
         JSONObject ret = new JSONObject();
         JSONArray items = new JSONArray();
         if (type.equals("e")) {
-            cats = cm.getTransactionCategories(TransactionCategory.CatType.EXP);
+            cats = TransactionCategory.getByType(TransactionCategory.CatType.EXP);
         } else if (type.equals("i")) {
-            cats = cm.getTransactionCategories(TransactionCategory.CatType.INC);
+            cats = TransactionCategory.getByType(TransactionCategory.CatType.INC);
         } else {
-            cats = cm.findAll(TransactionCategory.class);
+            cats = DBUtil.findAll(TransactionCategory.class);
         }
 
         try {

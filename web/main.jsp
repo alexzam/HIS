@@ -1,31 +1,20 @@
-<%@ page import="az.his.ejb.ContentManager" %>
 <%@ page import="az.his.filters.AuthFilter" %>
+<%@ page import="az.his.persist.Account" %>
 <%@ page import="az.his.persist.User" %>
-<%@ page import="javax.naming.InitialContext" %>
-<%@ page import="javax.naming.NamingException" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.util.Date" %>
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%!
     private static String pathRoot = null;
-    private static ContentManager cm;
     private static SimpleDateFormat dateFormatter = new SimpleDateFormat("dd.MM.yyyy");
-
-    static {
-        try {
-            cm = (ContentManager) (new InitialContext()).lookup("java:module/ContMan");
-        } catch (NamingException e) {
-            e.printStackTrace();
-        }
-    }
 %>
 <%
     if (pathRoot == null) {
         pathRoot = request.getServletContext().getInitParameter("path.root");
     }
 
-    List<User> usersNotMe = cm.getAllUsers();
+    List<User> usersNotMe = User.getAll();
     for (User user : usersNotMe) {
         if (user.getId() == AuthFilter.getUid(session)) {
             usersNotMe.remove(user);
@@ -122,7 +111,9 @@
             <nav dojoType="dijit.layout.ContentPane" region="right">
                 <a href="login?mode=out">Logout</a>
                 <br/>
-                <span id="account_amount"><%=cm.getAccountAmountPrintable(1)%> р.</span>
+                <span id="account_amount">
+                    <%=Account.getCommon().getAmountPrintable()%> р.
+                </span>
             </nav>
         </div>
     </div>

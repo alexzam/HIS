@@ -1,16 +1,16 @@
 package az.his.persist;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import az.his.DBUtil;
+
+import javax.persistence.*;
+import java.util.List;
 
 /**
  * Transaction category
  */
 @Entity(name = "transcategory")
 public class TransactionCategory {
-    public enum CatType{
+    public enum CatType {
         EXP, INC
     }
 
@@ -20,7 +20,7 @@ public class TransactionCategory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public int getId(){
+    public int getId() {
         return id;
     }
 
@@ -42,5 +42,13 @@ public class TransactionCategory {
 
     public void setType(CatType type) {
         this.type = type;
+    }
+
+    @Transient
+    @SuppressWarnings("unchecked")
+    public static List<TransactionCategory> getByType(CatType type) {
+        return DBUtil.getSession().createQuery("from az.his.persist.TransactionCategory where type = :type")
+                .setParameter("type", type)
+                .list();
     }
 }

@@ -1,22 +1,8 @@
-<%@ page import="az.his.ejb.ContentManager" %>
 <%@ page import="az.his.persist.User" %>
-<%@ page import="javax.naming.InitialContext" %>
-<%@ page import="javax.naming.NamingException" %>
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%!
-    private static ContentManager cm;
-
-    static {
-        try {
-            cm = (ContentManager) (new InitialContext()).lookup("java:module/ContMan");
-        } catch (NamingException e) {
-            e.printStackTrace();
-        }
-    }
-%>
 <%
-    List<User> users = cm.getAllUsers();
+    List<User> users = User.getAll();
 %>
 <!DOCTYPE HTML>
 <html>

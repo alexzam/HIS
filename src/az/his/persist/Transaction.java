@@ -1,5 +1,8 @@
 package az.his.persist;
 
+import az.his.DBUtil;
+import org.hibernate.Query;
+import org.hibernate.type.DateType;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -7,6 +10,7 @@ import javax.persistence.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Transaction to track.
@@ -107,5 +111,19 @@ public class Transaction {
         ret.put("comment", getComment());
 
         return ret;
+    }
+
+    @Transient
+    @SuppressWarnings("unchecked")
+    public static List<Transaction> getFiltered(Date from, Date to, int category) {
+        String q = "from az.his.persist.Transaction where timestmp >= :from and timestmp <= :to"
+                + ((category > 0) ? " and category = :cat" : "");
+        Query query = DBUtil.getSession().createQuery(q)
+                .setParameter("from", from, DateType.INSTANCE)
+                .setParameter("to", to, DateType.INSTANCE);
+        if (category > 0) {
+            query.setParameter("cat", DBUtil.get(TransactionCategory.class, category));
+        }
+        return (List<Transaction>) query.list();
     }
 }

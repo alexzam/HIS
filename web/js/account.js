@@ -63,8 +63,9 @@ var account = {
         }
 
         if (data.actor == 0) data.actor = uid;
+        data.act = 'put';
 
-        dojo.xhrPut({
+        dojo.xhrPost({
             content:data,
             url:transStoreUrl,
             load:function() {

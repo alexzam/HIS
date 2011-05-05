@@ -1,6 +1,9 @@
 package az.his.persist;
 
+import az.his.DBUtil;
+
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * User of the system. We know two of them.
@@ -12,7 +15,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public int getId(){
+    public int getId() {
         return id;
     }
 
@@ -26,5 +29,10 @@ public class User {
 
     public void setName(String name) {
         Name = name;
+    }
+
+    @Transient
+    public static List<User> getAll() {
+        return DBUtil.findAll(User.class);
     }
 }

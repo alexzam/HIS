@@ -1,12 +1,19 @@
 <?xml version='1.0' encoding='utf-8'?>
 <!DOCTYPE hibernate-configuration PUBLIC
         "-//Hibernate/Hibernate Configuration DTD//EN"
-        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
-        <property name="hibernate.connection.datasource">jdbc/hisPool</property>
-        <property name="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
-        <property name="hbm2ddl.auto">update</property>
+        <property name="connection.datasource">java:comp/env/jdbc/his</property>
+        <property name="dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
+        <property name="hbm2ddl.auto">create</property>
+        <property name="current_session_context_class">thread</property>
+        <property name="show_sql">true</property>
+        <property name="transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</property>
         <mapping package="az.his.persist"/>
+        <mapping class="az.his.persist.Transaction"/>
+        <mapping class="az.his.persist.Account"/>
+        <mapping class="az.his.persist.TransactionCategory"/>
+        <mapping class="az.his.persist.User"/>
     </session-factory>
 </hibernate-configuration>

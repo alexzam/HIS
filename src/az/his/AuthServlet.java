@@ -3,7 +3,6 @@ package az.his;
 import az.his.filters.AuthFilter;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,7 +11,6 @@ import java.io.IOException;
 /**
  * Process login and logout
  */
-@WebServlet(name = "AuthServlet", value = "/login")
 public class AuthServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
