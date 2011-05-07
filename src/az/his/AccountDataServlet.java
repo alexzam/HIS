@@ -86,7 +86,7 @@ public class AccountDataServlet extends HttpServlet {
         DBUtil.persist(trans);
 
         if (trType.equals("a")) {
-            // Expence form account itself means we should make immediate refund
+            // Expense form account itself means we should make immediate refund
             trans = new Transaction();
             trans.setActor(actor);
             trans.setAccount(account);

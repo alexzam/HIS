@@ -10,5 +10,6 @@
             driverClassName="com.mysql.jdbc.Driver"
             url="jdbc:mysql://localhost:3306/his"
             maxActive="15"
-            maxIdle="3"/>
+            maxIdle="3"
+            connectionProperties="useUnicode=true;characterEncoding=UTF-8"/>
 </Context>
