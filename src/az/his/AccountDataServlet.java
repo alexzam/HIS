@@ -37,14 +37,29 @@ public class AccountDataServlet extends HttpServlet {
     private void addTransaction(HttpServletRequest request) throws ServletException {
         int actId = Integer.parseInt(checkParam(request, "actor"));
         float amount = Float.parseFloat(checkParam(request, "amount"));
+        String trType = checkParam(request, "type");
+        boolean common;
 
-        int catId = Integer.parseInt(checkParam(request, "cat"));
+        int catId;
+        if (trType.equals("i")) {
+            catId = TransactionCategory.CAT_DONATE;
+            common = false;
+        } else if (trType.equals("r")) {
+            catId = TransactionCategory.CAT_REFUND;
+            amount = -amount;
+            common = false;
+        } else {
+            catId = Integer.parseInt(checkParam(request, "cat"));
+            amount = -amount;
+            common = true;
+        }
+
         TransactionCategory cat;
         if (catId == 0) {
             // New category
             cat = new TransactionCategory();
             cat.setName(checkParam(request, "catname"));
-            cat.setType((amount > 0) ? TransactionCategory.CatType.INC : TransactionCategory.CatType.EXP);
+            cat.setType(TransactionCategory.CatType.EXP);
             cat = DBUtil.merge(cat);
         } else {
             cat = DBUtil.get(TransactionCategory.class, catId);
@@ -52,19 +67,39 @@ public class AccountDataServlet extends HttpServlet {
 
         String comment = request.getParameter("comment");
         Date time = new Date(Long.parseLong(checkParam(request, "date")));
+        User actor = DBUtil.get(User.class, actId);
 
         Account account = Account.getCommon();
 
         Transaction trans = new Transaction();
-        trans.setActor(DBUtil.get(User.class, actId));
+        trans.setActor(actor);
         trans.setAccount(account);
         trans.setTimestmp(time);
         trans.setAmount(amount);
         trans.setCategory(cat);
         trans.setComment(comment);
-        account.setValue(account.getValue() + amount);
-        DBUtil.merge(account);
+        trans.setCommon(common);
+        if (!common) {
+            account.setValue(account.getValue() + amount);
+            DBUtil.merge(account);
+        }
         DBUtil.persist(trans);
+
+        if (trType.equals("a")) {
+            // Expence form account itself means we should make immediate refund
+            trans = new Transaction();
+            trans.setActor(actor);
+            trans.setAccount(account);
+            trans.setTimestmp(time);
+            trans.setAmount(amount);
+            trans.setCategory(DBUtil.get(TransactionCategory.class, TransactionCategory.CAT_REFUND));
+            trans.setCommon(false);
+
+            account.setValue(account.getValue() + amount);
+            DBUtil.merge(account);
+
+            DBUtil.persist(trans);
+        }
     }
 
     private String checkParam(HttpServletRequest request, String name) throws ServletException {

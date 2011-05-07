@@ -33,7 +33,7 @@ var account = {
             onComplete:function() {
                 var cbCat = dijit.byId('cbCategory');
                 cbCat.store = catStore;
-                cbCat.query = {"type":dijit.byId('rbTypeExp').checked ? 'e' : 'i'};
+                cbCat.query = {"type":'e'};
                 var selFilterCat = dijit.byId('filter_category');
                 if (firstTime) {
                     selFilterCat.setStore(catStore, 0);
@@ -50,7 +50,6 @@ var account = {
         if (!frm.validate()) return;
 
         var data = frm.getValues();
-        if (data.type == 'e') data.amount = -data.amount;
         data.date = data.date.getTime();
 
         var cbcat = dijit.byId('cbCategory');
@@ -112,7 +111,5 @@ dojo.addOnLoad(function() {
 
     account.loadCategories(true);
 
-    dijit.byId('rbTypeExp').onChange = function() {
-        dijit.byId('cbCategory').query = {"type":this.checked ? 'e' : 'i'};
-    };
+    dijit.byId('cbCategory').query = {"type":'e'};
 });

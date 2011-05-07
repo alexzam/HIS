@@ -85,12 +85,16 @@
                         <input dojotype="dijit.form.CurrencyTextBox" currency="RUB" class="sum" required="true"
                                name="amount" constraints="{min:0.01}" rangeMessage="Не менее копейки" id="tbAddAmount"/>
                         <br/>
-                        <input type="radio" dojotype="dijit.form.RadioButton" checked="true" id="rbTypeExp" name="type"
-                               value="e"/>
-                        <label for="rbTypeExp">Расход</label>
-                        <input type="radio" dojotype="dijit.form.RadioButton" id="rbTypeInc" name="type"
-                               value="i"/>
-                        <label for="rbTypeInc">Приход</label>
+                        <input type="radio" dojotype="dijit.form.RadioButton" checked="true" id="rbTypeExpPers"
+                               name="type" value="p"/>
+                        <label for="rbTypeExpPers">Трата из своих</label>
+                        <input type="radio" dojotype="dijit.form.RadioButton" id="rbTypeExpAcc" name="type" value="a"/>
+                        <label for="rbTypeExpAcc">Трата из Казны</label>
+                        <br/>
+                        <input type="radio" dojotype="dijit.form.RadioButton" id="rbTypeInc" name="type" value="i"/>
+                        <label for="rbTypeInc">Вклад в Казну</label>
+                        <input type="radio" dojotype="dijit.form.RadioButton" id="rbTypeRef" name="type" value="r"/>
+                        <label for="rbTypeRef">Возмещение из Казны</label>
                     </div>
                     <div class="form_column">
                         <h1>Категория</h1>

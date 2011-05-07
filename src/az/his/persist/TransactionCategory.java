@@ -10,8 +10,11 @@ import java.util.List;
  */
 @Entity(name = "transcategory")
 public class TransactionCategory {
+    public static final int CAT_DONATE = 1;
+    public static final int CAT_REFUND = 2;
+
     public enum CatType {
-        EXP, INC
+        EXP, INC, NONE
     }
 
     private int id;
