@@ -53,7 +53,21 @@ public class TrCategoryDataServlet extends HttpServlet {
 
                 item.put("id", cat.getId());
                 item.put("name", cat.getName());
-                item.put("type", (cat.getType() == TransactionCategory.CatType.INC) ? "i" : "e");
+                String oType;
+                switch (cat.getType()) {
+                    case EXP:
+                        oType = "e";
+                        break;
+                    case INC:
+                        oType = "i";
+                        break;
+                    case NONE:
+                        oType = "n";
+                        break;
+                    default:
+                        oType = "null";
+                }
+                item.put("type", oType);
 
                 items.put(item);
             }

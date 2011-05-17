@@ -1,5 +1,6 @@
 package az.his;
 
+import az.his.filters.AuthFilter;
 import az.his.persist.Account;
 import az.his.persist.Transaction;
 import az.his.persist.TransactionCategory;
@@ -23,6 +24,14 @@ import java.util.List;
  * For fetching account data in JSON
  */
 public class AccountDataServlet extends HttpServlet {
+    /**
+     * If act == "put", add transaction.
+     *
+     * @param request  Standart
+     * @param response Standart
+     * @throws ServletException
+     * @throws IOException
+     */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             request.setCharacterEncoding("UTF-8");
@@ -34,9 +43,15 @@ public class AccountDataServlet extends HttpServlet {
         if ("put".equals(act)) addTransaction(request);
     }
 
+    /**
+     * Adds a transaction. Type (i, r, p, a), cat, catname, actor, amount, comment, date.
+     *
+     * @param request Standart
+     * @throws ServletException Standart
+     */
     private void addTransaction(HttpServletRequest request) throws ServletException {
         int actId = Integer.parseInt(checkParam(request, "actor"));
-        float amount = Float.parseFloat(checkParam(request, "amount"));
+        int amount = Math.round(Float.parseFloat(checkParam(request, "amount")) * 100);
         String trType = checkParam(request, "type");
         boolean common;
 
@@ -108,50 +123,25 @@ public class AccountDataServlet extends HttpServlet {
         return ret;
     }
 
+    /**
+     * act == getamount: return account stats <br/>
+     * else: return transactions list
+     *
+     * @param request  Standart
+     * @param response Standart
+     * @throws ServletException
+     * @throws IOException
+     */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        JSONObject ret = new JSONObject();
+        JSONObject ret;
 
         String act = request.getParameter("act");
 
         try {
             if ("getamount".equals(act)) {
-                ret.put("amount", Account.getCommon().getAmountPrintable());
+                ret = getStatistic(request);
             } else {
-                Calendar calFrom = new GregorianCalendar();
-                calFrom.set(Calendar.DAY_OF_MONTH, 1);
-                Date fromDate = calFrom.getTime();
-
-                calFrom.add(Calendar.MONTH, 1);
-                Date toDate = calFrom.getTime();
-
-                int cat = 0;
-
-                String param = request.getParameter("from");
-                if (param != null && !param.equals("")) {
-                    fromDate = new Date(Long.parseLong(param));
-                }
-
-                param = request.getParameter("to");
-                if (param != null && !param.equals("")) {
-                    // Plus day to include "to" date to filter
-                    toDate = new Date(Long.parseLong(param) + 24 * 3600 * 1000);
-                }
-
-                param = request.getParameter("cat");
-                if (param != null && !param.equals("")) {
-                    cat = Integer.parseInt(param);
-                }
-
-                List<Transaction> transactions = Transaction.getFiltered(fromDate, toDate, cat);
-                JSONArray items = new JSONArray();
-
-                ret.put("identifier", "id");
-
-                for (Transaction transaction : transactions) {
-                    items.put(transaction.getJson());
-                }
-
-                ret.put("items", items);
+                ret = getTransactions(request);
             }
         } catch (JSONException e) {
             throw new ServletException(e);
@@ -160,5 +150,67 @@ public class AccountDataServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
         response.getWriter().append(ret.toString());
+    }
+
+    private JSONObject getStatistic(HttpServletRequest req) throws JSONException {
+        JSONObject ret = new JSONObject();
+        Account acc = Account.getCommon();
+        long totalExp = acc.getTotalExp();
+        long eachExp = totalExp / 2;
+        User user = DBUtil.get(User.class, AuthFilter.getUid(req.getSession()));
+        long persExp = user.getPersonalExpense(acc);
+        long persDonation = user.getPersonalDonation(acc);
+
+        ret.put("amount", acc.getAmountPrintable());
+        ret.put("totalExp", DBUtil.formatCurrency(totalExp));
+        ret.put("eachExp", DBUtil.formatCurrency(eachExp));
+        ret.put("persExp", DBUtil.formatCurrency(persExp));
+        ret.put("persDonation", DBUtil.formatCurrency(persDonation));
+        ret.put("persSpent", DBUtil.formatCurrency(persDonation + persExp));
+        ret.put("persBalance", DBUtil.formatCurrency(persDonation + persExp - eachExp));
+
+        return ret;
+    }
+
+    private JSONObject getTransactions(HttpServletRequest request) throws JSONException {
+        JSONObject ret = new JSONObject();
+
+        Calendar calFrom = new GregorianCalendar();
+        calFrom.set(Calendar.DAY_OF_MONTH, 1);
+        Date fromDate = calFrom.getTime();
+
+        calFrom.add(Calendar.MONTH, 1);
+        Date toDate = calFrom.getTime();
+
+        int cat = 0;
+
+        String param = request.getParameter("from");
+        if (param != null && !param.equals("")) {
+            fromDate = new Date(Long.parseLong(param));
+        }
+
+        param = request.getParameter("to");
+        if (param != null && !param.equals("")) {
+            // Plus day to include "to" date to filter
+            toDate = new Date(Long.parseLong(param) + 24 * 3600 * 1000);
+        }
+
+        param = request.getParameter("cat");
+        if (param != null && !param.equals("")) {
+            cat = Integer.parseInt(param);
+        }
+
+        List<Transaction> transactions = Transaction.getFiltered(fromDate, toDate, cat);
+        JSONArray items = new JSONArray();
+
+        ret.put("identifier", "id");
+
+        for (Transaction transaction : transactions) {
+            items.put(transaction.getJson());
+        }
+
+        ret.put("items", items);
+
+        return ret;
     }
 }

@@ -112,8 +112,8 @@
                     </div>
                 </form>
             </div>
-            <nav dojoType="dijit.layout.ContentPane" region="right">
-                <a href="login?mode=out">Logout</a>
+            <nav dojoType="dijit.layout.ContentPane" region="right" style="text-align:right;">
+                <a href="login?mode=out">Выйти</a>
                 <br/>
                 <span id="account_amount">
                     <%=Account.getCommon().getAmountPrintable()%> р.
@@ -121,32 +121,63 @@
             </nav>
         </div>
     </div>
-    <div dojoType="dijit.layout.ContentPane" region="right" style="width: 200px;" id="filter_pane">
-        <h1>Фильтровать</h1>
+    <div dojoType="dijit.layout.BorderContainer" gutters="false" region="right" style="width: 200px;" id="filter_pane">
+        <div dojoType="dijit.layout.ContentPane" region="top">
+            <h1>Фильтровать</h1>
 
-        <form id="frmFilter" dojoType="dijit.form.Form">
-            <table>
+            <form id="frmFilter" dojoType="dijit.form.Form">
+                <table>
+                    <tr>
+                        <td><label for="filter_datefrom">С</label></td>
+                        <td>
+                            <input dojotype='dijit.form.DateTextBox' class="input" name="from" id="filter_datefrom"
+                                   onchange="account.onFilterChange();"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="filter_dateto">По</label></td>
+                        <td>
+                            <input dojotype='dijit.form.DateTextBox' class="input" name="to" id="filter_dateto"
+                                   onchange="account.onFilterChange();"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="filter_сategory">Категория</label></td>
+                        <td><select dojotype="dijit.form.Select" name="cat" id="filter_category" store="catStore"
+                                    class="input" value="0" onchange="account.onFilterChange();"></select></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        <div dojoType="dijit.layout.ContentPane" region="center"></div>
+        <div dojoType="dijit.layout.ContentPane" region="bottom">
+            <table style="border:0;width:100%">
                 <tr>
-                    <td><label for="filter_datefrom">С</label></td>
-                    <td>
-                        <input dojotype='dijit.form.DateTextBox' class="input" name="from" id="filter_datefrom"
-                               onchange="account.onFilterChange();"/>
-                    </td>
+                    <td>Общие расходы:</td>
+                    <td><span id="valTotalExp">0</span></td>
                 </tr>
                 <tr>
-                    <td><label for="filter_dateto">По</label></td>
-                    <td>
-                        <input dojotype='dijit.form.DateTextBox' class="input" name="to" id="filter_dateto"
-                               onchange="account.onFilterChange();"/>
-                    </td>
+                    <td>На каждого:</td>
+                    <td><span id="valEachExp">0</span></td>
                 </tr>
                 <tr>
-                    <td><label for="filter_сategory">Категория</label></td>
-                    <td><select dojotype="dijit.form.Select" name="cat" id="filter_category" store="catStore"
-                                class="input" value="0" onchange="account.onFilterChange();"></select></td>
+                    <td>Мои траты:</td>
+                    <td><span id="valPersExp">0</span></td>
+                </tr>
+                <tr>
+                    <td>Мой вклад в Казну:</td>
+                    <td><span id="valPersDonation">0</span></td>
+                </tr>
+                <tr>
+                    <td>Всего моих расходов:</td>
+                    <td><span id="valPersSpent">0</span></td>
+                </tr>
+                <tr>
+                    <td>Мой баланс:</td>
+                    <td><span id="valPersBalance">0</span></td>
                 </tr>
             </table>
-        </form>
+        </div>
     </div>
     <div dojoType="dijit.layout.ContentPane" region="center">
         <table dojoType="dojox.grid.DataGrid" store="transStore" id="tabTrans" query="{id:'*'}"

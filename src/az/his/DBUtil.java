@@ -8,24 +8,23 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Restrictions;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.List;
 
 /**
  * Hibernate set up
  */
 public class DBUtil {
-    private static final SessionFactory factory;
-
-    static {
-        try {
-            factory = new Configuration().configure().buildSessionFactory();
-//            factory = new AnnotationConfiguration().configure().buildSessionFactory();
-        } catch (Throwable ex) {
-            throw new ExceptionInInitializerError(ex);
-        }
-    }
+    private static SessionFactory factory;
 
     public static Session getSession() throws HibernateException {
+        if (factory == null) {
+            try {
+                factory = new Configuration().configure().buildSessionFactory();
+            } catch (Throwable ex) {
+                throw new ExceptionInInitializerError(ex);
+            }
+        }
         return factory.getCurrentSession();
     }
 
@@ -73,5 +72,20 @@ public class DBUtil {
 
     public static Session openSession() {
         return factory.openSession();
+    }
+
+    private static java.text.NumberFormat dblFormatter = new DecimalFormat("#,###.##");
+
+    public static String formatCurrency(double sum) {
+        return dblFormatter.format(sum);
+    }
+
+    private static java.text.NumberFormat intFormatter = new DecimalFormat("#,##0");
+    private static java.text.NumberFormat int2Formatter = new DecimalFormat("#,##0.00");
+
+    public static String formatCurrency(long sum) {
+        if (sum % 100 != 0) {
+            return int2Formatter.format((double) sum / 100);
+        } else return intFormatter.format((double) sum / 100);
     }
 }

@@ -18,7 +18,7 @@ import java.util.List;
 @Entity(name = "transaction")
 public class Transaction {
     private int id;
-    private float amount;
+    private int amount;
     private Date timestmp;
     private String comment;
     private User actor;
@@ -36,11 +36,11 @@ public class Transaction {
         this.id = id;
     }
 
-    public float getAmount() {
+    public int getAmount() {
         return amount;
     }
 
-    public void setAmount(float amount) {
+    public void setAmount(int amount) {
         this.amount = amount;
     }
 
@@ -103,7 +103,7 @@ public class Transaction {
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
 
         ret.put("id", getId());
-        ret.put("amount", getAmount());
+        ret.put("amount", DBUtil.formatCurrency(getAmount()));
         ret.put("timestamp", df.format(getTimestmp()));
         ret.put("actor_id", getActor().getId());
         ret.put("actor_name", getActor().getName());
@@ -125,5 +125,9 @@ public class Transaction {
             query.setParameter("cat", DBUtil.get(TransactionCategory.class, category));
         }
         return (List<Transaction>) query.list();
+    }
+
+    public void setAmount(double amount) {
+        setAmount((int) Math.round(amount * 100));
     }
 }

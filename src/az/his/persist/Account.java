@@ -4,7 +4,6 @@ import az.his.DBUtil;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.text.DecimalFormat;
 import java.util.Set;
 
 /**
@@ -12,9 +11,8 @@ import java.util.Set;
  */
 @Entity(name = "account")
 public class Account {
-    public static final int ACC_COMMON = 1;
     private int id;
-    private float value;
+    private long value;
     private String name;
     private Set<Transaction> transactions;
     public static final Serializable COMMON_ACC = 1;
@@ -29,11 +27,11 @@ public class Account {
         this.id = id;
     }
 
-    public float getValue() {
+    public long getValue() {
         return value;
     }
 
-    public void setValue(float value) {
+    public void setValue(long value) {
         this.value = value;
     }
 
@@ -41,14 +39,14 @@ public class Account {
         return name;
     }
 
-//    @OneToMany(mappedBy = "account")
-//    public Set<Transaction> getTransactions() {
-//        return transactions;
-//    }
-//
-//    public void setTransactions(Set<Transaction> transactions) {
-//        this.transactions = transactions;
-//    }
+    @OneToMany(mappedBy = "account")
+    public Set<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(Set<Transaction> transactions) {
+        this.transactions = transactions;
+    }
 
     public void setName(String name) {
         this.name = name;
@@ -56,12 +54,17 @@ public class Account {
 
     @Transient
     public String getAmountPrintable() {
-        java.text.NumberFormat f = new DecimalFormat("#,###.##");
-        return f.format(getValue());
+        return DBUtil.formatCurrency(getValue());
     }
 
     @Transient
     public static Account getCommon() {
         return DBUtil.get(Account.class, Account.COMMON_ACC);
+    }
+
+    @Transient
+    public long getTotalExp() {
+        return -(Long) DBUtil.getSession().createQuery("select sum(amount) from transaction where common = true")
+                .uniqueResult();
     }
 }

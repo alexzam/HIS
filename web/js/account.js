@@ -17,7 +17,6 @@ var account = {
         }
 
         transStore.url = transStoreUrl + '?' + dojo.objectToQuery(q);
-        console.dir(transStore.url);
         transStore.fetch({
             onComplete:function() {
                 // When transaction store is updated
@@ -70,7 +69,7 @@ var account = {
             load:function() {
                 account.loadTransactions();
                 account.loadCategories(false);
-                account.updateAccountAmount();
+                account.updateAccountStats();
 
                 dijit.byId('taAddComment').set('value', '');
                 dijit.byId('cbCategory').set('value', '');
@@ -79,12 +78,18 @@ var account = {
         });
     },
 
-    updateAccountAmount:function() {
+    updateAccountStats:function() {
         dojo.xhrGet({
             url:transStoreUrl + '?act=getamount',
             handleAs:'json',
             load:function(data) {
                 dojo.byId('account_amount').innerHTML = data.amount + ' р.';
+                dojo.byId('valTotalExp').innerHTML = data.totalExp;
+                dojo.byId('valEachExp').innerHTML = data.eachExp;
+                dojo.byId('valPersExp').innerHTML = data.persExp;
+                dojo.byId('valPersDonation').innerHTML = data.persDonation;
+                dojo.byId('valPersSpent').innerHTML = data.persSpent;
+                dojo.byId('valPersBalance').innerHTML = data.persBalance;
             }
         });
     },
@@ -94,6 +99,11 @@ var account = {
 
     onFilterChange:function() {
         account.loadTransactions();
+    },
+
+    onAddTypeChange:function() {
+        var type = dijit.byId('frmAddTrans').getValues().type;
+        dijit.byId('cbCategory').set('disabled', (type == 'i' || type == 'r'));
     }
 };
 
@@ -112,4 +122,15 @@ dojo.addOnLoad(function() {
     account.loadCategories(true);
 
     dijit.byId('cbCategory').query = {"type":'e'};
+
+    dijit.byId('rbTypeExpPers').onChange = account.onAddTypeChange;
+    dijit.byId('rbTypeExpAcc').onChange = account.onAddTypeChange;
+    dijit.byId('rbTypeInc').onChange = account.onAddTypeChange;
+    dijit.byId('rbTypeRef').onChange = account.onAddTypeChange;
+
+    var from = new Date();
+    from.setDate(1);
+    dijit.byId('filter_datefrom').set('value', from);
+
+    account.updateAccountStats();
 });
