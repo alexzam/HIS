@@ -5,10 +5,10 @@
             scope="Shareable"
             auth="Container"
             type="javax.sql.DataSource"
-            username="his"
-            password="his"
+            username="${db.username}"
+            password="${db.password}"
             driverClassName="com.mysql.jdbc.Driver"
-            url="jdbc:mysql://localhost:3306/his"
+            url="${db.url}"
             maxActive="15"
             maxIdle="3"
             connectionProperties="useUnicode=true;characterEncoding=UTF-8"/>

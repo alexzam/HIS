@@ -40,12 +40,13 @@ public class User {
     @Transient
     public long getPersonalExpense(Account acc) {
         Session session = DBUtil.getSession();
-        Long out = -(Long) session
+        Long out = (Long) session
                 .createQuery("select sum(amount) from transaction where account = ? and common = true and actor = ?")
                 .setEntity(0, acc)
                 .setEntity(1, this)
                 .uniqueResult();
         if (out == null) out = 0l;
+        else out = -out;
         return out;
     }
 

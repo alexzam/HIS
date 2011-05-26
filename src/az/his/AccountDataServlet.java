@@ -5,6 +5,7 @@ import az.his.persist.Account;
 import az.his.persist.Transaction;
 import az.his.persist.TransactionCategory;
 import az.his.persist.User;
+import org.hibernate.Session;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,6 +42,20 @@ public class AccountDataServlet extends HttpServlet {
 
         String act = request.getParameter("act");
         if ("put".equals(act)) addTransaction(request);
+        else if ("del".equals(act)) delTransactions(request);
+    }
+
+    private void delTransactions(HttpServletRequest request) throws ServletException {
+        String[] ids = checkParam(request, "ids").split(",");
+        Session sess = DBUtil.getSession();
+        for (String id : ids) {
+            try {
+                int iid = Integer.parseInt(id);
+                DBUtil.delete(Transaction.class, iid);
+            } catch (Exception e) {
+                // ignored
+            }
+        }
     }
 
     /**

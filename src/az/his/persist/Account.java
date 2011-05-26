@@ -64,7 +64,10 @@ public class Account {
 
     @Transient
     public long getTotalExp() {
-        return -(Long) DBUtil.getSession().createQuery("select sum(amount) from transaction where common = true")
+        Long out = (Long) DBUtil.getSession().createQuery("select sum(amount) from transaction where common = true")
                 .uniqueResult();
+        if (out == null) out = 0l;
+        else out = -out;
+        return out;
     }
 }

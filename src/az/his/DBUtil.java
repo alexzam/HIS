@@ -70,6 +70,12 @@ public class DBUtil {
         return query.list();
     }
 
+    @SuppressWarnings("unchecked")
+    public static void delete(Class cls, int id) {
+        Session sess = getSession();
+        sess.delete(get(cls, id));
+    }
+
     public static Session openSession() {
         return factory.openSession();
     }

@@ -149,7 +149,9 @@
                 </table>
             </form>
         </div>
-        <div dojoType="dijit.layout.ContentPane" region="center"></div>
+        <div dojoType="dijit.layout.ContentPane" region="center">
+            <button dojotype="dijit.form.Button" id="btDelete">Удалить</button>
+        </div>
         <div dojoType="dijit.layout.ContentPane" region="bottom">
             <table style="border:0;width:100%">
                 <tr>

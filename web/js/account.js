@@ -104,6 +104,30 @@ var account = {
     onAddTypeChange:function() {
         var type = dijit.byId('frmAddTrans').getValues().type;
         dijit.byId('cbCategory').set('disabled', (type == 'i' || type == 'r'));
+    },
+
+    onBtDelete: function() {
+        var tab = dijit.byId('tabTrans');
+        var selItems = tab.selection.selected;
+        var delIds = new Array();
+
+        for (var i = 0; i < selItems.length; i++) {
+            if (selItems[i] != true) continue;
+            delIds.push(tab.getItem(i).id[0]);
+        }
+
+        if (delIds.length <= 0) return;
+        var idsStr = delIds.join();
+
+        var data = {act:"del", ids:idsStr};
+        dojo.xhrPost({
+            content:data,
+            url:transStoreUrl,
+            load:function() {
+                account.loadTransactions();
+                account.updateAccountStats();
+            }
+        });
     }
 };
 
@@ -133,4 +157,6 @@ dojo.addOnLoad(function() {
     dijit.byId('filter_datefrom').set('value', from);
 
     account.updateAccountStats();
+
+    dijit.byId('btDelete').onClick = account.onBtDelete;
 });

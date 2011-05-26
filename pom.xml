@@ -5,18 +5,54 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>az.his</groupId>
     <artifactId>his</artifactId>
-    <packaging>ear</packaging>
-    <version>0.0.1</version>
+    <packaging>war</packaging>
+    <version>0.1</version>
     <name>HIS</name>
     <properties>
         <config>dev</config>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <config>dev</config>
+            </properties>
+            <build>
+                <finalName>${project.artifactId}</finalName>
+            </build>
+        </profile>
+
+        <profile>
+            <id>prd</id>
+            <properties>
+                <config>prd</config>
+            </properties>
+        </profile>
+    </profiles>
+
     <repositories>
         <repository>
             <id>Java.Net</id>
             <url>http://download.java.net/maven/2/</url>
+        </repository>
+        <repository>
+            <id>jboss-public-repository-group</id>
+            <name>JBoss Public Repository Group</name>
+            <url>http://repository.jboss.org/nexus/content/groups/public/</url>
+            <layout>default</layout>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </snapshots>
         </repository>
     </repositories>
     <pluginRepositories>
@@ -25,28 +61,49 @@
             <name>Java.net Maven2 Repository</name>
             <url>http://download.java.net/maven/2</url>
         </pluginRepository>
+        <pluginRepository>
+            <id>jboss-public-repository-group</id>
+            <name>JBoss Public Repository Group</name>
+            <url>http://repository.jboss.org/nexus/content/groups/public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
     </pluginRepositories>
 
     <build>
         <defaultGoal>compile</defaultGoal>
-        <directory>${basedir}/out/production</directory>
-        <sourceDirectory>${basedir}/src</sourceDirectory>
+        <directory>${project.basedir}/out</directory>
+        <outputDirectory>${project.basedir}/out/warsrc/WEB-INF/classes</outputDirectory>
+        <sourceDirectory>./src</sourceDirectory>
         <finalName>${project.artifactId}-${project.version}-${config}</finalName>
         <resources>
             <resource>
-                <targetPath>src/META-INF</targetPath>
+                <targetPath>.</targetPath>
                 <filtering>true</filtering>
-                <directory>${basedir}/src/META-INF</directory>
+                <directory>${basedir}/web</directory>
                 <includes>
-                    <include>*.xml</include>
+                    <include>**/*.xml</include>
                 </includes>
             </resource>
             <resource>
                 <targetPath>.</targetPath>
                 <filtering>false</filtering>
+                <directory>${basedir}/web</directory>
+                <excludes>
+                    <exclude>**/*.xml</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <targetPath>WEB-INF/classes</targetPath>
+                <filtering>false</filtering>
                 <directory>${basedir}/src</directory>
                 <includes>
                     <include>import.sql</include>
+                    <include>hibernate.cfg.xml</include>
                 </includes>
             </resource>
         </resources>
@@ -55,22 +112,6 @@
         </filters>
 
         <plugins>
-            <plugin>
-                <groupId>org.glassfish.maven.plugin</groupId>
-                <artifactId>maven-glassfish-plugin</artifactId>
-                <version>2.1</version>
-                <executions>
-                    <execution>
-                        <id>deploy</id>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>start-domain</goal>
-                            <goal>deploy</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -81,17 +122,45 @@
                         <exclude>org/json/Test.java</exclude>
                     </excludes>
                 </configuration>
-
-                <executions>
-                    <execution>
-                        <id>compile</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.4.3</version>
+                <configuration>
+                    <outputDirectory>${project.build.directory}/warsrc</outputDirectory>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.1.1</version>
+                <configuration>
+                    <outputDirectory>${project.build.directory}</outputDirectory>
+                    <warSourceDirectory>${project.build.directory}/warsrc</warSourceDirectory>
+                    <packagingExcludes>**/javaee-api-6.0.jar</packagingExcludes>
+                </configuration>
+            </plugin>
+
+            <!--<plugin>-->
+            <!--<groupId>org.codehaus.mojo</groupId>-->
+            <!--<artifactId>buildnumber-maven-plugin</artifactId>-->
+            <!--<version>1.0</version>-->
+            <!--&lt;!&ndash;<executions>&ndash;&gt;-->
+            <!--&lt;!&ndash;<execution>&ndash;&gt;-->
+            <!--&lt;!&ndash;<phase>validate</phase>&ndash;&gt;-->
+            <!--&lt;!&ndash;<goals>&ndash;&gt;-->
+            <!--&lt;!&ndash;<goal>create</goal>&ndash;&gt;-->
+            <!--&lt;!&ndash;</goals>&ndash;&gt;-->
+            <!--&lt;!&ndash;</execution>&ndash;&gt;-->
+            <!--&lt;!&ndash;</executions>&ndash;&gt;-->
+            <!--<configuration>-->
+            <!--<doCheck>true</doCheck>-->
+            <!--<doUpdate>true</doUpdate>-->
+            <!--</configuration>-->
+            <!--</plugin>-->
         </plugins>
 
     </build>
@@ -101,6 +170,22 @@
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
             <version>6.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>3.6.4.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>javassist</groupId>
+            <artifactId>javassist</artifactId>
+            <version>3.12.1.GA</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.6.1</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>
