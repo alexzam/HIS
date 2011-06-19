@@ -38,13 +38,15 @@ public class AuthFilter implements Filter {
         String path = context.getInitParameter("path.root");
 
         String uri = htReq.getServletPath();
-        boolean isPublic = uri.equals("/" + pgLogin);
-        boolean isLoginReq = uri.equals("/login");
+        boolean isPublic = uri.endsWith("/" + pgLogin);
+        boolean isLoginReq = uri.endsWith("/login");
 
         if (isPublic && isAuth) {
             htResp.sendRedirect(path + pgMain);
+//            htResp.getWriter().append("Redirect: "+path + pgMain);
         } else if (!isAuth && !isPublic && !isLoginReq) {
             htResp.sendRedirect(path);
+//            htResp.getWriter().append("Redirect: "+path);
         } else {
             chain.doFilter(req, resp);
         }

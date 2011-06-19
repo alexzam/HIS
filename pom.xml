@@ -33,6 +33,13 @@
                 <config>prd</config>
             </properties>
         </profile>
+
+        <profile>
+            <id>tst</id>
+            <properties>
+                <config>tst</config>
+            </properties>
+        </profile>
     </profiles>
 
     <repositories>
@@ -99,7 +106,7 @@
             </resource>
             <resource>
                 <targetPath>WEB-INF/classes</targetPath>
-                <filtering>false</filtering>
+                <filtering>true</filtering>
                 <directory>${basedir}/src</directory>
                 <includes>
                     <include>import.sql</include>

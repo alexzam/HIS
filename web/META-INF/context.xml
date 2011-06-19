@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context path="/his">
+<Context path="${context.path}">
     <Resource
-            name="jdbc/his"
+            name="jdbc/${context.dbres}"
             scope="Shareable"
             auth="Container"
             type="javax.sql.DataSource"

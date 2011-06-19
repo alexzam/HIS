@@ -63,7 +63,7 @@
 
     <context-param>
         <param-name>path.root</param-name>
-        <param-value>/his/</param-value>
+        <param-value>${context.path}/</param-value>
     </context-param>
 
     <context-param>
