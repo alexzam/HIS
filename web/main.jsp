@@ -26,35 +26,54 @@
 <html>
 <head>
     <title>Казна</title>
+
+    <link rel="stylesheet" type="text/css" href="js/ext/resources/css/ext-all.css"/>
+    <script type="text/javascript" src="js/ext/ext-all-debug-w-comments.js"></script>
+    <script type="text/javascript">
+        Ext.BLANK_IMAGE_URL = 'js/ext/resources/images/default/s.gif';
+        var transStoreUrl = '<%=pathRoot%>account-data';
+        var catStoreUrl = '<%=pathRoot%>trcategory-data';
+        var uid = <%=AuthFilter.getUid(session)%>;
+
+        Ext.onReady(function() {
+            Ext.create('Ext.container.Viewport', {
+                layout: 'fit',
+                items: [
+                    {
+                        xtype: 'panel',
+                        title: 'Users',
+                        html : 'List of users will go here'
+                    }
+                ]
+            });
+        });
+    </script>
+
     <link rel="stylesheet" href="css/main.css"/>
     <link rel="stylesheet" href="js/dijit/themes/tundra/tundra.css">
     <link rel="stylesheet" href="js/dojox/grid/resources/Grid.css"/>
     <link rel="stylesheet" href="js/dojox/grid/resources/tundraGrid.css"/>
     <script type="text/javascript" src="js/dojo/dojo.js" djConfig="parseOnLoad: true, locale: 'ru'"></script>
     <script type="text/javascript">
-        dojo.require("dijit.layout.BorderContainer");
-        dojo.require("dijit.layout.ContentPane");
-        dojo.require("dojox.grid.DataGrid");
-        dojo.require("dojox.grid.cells.dijit");
-        dojo.require("dojo.data.ItemFileReadStore");
-        dojo.require("dojo.data.ItemFileWriteStore");
-        dojo.require("dijit.form.Form");
-        dojo.require("dijit.form.RadioButton");
-        dojo.require("dijit.form.DateTextBox");
-        dojo.require("dijit.form.CurrencyTextBox");
-        dojo.require("dijit.form.ComboBox");
-        dojo.require("dijit.form.SimpleTextarea");
-        dojo.require("dijit.form.Button");
-        dojo.require("dijit.form.Select");
-
-        var transStoreUrl = '<%=pathRoot%>account-data';
-        var catStoreUrl = '<%=pathRoot%>trcategory-data';
-        var uid = <%=AuthFilter.getUid(session)%>;
+        /*dojo.require("dijit.layout.BorderContainer");
+         dojo.require("dijit.layout.ContentPane");
+         dojo.require("dojox.grid.DataGrid");
+         dojo.require("dojox.grid.cells.dijit");
+         dojo.require("dojo.data.ItemFileReadStore");
+         dojo.require("dojo.data.ItemFileWriteStore");
+         dojo.require("dijit.form.Form");
+         dojo.require("dijit.form.RadioButton");
+         dojo.require("dijit.form.DateTextBox");
+         dojo.require("dijit.form.CurrencyTextBox");
+         dojo.require("dijit.form.ComboBox");
+         dojo.require("dijit.form.SimpleTextarea");
+         dojo.require("dijit.form.Button");
+         dojo.require("dijit.form.Select");*/
     </script>
     <script type="text/javascript" src="js/account.js"></script>
 </head>
 <body class="tundra">
-<div dojoType="dijit.layout.BorderContainer">
+<!--div dojoType="dijit.layout.BorderContainer">
     <div dojoType="dijit.layout.ContentPane" region="top" style="height:100px;">
         <div dojoType="dijit.layout.BorderContainer" gutters="false">
             <div dojoType="dijit.layout.ContentPane" region="center">
@@ -195,6 +214,6 @@
             </thead>
         </table>
     </div>
-</div>
+</div-->
 </body>
 </html>
