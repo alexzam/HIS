@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-ear" name="HIS:ear exploded">
+    <output-path>$PROJECT_DIR$/target/his-0.0.1</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="HIS/javaeeApplication/JavaEE" />
+    </root>
+  </artifact>
+</component>
