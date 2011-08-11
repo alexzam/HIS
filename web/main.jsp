@@ -35,24 +35,19 @@
         var catStoreUrl = '<%=pathRoot%>trcategory-data';
         var uid = <%=AuthFilter.getUid(session)%>;
 
-        Ext.onReady(function() {
-            Ext.create('Ext.container.Viewport', {
-                layout: 'fit',
-                items: [
-                    {
-                        xtype: 'panel',
-                        title: 'Users',
-                        html : 'List of users will go here'
-                    }
-                ]
-            });
-        });
+        var userRadioOptions = [
+            {boxLabel: 'Я', name:'actor', inputValue:'0', checked: true}
+            <% for (User user : usersNotMe) { %>
+            ,
+            {boxLabel: '<%=user.getName()%>', name: 'actor', inputValue: '<%=user.getId()%>'}
+            <% } %>
+        ];
     </script>
 
-    <link rel="stylesheet" href="css/main.css"/>
-    <link rel="stylesheet" href="js/dijit/themes/tundra/tundra.css">
-    <link rel="stylesheet" href="js/dojox/grid/resources/Grid.css"/>
-    <link rel="stylesheet" href="js/dojox/grid/resources/tundraGrid.css"/>
+    <%--<link rel="stylesheet" href="css/main.css"/>--%>
+    <%--<link rel="stylesheet" href="js/dijit/themes/tundra/tundra.css">--%>
+    <%--<link rel="stylesheet" href="js/dojox/grid/resources/Grid.css"/>--%>
+    <%--<link rel="stylesheet" href="js/dojox/grid/resources/tundraGrid.css"/>--%>
     <script type="text/javascript" src="js/dojo/dojo.js" djConfig="parseOnLoad: true, locale: 'ru'"></script>
     <script type="text/javascript">
         /*dojo.require("dijit.layout.BorderContainer");

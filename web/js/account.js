@@ -131,32 +131,95 @@ var account = {
     }
 };
 
-dojo.addOnLoad(function() {
-    transStore = new dojo.data.ItemFileWriteStore({
-        url: transStoreUrl,
-        clearOnClose: true,
-        urlPreventCache: true
+//dojo.addOnLoad(function() {
+//    transStore = new dojo.data.ItemFileWriteStore({
+//        url: transStoreUrl,
+//        clearOnClose: true,
+//        urlPreventCache: true
+//    });
+//
+//    catStore = new dojo.data.ItemFileReadStore({
+//        clearOnClose: true,
+//        urlPreventCache: true
+//    });
+//
+//    account.loadCategories(true);
+//
+//    dijit.byId('cbCategory').query = {"type":'e'};
+//
+//    dijit.byId('rbTypeExpPers').onChange = account.onAddTypeChange;
+//    dijit.byId('rbTypeExpAcc').onChange = account.onAddTypeChange;
+//    dijit.byId('rbTypeInc').onChange = account.onAddTypeChange;
+//    dijit.byId('rbTypeRef').onChange = account.onAddTypeChange;
+//
+//    var from = new Date();
+//    from.setDate(1);
+//    dijit.byId('filter_datefrom').set('value', from);
+//
+//    account.updateAccountStats();
+//
+//    dijit.byId('btDelete').onClick = account.onBtDelete;
+//});
+
+Ext.onReady(function() {
+    Ext.create('Ext.container.Viewport', {
+        layout: 'border',
+        items: [
+            {
+                xtype: 'panel',
+                region: 'north',
+                height: 120,
+                layout: 'border',
+                //collapsible: true
+                items:[
+                    {
+                        xtype: 'panel',
+                        region: 'east',
+                        width: 100
+                    },
+                    {
+                        xtype: 'panel',
+                        region:'center',
+                        layout: 'fit',
+                        items:[
+                            {
+                                xtype: 'form',
+                                title: 'Добавить транзакцию',
+                                layout: 'hbox',
+                                items:[
+                                    {
+                                        xtype: 'radiogroup',
+                                        fieldLabel: 'Кто',
+                                        labelAlign: 'top',
+                                        vertical: true,
+                                        columns: 1,
+                                        minWidth: 90,
+                                        items: userRadioOptions
+                                    },
+                                    {
+                                        xtype: 'datefield',
+                                        fieldLabel: 'Когда',
+                                        name: 'date',
+                                        maxValue: new Date(),
+                                        format: 'd.m.Y',
+                                        validateOnChange: false
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                xtype: 'panel',
+                region: 'east',
+                width: 150,
+                split: true
+            },
+            {
+                xtype: 'panel',
+                region: 'center'
+            }
+        ]
     });
-
-    catStore = new dojo.data.ItemFileReadStore({
-        clearOnClose: true,
-        urlPreventCache: true
-    });
-
-    account.loadCategories(true);
-
-    dijit.byId('cbCategory').query = {"type":'e'};
-
-    dijit.byId('rbTypeExpPers').onChange = account.onAddTypeChange;
-    dijit.byId('rbTypeExpAcc').onChange = account.onAddTypeChange;
-    dijit.byId('rbTypeInc').onChange = account.onAddTypeChange;
-    dijit.byId('rbTypeRef').onChange = account.onAddTypeChange;
-
-    var from = new Date();
-    from.setDate(1);
-    dijit.byId('filter_datefrom').set('value', from);
-
-    account.updateAccountStats();
-
-    dijit.byId('btDelete').onClick = account.onBtDelete;
 });
