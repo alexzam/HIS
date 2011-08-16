@@ -170,7 +170,6 @@ Ext.onReady(function() {
                 region: 'north',
                 height: 120,
                 layout: 'border',
-                //collapsible: true
                 items:[
                     {
                         xtype: 'panel',
@@ -186,6 +185,7 @@ Ext.onReady(function() {
                                 xtype: 'form',
                                 title: 'Добавить транзакцию',
                                 layout: 'hbox',
+                                bodyPadding: 5,
                                 items:[
                                     {
                                         xtype: 'radiogroup',
@@ -203,6 +203,71 @@ Ext.onReady(function() {
                                         maxValue: new Date(),
                                         format: 'd.m.Y',
                                         validateOnChange: false
+                                    },
+                                    {
+                                        xtype: 'panel',
+                                        layout: 'vbox',
+                                        height: 80,
+                                        border: 0,
+                                        bodyPadding: '0 0 0 5px',
+                                        items:[
+                                            {
+                                                xtype: 'numberfield',
+                                                name: 'amount',
+                                                fieldLabel: 'Сколько',
+                                                minValue: 0.01,
+                                                hideTrigger: true,
+                                                keyNavEnabled: false,
+                                                mouseWheelEnabled: false
+                                            },
+                                            {
+                                                xtype: 'radiogroup',
+                                                width: 300,
+                                                layout: 'vbox',
+                                                items: [
+                                                    {
+                                                        xtype: 'panel',
+                                                        layout: 'hbox',
+                                                        border: 0,
+                                                        width: 300,
+                                                        items: [
+                                                            {
+                                                                xtype: 'radio',
+                                                                boxLabel: 'Трата из своих',
+                                                                name: 'type',
+                                                                inputValue: 'p'
+                                                            },
+                                                            {
+                                                                xtype: 'radio',
+                                                                boxLabel: 'Трата из Казны',
+                                                                name: 'type',
+                                                                inputValue: 'a'
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        xtype: 'panel',
+                                                        layout: 'hbox',
+                                                        border: 0,
+                                                        width: 300,
+                                                        items: [
+                                                            {
+                                                                xtype: 'radio',
+                                                                boxLabel: 'Вклад в Казну',
+                                                                name: 'type',
+                                                                inputValue: 'i'
+                                                            },
+                                                            {
+                                                                xtype: 'radio',
+                                                                boxLabel: 'Возмещение из Казны',
+                                                                name: 'type',
+                                                                inputValue: 'r'
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
                                     }
                                 ]
                             }
