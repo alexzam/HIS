@@ -160,131 +160,165 @@ var account = {
 //
 //    dijit.byId('btDelete').onClick = account.onBtDelete;
 //});
+var srcStoreCats = {
+    model: 'Category',
+    storeId: 'stCats',
+    proxy: {
+        type: 'ajax',
+        url: catStoreUrl,
+        reader: {
+            type: 'json',
+            root: 'cats'
+        },
+        autoLoad: true
+    }
+};
+
+var srcAddForm = {
+    xtype: 'form',
+    title: 'Добавить транзакцию',
+    layout: 'hbox',
+    bodyPadding: 5,
+    items:[
+        {
+            xtype: 'radiogroup',
+            fieldLabel: 'Кто',
+            labelAlign: 'top',
+            vertical: true,
+            columns: 1,
+            minWidth: 90,
+            items: userRadioOptions
+        },
+        {
+            xtype: 'datefield',
+            fieldLabel: 'Когда',
+            name: 'date',
+            maxValue: new Date(),
+            format: 'd.m.Y',
+            validateOnChange: false
+        },
+        {
+            xtype: 'panel',
+            layout: 'vbox',
+            height: 80,
+            border: 0,
+            bodyPadding: '0 0 0 5px',
+            items:[
+                {
+                    xtype: 'numberfield',
+                    name: 'amount',
+                    fieldLabel: 'Сколько',
+                    minValue: 0.01,
+                    hideTrigger: true,
+                    keyNavEnabled: false,
+                    mouseWheelEnabled: false
+                },
+                {
+                    xtype: 'radiogroup',
+                    width: 300,
+                    layout: 'vbox',
+                    height: 50,
+                    items: [
+                        {
+                            xtype: 'panel',
+                            layout: 'hbox',
+                            border: 0,
+                            width: 300,
+                            items: [
+                                {
+                                    xtype: 'radio',
+                                    boxLabel: 'Трата из своих',
+                                    name: 'type',
+                                    inputValue: 'p',
+                                    margin: '0 5 0 0'
+                                },
+                                {
+                                    xtype: 'radio',
+                                    boxLabel: 'Трата из Казны',
+                                    name: 'type',
+                                    inputValue: 'a'
+                                }
+                            ]
+                        },
+                        {
+                            xtype: 'panel',
+                            layout: 'hbox',
+                            border: 0,
+                            width: 300,
+                            items: [
+                                {
+                                    xtype: 'radio',
+                                    boxLabel: 'Вклад в Казну',
+                                    name: 'type',
+                                    inputValue: 'i',
+                                    margin: '0 5 0 0'
+                                },
+                                {
+                                    xtype: 'radio',
+                                    boxLabel: 'Возмещение из Казны',
+                                    name: 'type',
+                                    inputValue: 'r'
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            xtype: 'combo',
+            fieldLabel: 'Категория',
+            queryMode: 'local',
+            store: 'stCats'
+        }
+    ]
+};
+
+var srcScreen = {
+    layout: 'border',
+    items: [
+        {
+            xtype: 'panel',
+            region: 'north',
+            height: 120,
+            layout: 'border',
+            items:[
+                {
+                    xtype: 'panel',
+                    region: 'east',
+                    width: 100
+                },
+                {
+                    xtype: 'panel',
+                    region:'center',
+                    layout: 'fit',
+                    items:[
+                        srcAddForm
+                    ]
+                }
+            ]
+        },
+        {
+            xtype: 'panel',
+            region: 'east',
+            width: 150,
+            split: true
+        },
+        {
+            xtype: 'panel',
+            region: 'center'
+        }
+    ]
+};
 
 Ext.onReady(function() {
-    Ext.create('Ext.container.Viewport', {
-        layout: 'border',
-        items: [
-            {
-                xtype: 'panel',
-                region: 'north',
-                height: 120,
-                layout: 'border',
-                items:[
-                    {
-                        xtype: 'panel',
-                        region: 'east',
-                        width: 100
-                    },
-                    {
-                        xtype: 'panel',
-                        region:'center',
-                        layout: 'fit',
-                        items:[
-                            {
-                                xtype: 'form',
-                                title: 'Добавить транзакцию',
-                                layout: 'hbox',
-                                bodyPadding: 5,
-                                items:[
-                                    {
-                                        xtype: 'radiogroup',
-                                        fieldLabel: 'Кто',
-                                        labelAlign: 'top',
-                                        vertical: true,
-                                        columns: 1,
-                                        minWidth: 90,
-                                        items: userRadioOptions
-                                    },
-                                    {
-                                        xtype: 'datefield',
-                                        fieldLabel: 'Когда',
-                                        name: 'date',
-                                        maxValue: new Date(),
-                                        format: 'd.m.Y',
-                                        validateOnChange: false
-                                    },
-                                    {
-                                        xtype: 'panel',
-                                        layout: 'vbox',
-                                        height: 80,
-                                        border: 0,
-                                        bodyPadding: '0 0 0 5px',
-                                        items:[
-                                            {
-                                                xtype: 'numberfield',
-                                                name: 'amount',
-                                                fieldLabel: 'Сколько',
-                                                minValue: 0.01,
-                                                hideTrigger: true,
-                                                keyNavEnabled: false,
-                                                mouseWheelEnabled: false
-                                            },
-                                            {
-                                                xtype: 'radiogroup',
-                                                width: 300,
-                                                layout: 'vbox',
-                                                items: [
-                                                    {
-                                                        xtype: 'panel',
-                                                        layout: 'hbox',
-                                                        border: 0,
-                                                        width: 300,
-                                                        items: [
-                                                            {
-                                                                xtype: 'radio',
-                                                                boxLabel: 'Трата из своих',
-                                                                name: 'type',
-                                                                inputValue: 'p'
-                                                            },
-                                                            {
-                                                                xtype: 'radio',
-                                                                boxLabel: 'Трата из Казны',
-                                                                name: 'type',
-                                                                inputValue: 'a'
-                                                            }
-                                                        ]
-                                                    },
-                                                    {
-                                                        xtype: 'panel',
-                                                        layout: 'hbox',
-                                                        border: 0,
-                                                        width: 300,
-                                                        items: [
-                                                            {
-                                                                xtype: 'radio',
-                                                                boxLabel: 'Вклад в Казну',
-                                                                name: 'type',
-                                                                inputValue: 'i'
-                                                            },
-                                                            {
-                                                                xtype: 'radio',
-                                                                boxLabel: 'Возмещение из Казны',
-                                                                name: 'type',
-                                                                inputValue: 'r'
-                                                            }
-                                                        ]
-                                                    }
-                                                ]
-                                            }
-                                        ]
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                xtype: 'panel',
-                region: 'east',
-                width: 150,
-                split: true
-            },
-            {
-                xtype: 'panel',
-                region: 'center'
-            }
+    Ext.define('Category', {
+        extend: 'Ext.data.Model',
+        fields: [
+            {name: 'name', type: 'String'}
         ]
     });
+    new Ext.data.Store(srcStoreCats);
+
+    Ext.create('Ext.container.Viewport', srcScreen);
 });
