@@ -168,10 +168,10 @@ var srcStoreCats = {
         url: catStoreUrl,
         reader: {
             type: 'json',
-            root: 'cats'
-        },
-        autoLoad: true
-    }
+            root: 'items'
+        }
+    },
+    autoLoad: true
 };
 
 var srcAddForm = {
@@ -269,7 +269,9 @@ var srcAddForm = {
             xtype: 'combo',
             fieldLabel: 'Категория',
             queryMode: 'local',
-            store: 'stCats'
+            store: 'stCats',
+            valueField: 'id',
+            displayField: 'name'
         }
     ]
 };
@@ -315,7 +317,9 @@ Ext.onReady(function() {
     Ext.define('Category', {
         extend: 'Ext.data.Model',
         fields: [
-            {name: 'name', type: 'String'}
+            {name: 'id', type: 'String'},
+            {name: 'name', type: 'String'},
+            {name: 'type', type: 'String'}
         ]
     });
     new Ext.data.Store(srcStoreCats);
