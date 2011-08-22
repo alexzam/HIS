@@ -116,7 +116,8 @@
                                 required="true"></select>
                     </div>
                     <div class="form_column">
-                        <h1>Комментарий</h1>
+                        <h1>
+                        </h1>
                         <textarea dojotype="dijit.form.SimpleTextarea" trim="true" rows="3" name="comment"
                                   id="taAddComment">
                         </textarea>

@@ -171,7 +171,13 @@ var srcStoreCats = {
             root: 'items'
         }
     },
-    autoLoad: true
+    autoLoad: true,
+    filters:[
+        {
+            property: 'type',
+            value: /^e$/
+        }
+    ]
 };
 
 var srcAddForm = {
@@ -266,12 +272,31 @@ var srcAddForm = {
             ]
         },
         {
-            xtype: 'combo',
-            fieldLabel: 'Категория',
-            queryMode: 'local',
-            store: 'stCats',
-            valueField: 'id',
-            displayField: 'name'
+            xtype: 'panel',
+            layout: 'vbox',
+            height: 80,
+            border: 0,
+            bodyPadding: '0 0 0 5px',
+            items:[
+                {
+                    xtype: 'combo',
+                    fieldLabel: 'Категория',
+                    queryMode: 'local',
+                    store: 'stCats',
+                    valueField: 'id',
+                    displayField: 'name'
+                },
+                {
+                    xtype: 'textfield',
+                    fieldLabel: 'Комментарий',
+                    name: 'comment'
+                }
+            ]
+        },
+        {
+            xtype: 'button',
+            text: 'Добавить',
+            handler: account.addSubmit
         }
     ]
 };
