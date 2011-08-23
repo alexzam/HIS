@@ -175,7 +175,7 @@ var srcStoreCats = {
     filters:[
         {
             property: 'type',
-            value: /^e$/
+            value: 'e'
         }
     ]
 };
@@ -284,7 +284,8 @@ var srcAddForm = {
                     queryMode: 'local',
                     store: 'stCats',
                     valueField: 'id',
-                    displayField: 'name'
+                    displayField: 'name',
+                    lastQuery: ''
                 },
                 {
                     xtype: 'textfield',
@@ -338,6 +339,8 @@ var srcScreen = {
     ]
 };
 
+var proxyCats;
+
 Ext.onReady(function() {
     Ext.define('Category', {
         extend: 'Ext.data.Model',
@@ -347,7 +350,27 @@ Ext.onReady(function() {
             {name: 'type', type: 'String'}
         ]
     });
-    new Ext.data.Store(srcStoreCats);
+    proxyCats = new Ext.data.proxy.Ajax({
+        url: catStoreUrl,
+        model: 'Category',
+        reader: {
+            type: 'json',
+            root: 'items'
+        }
+    });
+
+    new Ext.data.Store({
+        model: 'Category',
+        storeId: 'stCats',
+        proxy: proxyCats,
+        autoLoad: true,
+        filters:[
+            {
+                property: 'type',
+                value: 'e'
+            }
+        ]
+    });
 
     Ext.create('Ext.container.Viewport', srcScreen);
 });
