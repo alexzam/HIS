@@ -45,37 +45,37 @@ var account = {
     },
 
     addSubmit:function() {
-        var frm = dijit.byId('frmAddTrans');
-        if (!frm.validate()) return;
+        var frm = Ext.getCmp('frmAddTrans');
+        if (!frm.getForm().isValid()) return;
 
         var data = frm.getValues();
-        data.date = data.date.getTime();
+        data.date = Ext.getCmp('tbAddDate').getValue().getTime();
 
-        var cbcat = dijit.byId('cbCategory');
-        if (cbcat.item == null) {
-            // New category
-            data.catname = data.cat;
-            data.cat = 0;
-        } else {
-            data.cat = cbcat.item.id[0];
-        }
-
-        if (data.actor == 0) data.actor = uid;
-        data.act = 'put';
-
-        dojo.xhrPost({
-            content:data,
-            url:transStoreUrl,
-            load:function() {
-                account.loadTransactions();
-                account.loadCategories(false);
-                account.updateAccountStats();
-
-                dijit.byId('taAddComment').set('value', '');
-                dijit.byId('cbCategory').set('value', '');
-                dijit.byId('tbAddAmount').set('value', '');
-            }
-        });
+        var cbcat = Ext.getCmp('cbCategory');
+//        if (cbcat.item == null) {
+//            // New category
+//            data.catname = data.cat;
+//            data.cat = 0;
+//        } else {
+//            data.cat = cbcat.item.id[0];
+//        }
+//
+//        if (data.actor == 0) data.actor = uid;
+//        data.act = 'put';
+//
+//        dojo.xhrPost({
+//            content:data,
+//            url:transStoreUrl,
+//            load:function() {
+//                account.loadTransactions();
+//                account.loadCategories(false);
+//                account.updateAccountStats();
+//
+//                dijit.byId('taAddComment').set('value', '');
+//                dijit.byId('cbCategory').set('value', '');
+//                dijit.byId('tbAddAmount').set('value', '');
+//            }
+//        });
     },
 
     updateAccountStats:function() {
@@ -182,6 +182,7 @@ var srcStoreCats = {
 
 var srcAddForm = {
     xtype: 'form',
+    id: 'frmAddTrans',
     title: 'Добавить транзакцию',
     layout: 'hbox',
     bodyPadding: 5,
@@ -198,6 +199,7 @@ var srcAddForm = {
         {
             xtype: 'datefield',
             fieldLabel: 'Когда',
+            id: 'tbAddDate',
             name: 'date',
             maxValue: new Date(),
             format: 'd.m.Y',
@@ -276,11 +278,12 @@ var srcAddForm = {
             layout: 'vbox',
             height: 80,
             border: 0,
-            bodyPadding: '0 0 0 5px',
+            bodyPadding: '0 5px 0 5px',
             items:[
                 {
                     xtype: 'combo',
                     fieldLabel: 'Категория',
+                    id: 'cbCategory',
                     queryMode: 'local',
                     store: 'stCats',
                     valueField: 'id',
