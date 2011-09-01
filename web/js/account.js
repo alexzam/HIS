@@ -2,47 +2,47 @@ var transStore;
 var catStore;
 
 var account = {
-    loadTransactions:function() {
-        transStore.close();
-
-        var frm = dijit.byId('frmFilter');
-        if (!frm.validate()) return;
-
-        var q = frm.getValues();
-        if (q.from != null) {
-            q.from = q.from.getTime();
-        }
-        if (q.to != null) {
-            q.to = q.to.getTime();
-        }
-
-        transStore.url = transStoreUrl + '?' + dojo.objectToQuery(q);
-        transStore.fetch({
-            onComplete:function() {
-                // When transaction store is updated
-                dijit.byId('tabTrans').setStore(transStore);
-            }
-        });
-    },
-
-    loadCategories:function(firstTime) {
-        catStore.close();
-        catStore.url = catStoreUrl;
-        catStore.fetch({
-            onComplete:function() {
-                var cbCat = dijit.byId('cbCategory');
-                cbCat.store = catStore;
-                cbCat.query = {"type":'e'};
-                var selFilterCat = dijit.byId('filter_category');
-                if (firstTime) {
-                    selFilterCat.setStore(catStore, 0);
-                    account.loadTransactions();
-                } else {
-                    selFilterCat.setStore(catStore);
-                }
-            }
-        });
-    },
+//    loadTransactions:function() {
+//        transStore.close();
+//
+//        var frm = dijit.byId('frmFilter');
+//        if (!frm.validate()) return;
+//
+//        var q = frm.getValues();
+//        if (q.from != null) {
+//            q.from = q.from.getTime();
+//        }
+//        if (q.to != null) {
+//            q.to = q.to.getTime();
+//        }
+//
+//        transStore.url = transStoreUrl + '?' + dojo.objectToQuery(q);
+//        transStore.fetch({
+//            onComplete:function() {
+//                // When transaction store is updated
+//                dijit.byId('tabTrans').setStore(transStore);
+//            }
+//        });
+//    },
+//
+//    loadCategories:function(firstTime) {
+//        catStore.close();
+//        catStore.url = catStoreUrl;
+//        catStore.fetch({
+//            onComplete:function() {
+//                var cbCat = dijit.byId('cbCategory');
+//                cbCat.store = catStore;
+//                cbCat.query = {"type":'e'};
+//                var selFilterCat = dijit.byId('filter_category');
+//                if (firstTime) {
+//                    selFilterCat.setStore(catStore, 0);
+//                    account.loadTransactions();
+//                } else {
+//                    selFilterCat.setStore(catStore);
+//                }
+//            }
+//        });
+//    },
 
     addSubmit:function() {
         var frm = Ext.getCmp('frmAddTrans');
@@ -52,21 +52,19 @@ var account = {
         data.date = Ext.getCmp('tbAddDate').getValue().getTime();
 
         var cbcat = Ext.getCmp('cbCategory');
-//        if (cbcat.item == null) {
-//            // New category
-//            data.catname = data.cat;
-//            data.cat = 0;
-//        } else {
-//            data.cat = cbcat.item.id[0];
-//        }
-//
-//        if (data.actor == 0) data.actor = uid;
-//        data.act = 'put';
-//
-//        dojo.xhrPost({
-//            content:data,
-//            url:transStoreUrl,
-//            load:function() {
+        if (cbcat.getRawValue() == data.cat) {
+            // New category
+            data.catname = data.cat;
+            data.cat = 0;
+        }
+
+        if (data.actor == 0) data.actor = uid;
+        data.act = 'put';
+
+        Ext.Ajax.request({
+            url: transStoreUrl,
+            params: data,
+            success:function() {
 //                account.loadTransactions();
 //                account.loadCategories(false);
 //                account.updateAccountStats();
@@ -74,61 +72,61 @@ var account = {
 //                dijit.byId('taAddComment').set('value', '');
 //                dijit.byId('cbCategory').set('value', '');
 //                dijit.byId('tbAddAmount').set('value', '');
-//            }
-//        });
-    },
-
-    updateAccountStats:function() {
-        dojo.xhrGet({
-            url:transStoreUrl + '?act=getamount',
-            handleAs:'json',
-            load:function(data) {
-                dojo.byId('account_amount').innerHTML = data.amount + ' р.';
-                dojo.byId('valTotalExp').innerHTML = data.totalExp;
-                dojo.byId('valEachExp').innerHTML = data.eachExp;
-                dojo.byId('valPersExp').innerHTML = data.persExp;
-                dojo.byId('valPersDonation').innerHTML = data.persDonation;
-                dojo.byId('valPersSpent').innerHTML = data.persSpent;
-                dojo.byId('valPersBalance').innerHTML = data.persBalance;
-            }
-        });
-    },
-
-    onTableColResize:function() {
-    },
-
-    onFilterChange:function() {
-        account.loadTransactions();
-    },
-
-    onAddTypeChange:function() {
-        var type = dijit.byId('frmAddTrans').getValues().type;
-        dijit.byId('cbCategory').set('disabled', (type == 'i' || type == 'r'));
-    },
-
-    onBtDelete: function() {
-        var tab = dijit.byId('tabTrans');
-        var selItems = tab.selection.selected;
-        var delIds = new Array();
-
-        for (var i = 0; i < selItems.length; i++) {
-            if (selItems[i] != true) continue;
-            delIds.push(tab.getItem(i).id[0]);
-        }
-
-        if (delIds.length <= 0) return;
-        var idsStr = delIds.join();
-
-        var data = {act:"del", ids:idsStr};
-        dojo.xhrPost({
-            content:data,
-            url:transStoreUrl,
-            load:function() {
-                account.loadTransactions();
-                account.updateAccountStats();
             }
         });
     }
+
+//    updateAccountStats:function() {
+//        dojo.xhrGet({
+//            url:transStoreUrl + '?act=getamount',
+//            handleAs:'json',
+//            load:function(data) {
+//                dojo.byId('account_amount').innerHTML = data.amount + ' р.';
+//                dojo.byId('valTotalExp').innerHTML = data.totalExp;
+//                dojo.byId('valEachExp').innerHTML = data.eachExp;
+//                dojo.byId('valPersExp').innerHTML = data.persExp;
+//                dojo.byId('valPersDonation').innerHTML = data.persDonation;
+//                dojo.byId('valPersSpent').innerHTML = data.persSpent;
+//                dojo.byId('valPersBalance').innerHTML = data.persBalance;
+//            }
+//        });
+//    },
+//
+//    onTableColResize:function() {
+//    },
+//
+//    onFilterChange:function() {
+//        account.loadTransactions();
+//    },
+//
+//    onAddTypeChange:function() {
+//        var type = dijit.byId('frmAddTrans').getValues().type;
+//        dijit.byId('cbCategory').set('disabled', (type == 'i' || type == 'r'));
+//    },
+//
+//    onBtDelete: function() {
+//        var tab = dijit.byId('tabTrans');
+//        var selItems = tab.selection.selected;
+//        var delIds = new Array();
+//
+//        for (var i = 0; i < selItems.length; i++) {
+//            if (selItems[i] != true) continue;
+//            delIds.push(tab.getItem(i).id[0]);
+//        }
+//
+//        if (delIds.length <= 0) return;
+//        var idsStr = delIds.join();
+//
+//        var data = {act:"del", ids:idsStr};
+//        dojo.xhrPost({
+//            content:data,
+//            url:transStoreUrl,
+//            load:function() {
+//                account.loadTransactions();
+//                account.updateAccountStats();
+//            }
+//        });
+//    }
 };
 
 //dojo.addOnLoad(function() {
@@ -283,6 +281,7 @@ var srcAddForm = {
                 {
                     xtype: 'combo',
                     fieldLabel: 'Категория',
+                    name: 'cat',
                     id: 'cbCategory',
                     queryMode: 'local',
                     store: 'stCats',
