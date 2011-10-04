@@ -8,7 +8,7 @@
         <property name="connection.useUnicode">true</property>
         <property name="connection.characterEncoding">UTF-8</property>
         <property name="dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
-        <property name="hbm2ddl.auto">update</property>
+        <property name="hbm2ddl.auto">${hbm2ddl}</property>
         <property name="current_session_context_class">thread</property>
         <property name="show_sql">true</property>
         <property name="transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</property>

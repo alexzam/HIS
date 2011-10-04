@@ -1,6 +1,3 @@
-var transStore;
-var catStore;
-
 var account = {
 //    loadTransactions:function() {
 //        transStore.close();
@@ -67,33 +64,30 @@ var account = {
             success:function() {
 //                account.loadTransactions();
 //                account.loadCategories(false);
-//                account.updateAccountStats();
-//
-//                dijit.byId('taAddComment').set('value', '');
-//                dijit.byId('cbCategory').set('value', '');
-//                dijit.byId('tbAddAmount').set('value', '');
+                account.updateAccountStats();
             }
         });
-    }
+    },
 
-//    updateAccountStats:function() {
-//        dojo.xhrGet({
-//            url:transStoreUrl + '?act=getamount',
-//            handleAs:'json',
-//            load:function(data) {
-//                dojo.byId('account_amount').innerHTML = data.amount + ' р.';
+    logout: function(){
+        document.location = "login?mode=out";
+    },
+
+    updateAccountStats:function() {
+        Ext.Ajax.request({
+            url:transStoreUrl + '?act=getamount',
+            callback:function(o, s, resp) {
+                var data = Ext.JSON.decode(resp.responseText);
+                Ext.get('account_amount').dom.innerHTML = data.amount + ' р.';
 //                dojo.byId('valTotalExp').innerHTML = data.totalExp;
 //                dojo.byId('valEachExp').innerHTML = data.eachExp;
 //                dojo.byId('valPersExp').innerHTML = data.persExp;
 //                dojo.byId('valPersDonation').innerHTML = data.persDonation;
 //                dojo.byId('valPersSpent').innerHTML = data.persSpent;
 //                dojo.byId('valPersBalance').innerHTML = data.persBalance;
-//            }
-//        });
-//    },
-//
-//    onTableColResize:function() {
-//    },
+            }
+        });
+    }
 //
 //    onFilterChange:function() {
 //        account.loadTransactions();
@@ -158,25 +152,6 @@ var account = {
 //
 //    dijit.byId('btDelete').onClick = account.onBtDelete;
 //});
-var srcStoreCats = {
-    model: 'Category',
-    storeId: 'stCats',
-    proxy: {
-        type: 'ajax',
-        url: catStoreUrl,
-        reader: {
-            type: 'json',
-            root: 'items'
-        }
-    },
-    autoLoad: true,
-    filters:[
-        {
-            property: 'type',
-            value: 'e'
-        }
-    ]
-};
 
 var srcAddForm = {
     xtype: 'form',
@@ -184,6 +159,7 @@ var srcAddForm = {
     title: 'Добавить транзакцию',
     layout: 'hbox',
     bodyPadding: 5,
+    autoScroll: true,
     items:[
         {
             xtype: 'radiogroup',
@@ -310,13 +286,28 @@ var srcScreen = {
         {
             xtype: 'panel',
             region: 'north',
-            height: 120,
+            height: 150,
             layout: 'border',
             items:[
                 {
                     xtype: 'panel',
                     region: 'east',
-                    width: 100
+                    width: 200,
+                    layout: 'border',
+                    items:[
+                        {
+                            xtype: 'button',
+                            region:'north',
+                            text: 'Выйти',
+                            handler: account.logout
+                        },
+                        {
+                            xtype:'panel',
+                            region:'center',
+                            layout:'fit',
+                            html:'<span id="account_amount">load</span>'
+                        }
+                    ]
                 },
                 {
                     xtype: 'panel',
@@ -342,9 +333,18 @@ var srcScreen = {
 };
 
 var proxyCats;
+var proxyTrans;
 
 Ext.onReady(function() {
     Ext.define('Category', {
+        extend: 'Ext.data.Model',
+        fields: [
+            {name: 'id', type: 'String'},
+            {name: 'name', type: 'String'},
+            {name: 'type', type: 'String'}
+        ]
+    });
+    Ext.define('Transaction', {
         extend: 'Ext.data.Model',
         fields: [
             {name: 'id', type: 'String'},
@@ -375,4 +375,6 @@ Ext.onReady(function() {
     });
 
     Ext.create('Ext.container.Viewport', srcScreen);
+
+    account.updateAccountStats();
 });
