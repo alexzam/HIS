@@ -11,5 +11,5 @@
             url="${db.url}"
             maxActive="15"
             maxIdle="3"
-            connectionProperties="useUnicode=true;characterEncoding=UTF-8"/>
+            connectionProperties="useUnicode=true;characterEncoding=UTF-8;autoReconnect=true"/>
 </Context>

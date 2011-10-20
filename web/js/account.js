@@ -1,5 +1,6 @@
 var account = {
-//    loadTransactions:function() {
+    loadTransactions:function() {
+        Ext.data.StoreManager.getByKey('stTrans').load();
 //        transStore.close();
 //
 //        var frm = dijit.byId('frmFilter');
@@ -20,8 +21,8 @@ var account = {
 //                dijit.byId('tabTrans').setStore(transStore);
 //            }
 //        });
-//    },
-//
+    },
+
 //    loadCategories:function(firstTime) {
 //        catStore.close();
 //        catStore.url = catStoreUrl;
@@ -41,15 +42,41 @@ var account = {
 //        });
 //    },
 
+    setAddFormFullValidation:function(enable){
+        var cmp = Ext.getCmp('tbAddDate');
+        cmp.allowBlank = !enable;
+        cmp.isValid();
+        cmp = Ext.getCmp('tbAddAmount');
+        cmp.allowBlank = !enable;
+        cmp.isValid();
+        cmp = Ext.getCmp('cmp.isValid();');
+        cmp.allowBlank = !enable;
+        cmp.isValid();
+    },
+
+    resetAddForm:function(){
+        Ext.getCmp('tbAddAmount').setValue(null);
+        Ext.getCmp('cbCategory').setValue(null);
+    },
+
     addSubmit:function() {
         var frm = Ext.getCmp('frmAddTrans');
         if (!frm.getForm().isValid()) return;
 
         var data = frm.getValues();
-        data.date = Ext.getCmp('tbAddDate').getValue().getTime();
+        var tbAddDate = Ext.getCmp('tbAddDate');
+        var tbAddAmount = Ext.getCmp('tbAddAmount');
+        var cbCat = Ext.getCmp('cbCategory');
 
-        var cbcat = Ext.getCmp('cbCategory');
-        if (cbcat.getRawValue() == data.cat) {
+        account.setAddFormFullValidation(true);
+
+        if(!tbAddDate.isValid() || !tbAddAmount.isValid() || !cbCat.isValid()){
+            Ext.MessageBox.show({title:'Еггог',msg:'Инвалид!',icon:Ext.MessageBox.ERROR});
+            return;
+        }
+
+        data.date = tbAddDate.getValue().getTime();
+        if (cbCat.getRawValue() == data.cat) {
             // New category
             data.catname = data.cat;
             data.cat = 0;
@@ -62,14 +89,17 @@ var account = {
             url: transStoreUrl,
             params: data,
             success:function() {
-//                account.loadTransactions();
+                account.loadTransactions();
 //                account.loadCategories(false);
                 account.updateAccountStats();
             }
         });
+
+        account.resetAddForm();
+        account.setAddFormFullValidation(false);
     },
 
-    logout: function(){
+    logout: function() {
         document.location = "login?mode=out";
     },
 
@@ -78,7 +108,7 @@ var account = {
             url:transStoreUrl + '?act=getamount',
             callback:function(o, s, resp) {
                 var data = Ext.JSON.decode(resp.responseText);
-                Ext.get('account_amount').dom.innerHTML = data.amount + ' р.';
+                Ext.get('account_amount').dom.innerHTML = data.amount + '&nbsp;р.';
 //                dojo.byId('valTotalExp').innerHTML = data.totalExp;
 //                dojo.byId('valEachExp').innerHTML = data.eachExp;
 //                dojo.byId('valPersExp').innerHTML = data.persExp;
@@ -87,16 +117,21 @@ var account = {
 //                dojo.byId('valPersBalance').innerHTML = data.persBalance;
             }
         });
+    },
+
+    onFilterChange:function() {
+        account.loadTransactions();
+
+        var tbFrom = Ext.getCmp('tbFilterFrom');
+        var tbTo = Ext.getCmp('tbFilterTo');
+        tbTo.setMinValue(tbFrom.getValue());
+        tbFrom.setMaxValue(tbTo.getValue());
+    },
+
+    onAddTypeChange:function(me, val) {
+        var type = val.type;
+        Ext.getCmp('cbCategory').setDisabled(type == 'i' || type == 'r');
     }
-//
-//    onFilterChange:function() {
-//        account.loadTransactions();
-//    },
-//
-//    onAddTypeChange:function() {
-//        var type = dijit.byId('frmAddTrans').getValues().type;
-//        dijit.byId('cbCategory').set('disabled', (type == 'i' || type == 'r'));
-//    },
 //
 //    onBtDelete: function() {
 //        var tab = dijit.byId('tabTrans');
@@ -167,7 +202,8 @@ var srcAddForm = {
             labelAlign: 'top',
             vertical: true,
             columns: 1,
-            minWidth: 90,
+            minWidth: 100,
+            allowBlank: false,
             items: userRadioOptions
         },
         {
@@ -177,7 +213,9 @@ var srcAddForm = {
             name: 'date',
             maxValue: new Date(),
             format: 'd.m.Y',
-            validateOnChange: false
+            validateOnChange: false,
+            allowBlank: true,
+            labelWidth: 40
         },
         {
             xtype: 'panel',
@@ -187,25 +225,48 @@ var srcAddForm = {
             bodyPadding: '0 0 0 5px',
             items:[
                 {
-                    xtype: 'numberfield',
-                    name: 'amount',
-                    fieldLabel: 'Сколько',
-                    minValue: 0.01,
-                    hideTrigger: true,
-                    keyNavEnabled: false,
-                    mouseWheelEnabled: false
+                    xtype: 'panel',
+                    layout: 'hbox',
+                    width: 250,
+                    border: 0,
+                    items:[
+                        {
+                            xtype: 'numberfield',
+                            name: 'amount',
+                            fieldLabel: 'Сколько',
+                            minValue: 0.01,
+                            hideTrigger: true,
+                            keyNavEnabled: false,
+                            mouseWheelEnabled: false,
+                            labelWidth: 50,
+                            validateOnChange: false,
+                            width: 155,
+                            labelAlign: 'left',
+                            allowBlank: true,
+                            id: 'tbAddAmount'
+                        },
+                        {
+                            xtype: 'panel',
+                            border: 0,
+                            html: '<span class="labCurrency">RUR</span>'
+                        }
+                    ]
                 },
                 {
                     xtype: 'radiogroup',
-                    width: 300,
+                    width: 250,
                     layout: 'vbox',
                     height: 50,
+                    allowBlank: false,
+                    listeners:{
+                        change: account.onAddTypeChange
+                    },
                     items: [
                         {
                             xtype: 'panel',
                             layout: 'hbox',
                             border: 0,
-                            width: 300,
+                            width: 250,
                             items: [
                                 {
                                     xtype: 'radio',
@@ -226,7 +287,7 @@ var srcAddForm = {
                             xtype: 'panel',
                             layout: 'hbox',
                             border: 0,
-                            width: 300,
+                            width: 250,
                             items: [
                                 {
                                     xtype: 'radio',
@@ -263,12 +324,15 @@ var srcAddForm = {
                     store: 'stCats',
                     valueField: 'id',
                     displayField: 'name',
-                    lastQuery: ''
+                    lastQuery: '',
+                    labelWidth: 80,
+                    allowBlank: true
                 },
                 {
                     xtype: 'textfield',
                     fieldLabel: 'Комментарий',
-                    name: 'comment'
+                    name: 'comment',
+                    labelWidth: 80
                 }
             ]
         },
@@ -280,19 +344,70 @@ var srcAddForm = {
     ]
 };
 
+var srcFilterForm = {
+    xtype: 'form',
+    id: 'frmFilter',
+    region:'center',
+    title: 'Фильтр',
+    layout: 'vbox',
+    bodyPadding: 5,
+    autoScroll: true,
+    items:[
+        {
+            xtype: 'datefield',
+            fieldLabel: 'С',
+            id: 'tbFilterFrom',
+            name: 'from',
+            format: 'd.m.Y',
+            validateOnChange: false,
+            labelWidth: 65,
+            width: 175,
+            listeners:{
+                change: account.onFilterChange
+            }
+        },
+        {
+            xtype: 'datefield',
+            fieldLabel: 'По',
+            id: 'tbFilterTo',
+            name: 'to',
+            format: 'd.m.Y',
+            validateOnChange: false,
+            labelWidth: 65,
+            width: 175,
+            listeners:{
+                change: account.onFilterChange
+            }
+        },
+        {
+            xtype: 'combo',
+            fieldLabel: 'Категория',
+            name: 'cat',
+            id: 'cbFilterCategory',
+            queryMode: 'local',
+            store: 'stFilterCats',
+            valueField: 'id',
+            displayField: 'name',
+            lastQuery: '',
+            labelWidth: 65,
+            width: 175
+        }
+    ]
+};
+
 var srcScreen = {
     layout: 'border',
     items: [
         {
             xtype: 'panel',
             region: 'north',
-            height: 150,
+            height: 125,
             layout: 'border',
             items:[
                 {
                     xtype: 'panel',
                     region: 'east',
-                    width: 200,
+                    width: 230,
                     layout: 'border',
                     items:[
                         {
@@ -322,12 +437,23 @@ var srcScreen = {
         {
             xtype: 'panel',
             region: 'east',
-            width: 150,
-            split: true
+            width: 200,
+            layout:'border',
+            items:[
+                srcFilterForm
+            ]
         },
         {
-            xtype: 'panel',
-            region: 'center'
+            xtype: 'grid',
+            region: 'center',
+            store:'stTrans',
+            columns:[
+                {header:'Когда', dataIndex:'timestamp'},
+                {header:'Кто', dataIndex:'actor_name'},
+                {header:'Сколько', dataIndex:'amount'},
+                {header:'Категория', dataIndex:'category_name'},
+                {header:'Комментарий', dataIndex:'comment', flex: 1}
+            ]
         }
     ]
 };
@@ -348,13 +474,26 @@ Ext.onReady(function() {
         extend: 'Ext.data.Model',
         fields: [
             {name: 'id', type: 'String'},
-            {name: 'name', type: 'String'},
-            {name: 'type', type: 'String'}
+            {name: 'actor_id', type: 'int'},
+            {name: 'actor_name', type: 'String'},
+            {name: 'amount', type: 'String'},
+            {name: 'category_name', type: 'String'},
+            {name: 'comment', type: 'String'},
+            {name: 'timestamp', type: 'String'}
         ]
     });
     proxyCats = new Ext.data.proxy.Ajax({
         url: catStoreUrl,
         model: 'Category',
+        reader: {
+            type: 'json',
+            root: 'items'
+        }
+    });
+
+    proxyTrans = new Ext.data.proxy.Ajax({
+        url: transStoreUrl,
+        model: 'Transaction',
         reader: {
             type: 'json',
             root: 'items'
@@ -372,6 +511,18 @@ Ext.onReady(function() {
                 value: 'e'
             }
         ]
+    });
+    new Ext.data.Store({
+        model: 'Category',
+        storeId: 'stFilterCats',
+        proxy: proxyCats,
+        autoLoad: true
+    });
+    new Ext.data.Store({
+        model: 'Transaction',
+        storeId: 'stTrans',
+        proxy: proxyTrans,
+        autoLoad: true
     });
 
     Ext.create('Ext.container.Viewport', srcScreen);

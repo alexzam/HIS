@@ -14,12 +14,15 @@
     }
 
     List<User> usersNotMe = User.getAll();
+    User userMe = null;
     for (User user : usersNotMe) {
         if (user.getId() == AuthFilter.getUid(session)) {
+            userMe = user;
             usersNotMe.remove(user);
             break;
         }
     }
+    if(userMe == null) throw new ServletException("Where is users table?!");
 %>
 <!DOCTYPE HTML>
 <html>
@@ -36,7 +39,7 @@
         var uid = <%=AuthFilter.getUid(session)%>;
 
         var userRadioOptions = [
-            {boxLabel: 'Я', name:'actor', inputValue:'0', checked: true}
+            {boxLabel: '<%=userMe.getName()%> (Я)', name:'actor', inputValue:'0', checked: true}
             <% for (User user : usersNotMe) { %>
             ,
             {boxLabel: '<%=user.getName()%>', name: 'actor', inputValue: '<%=user.getId()%>'}
