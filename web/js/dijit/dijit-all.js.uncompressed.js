@@ -13763,7 +13763,7 @@ dojo.declare("dojo.data.ItemFileReadStore", null,{
 		
 		function valueIsAnItem(/* anything */ aValue){
 			// summary:
-			//		Given any sort of value that could be in the raw json data,
+			//		Given any sort of value that could be in the raw org.json data,
 			//		return true if we should interpret the value as being an
 			//		item itself, rather than a literal value or a reference.
 			// example:

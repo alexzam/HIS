@@ -8172,9 +8172,9 @@ If you are unsure which license is appropriate for your use, please contact the 
 */
 /**
  * @class Ext.JSON
- * Modified version of Douglas Crockford"s json.js that doesn"t
+ * Modified version of Douglas Crockford"s org.json.js that doesn"t
  * mess with the Object prototype
- * http://www.json.org/js.html
+ * http://www.org.json.org/js.html
  * @singleton
  */
 Ext.JSON = new(function() {

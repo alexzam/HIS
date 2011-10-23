@@ -221,7 +221,7 @@ public class AccountDataServlet extends HttpServlet {
         ret.put("identifier", "id");
 
         for (Transaction transaction : transactions) {
-            items.put(transaction.getJson());
+            items.put(transaction.getJson()); //
         }
 
         ret.put("items", items);

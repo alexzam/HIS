@@ -1324,7 +1324,7 @@ dojo.global = {
 		//	|	
 		//	|	// code in a module using acme resources
 		//	|	var tmpltPath = dojo.moduleUrl("acme.widget","templates/template.html");
-		//	|	var dataPath = dojo.moduleUrl("acme.util","resources/data.json");
+		//	|	var dataPath = dojo.moduleUrl("acme.util","resources/data.org.json");
 
 		var loc = d._getModuleSymbols(module).join('/');
 		if(!loc){ return null; }
@@ -4141,12 +4141,12 @@ dojo.provide("dojo._base.json");
 
 dojo.fromJson = function(/*String*/ json){
 	// summary:
-	// 		Parses a [JSON](http://json.org) string to return a JavaScript object.
+	// 		Parses a [JSON](http://org.json.org) string to return a JavaScript object.
 	// description:
 	// 		Throws for invalid JSON strings, but it does not use a strict JSON parser. It
 	// 		delegates to eval().  The content passed to this method must therefore come
 	//		from a trusted source.
-	// json: 
+	// org.json:
 	//		a string literal of a JSON item, for instance:
 	//			`'{ "foo": [ "bar", 1, { "baz": "thud" } ] }'`
 
@@ -4166,13 +4166,13 @@ dojo._escapeString = function(/*String*/str){
 dojo.toJsonIndentStr = "\t";
 dojo.toJson = function(/*Object*/ it, /*Boolean?*/ prettyPrint, /*String?*/ _indentStr){
 	//	summary:
-	//		Returns a [JSON](http://json.org) serialization of an object.
+	//		Returns a [JSON](http://org.json.org) serialization of an object.
 	//	description:
-	//		Returns a [JSON](http://json.org) serialization of an object.
+	//		Returns a [JSON](http://org.json.org) serialization of an object.
 	//		Note that this doesn't check for infinite recursion, so don't do that!
 	//	it:
 	//		an object to be serialized. Objects may define their own
-	//		serialization via a special "__json__" or "json" function
+	//		serialization via a special "__json__" or "org.json" function
 	//		property. If a specialized serializer has been defined, it will
 	//		be used as a fallback.
 	//	prettyPrint:
@@ -4210,7 +4210,7 @@ dojo.toJson = function(/*Object*/ it, /*Boolean?*/ prettyPrint, /*String?*/ _ind
 	}
 	// recurse
 	var recurse = arguments.callee;
-	// short-circuit for objects that support "json" serialization
+	// short-circuit for objects that support "org.json" serialization
 	// if they return "self" then just pass-through...
 	var newObj;
 	_indentStr = _indentStr || "";
@@ -4225,7 +4225,7 @@ dojo.toJson = function(/*Object*/ it, /*Boolean?*/ prettyPrint, /*String?*/ _ind
 	if(it.nodeType && it.cloneNode){ // isNode
 		// we can't seriailize DOM nodes as regular objects because they have cycles
 		// DOM nodes could be serialized with something like outerHTML, but
-		// that can be provided by users in the form of .json or .__json__ function.
+		// that can be provided by users in the form of .org.json or .__json__ function.
 		throw new Error("Can't serialize DOM nodes");
 	}
 
@@ -4247,7 +4247,7 @@ dojo.toJson = function(/*Object*/ it, /*Boolean?*/ prettyPrint, /*String?*/ _ind
 	// look in the registry
 	try {
 		window.o = it;
-		newObj = dojo.json.jsonRegistry.match(it);
+		newObj = dojo.org.json.jsonRegistry.match(it);
 		return recurse(newObj, prettyPrint, nextIndent);
 	}catch(e){
 		// console.log(e);
@@ -9867,13 +9867,13 @@ dojo.provide("dojo._base.xhr");
 			// summary: A contentHandler which expects comment-filtered JSON. 
 			// description: 
 			//		A contentHandler which expects comment-filtered JSON. 
-			//		the json-comment-filtered option was implemented to prevent
+			//		the org.json-comment-filtered option was implemented to prevent
 			//		"JavaScript Hijacking", but it is less secure than standard JSON. Use
 			//		standard JSON instead. JSON prefixing can be used to subvert hijacking.
 			//		
-			//		Will throw a notice suggesting to use application/json mimetype, as
-			//		json-commenting can introduce security issues. To decrease the chances of hijacking,
-			//		use the standard `json` contentHandler, and prefix your "JSON" with: {}&& 
+			//		Will throw a notice suggesting to use application/org.json mimetype, as
+			//		org.json-commenting can introduce security issues. To decrease the chances of hijacking,
+			//		use the standard `org.json` contentHandler, and prefix your "JSON" with: {}&&
 			//		
 			//		use djConfig.useCommentedJson = true to turn off the notice
 			if(!dojo.config.useCommentedJson){
@@ -9920,7 +9920,7 @@ dojo.provide("dojo._base.xhr");
 		},
 		"json-comment-optional": function(xhr){
 			// summary: A contentHandler which checks the presence of comment-filtered JSON and 
-			//		alternates between the `json` and `json-comment-filtered` contentHandlers.
+			//		alternates between the `org.json` and `org.json-comment-filtered` contentHandlers.
 			if(xhr.responseText && /^[^{\[]*\/\*/.test(xhr.responseText)){
 				return handlers["json-comment-filtered"](xhr);
 			}else{
@@ -10006,7 +10006,7 @@ dojo.provide("dojo._base.xhr");
 	=====*/
 
 	/*=====
-	dojo.__IoCallbackArgs = function(args, xhr, url, query, handleAs, id, canDelete, json){
+	dojo.__IoCallbackArgs = function(args, xhr, url, query, handleAs, id, canDelete, org.json){
 		//	args: Object
 		//		the original object argument to the IO call.
 		//	xhr: XMLHttpRequest
@@ -10033,7 +10033,7 @@ dojo.provide("dojo._base.xhr");
 		//		request can be deleted after callbacks have
 		//		been called. Used internally to know when
 		//		cleanup can happen on JSONP-type requests.
-		//	json: Object
+		//	org.json: Object
 		//		For dojo.io.script calls only: holds the JSON
 		//		response for JSONP-type requests. Used
 		//		internally to hold on to the JSON responses.
@@ -10047,7 +10047,7 @@ dojo.provide("dojo._base.xhr");
 		this.handleAs = handleAs;
 		this.id = id;
 		this.canDelete = canDelete;
-		this.json = json;
+		this.org.json = org.json;
 	}
 	=====*/
 
@@ -10411,8 +10411,8 @@ dojo.provide("dojo._base.xhr");
 			//		In addition to the properties listed for the dojo._IoArgs type,
 			//		the following properties are allowed for dojo.xhr* methods.
 			//	handleAs: String?
-			//		Acceptable values are: text (default), json, json-comment-optional,
-			//		json-comment-filtered, javascript, xml. See `dojo.contentHandlers`
+			//		Acceptable values are: text (default), org.json, org.json-comment-optional,
+			//		org.json-comment-filtered, javascript, xml. See `dojo.contentHandlers`
 			//	sync: Boolean?
 			//		false is default. Indicates whether the request should
 			//		be a synchronous (blocking) request.

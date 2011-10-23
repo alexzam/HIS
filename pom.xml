@@ -6,7 +6,7 @@
     <groupId>az.his</groupId>
     <artifactId>his</artifactId>
     <packaging>war</packaging>
-    <version>0.1</version>
+    <version>0.1.0</version>
     <name>HIS</name>
     <properties>
         <config>dev</config>
@@ -22,9 +22,6 @@
             <properties>
                 <config>dev</config>
             </properties>
-            <build>
-                <finalName>${project.artifactId}</finalName>
-            </build>
         </profile>
 
         <profile>
@@ -61,6 +58,11 @@
                 <updatePolicy>never</updatePolicy>
             </snapshots>
         </repository>
+        <repository>
+            <id>MVNRepository</id>
+            <name>MVNRepository</name>
+            <url>http://mvnrepository.com</url>
+        </repository>
     </repositories>
     <pluginRepositories>
         <pluginRepository>
@@ -86,7 +88,8 @@
         <directory>${project.basedir}/out</directory>
         <outputDirectory>${project.basedir}/out/warsrc/WEB-INF/classes</outputDirectory>
         <sourceDirectory>./src</sourceDirectory>
-        <finalName>${project.artifactId}-${project.version}-${config}</finalName>
+        <testSourceDirectory>test</testSourceDirectory>
+        <finalName>${project.artifactId}-${project.version}.${buildNumber}-${config}</finalName>
         <resources>
             <resource>
                 <targetPath>.</targetPath>
@@ -126,7 +129,7 @@
 
                 <configuration>
                     <excludes>
-                        <exclude>org/json/Test.java</exclude>
+                        <exclude>org/org.json/Test.java</exclude>
                     </excludes>
                 </configuration>
             </plugin>
@@ -151,23 +154,47 @@
                 </configuration>
             </plugin>
 
-            <!--<plugin>-->
-            <!--<groupId>org.codehaus.mojo</groupId>-->
-            <!--<artifactId>buildnumber-maven-plugin</artifactId>-->
-            <!--<version>1.0</version>-->
-            <!--&lt;!&ndash;<executions>&ndash;&gt;-->
-            <!--&lt;!&ndash;<execution>&ndash;&gt;-->
-            <!--&lt;!&ndash;<phase>validate</phase>&ndash;&gt;-->
-            <!--&lt;!&ndash;<goals>&ndash;&gt;-->
-            <!--&lt;!&ndash;<goal>create</goal>&ndash;&gt;-->
-            <!--&lt;!&ndash;</goals>&ndash;&gt;-->
-            <!--&lt;!&ndash;</execution>&ndash;&gt;-->
-            <!--&lt;!&ndash;</executions>&ndash;&gt;-->
-            <!--<configuration>-->
-            <!--<doCheck>true</doCheck>-->
-            <!--<doUpdate>true</doUpdate>-->
-            <!--</configuration>-->
-            <!--</plugin>-->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>buildnumber-maven-plugin</artifactId>
+                <version>1.0</version>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>create</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <format>{0}</format>
+                    <timestampFormat>{0}</timestampFormat>
+                    <items>
+                        <item>buildNumber1</item>
+                    </items>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <copy
+                                        file="${project.build.directory}/${project.build.finalName}.war"
+                                        tofile="${project.build.directory}/${project.artifactId}.war"
+                                        overwrite="true" />
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
 
     </build>
@@ -197,8 +224,18 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>3.8.1</version>
+            <version>4.8</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20090211</version>
+        </dependency>
     </dependencies>
+
+    <scm>
+        <!-- Fake -->
+        <connection>scm:git:file://.</connection>
+    </scm>
 </project>

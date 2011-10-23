@@ -1,26 +1,19 @@
 var account = {
     loadTransactions:function() {
+        var frm = Ext.getCmp('frmFilter');
+        if(!frm.getForm().isValid()) return;
+
+        var q = frm.getForm().getFieldValues();
+        if (q.from != null) {
+            q.from = q.from.getTime();
+        }
+        if (q.to != null) {
+            q.to = q.to.getTime();
+        }
+
+        proxyTrans.extraParams = q;
+
         Ext.data.StoreManager.getByKey('stTrans').load();
-//        transStore.close();
-//
-//        var frm = dijit.byId('frmFilter');
-//        if (!frm.validate()) return;
-//
-//        var q = frm.getValues();
-//        if (q.from != null) {
-//            q.from = q.from.getTime();
-//        }
-//        if (q.to != null) {
-//            q.to = q.to.getTime();
-//        }
-//
-//        transStore.url = transStoreUrl + '?' + dojo.objectToQuery(q);
-//        transStore.fetch({
-//            onComplete:function() {
-//                // When transaction store is updated
-//                dijit.byId('tabTrans').setStore(transStore);
-//            }
-//        });
     },
 
 //    loadCategories:function(firstTime) {
@@ -49,7 +42,7 @@ var account = {
         cmp = Ext.getCmp('tbAddAmount');
         cmp.allowBlank = !enable;
         cmp.isValid();
-        cmp = Ext.getCmp('cmp.isValid();');
+        cmp = Ext.getCmp('cbCategory');
         cmp.allowBlank = !enable;
         cmp.isValid();
     },
@@ -390,7 +383,10 @@ var srcFilterForm = {
             displayField: 'name',
             lastQuery: '',
             labelWidth: 65,
-            width: 175
+            width: 175,
+            listeners:{
+                change: account.onFilterChange
+            }
         }
     ]
 };
@@ -448,9 +444,9 @@ var srcScreen = {
             region: 'center',
             store:'stTrans',
             columns:[
-                {header:'Когда', dataIndex:'timestamp'},
+                {header:'Когда', dataIndex:'timestamp', xtype:'datecolumn', format:'d.m.Y'},
                 {header:'Кто', dataIndex:'actor_name'},
-                {header:'Сколько', dataIndex:'amount'},
+                {header:'Сколько', dataIndex:'amount', xtype:'numbercolumn'},
                 {header:'Категория', dataIndex:'category_name'},
                 {header:'Комментарий', dataIndex:'comment', flex: 1}
             ]
@@ -462,6 +458,8 @@ var proxyCats;
 var proxyTrans;
 
 Ext.onReady(function() {
+    Ext.util.Format.thousandSeparator = ' ';
+
     Ext.define('Category', {
         extend: 'Ext.data.Model',
         fields: [
@@ -473,13 +471,13 @@ Ext.onReady(function() {
     Ext.define('Transaction', {
         extend: 'Ext.data.Model',
         fields: [
-            {name: 'id', type: 'String'},
+            {name: 'id', type: 'string'},
             {name: 'actor_id', type: 'int'},
-            {name: 'actor_name', type: 'String'},
-            {name: 'amount', type: 'String'},
-            {name: 'category_name', type: 'String'},
-            {name: 'comment', type: 'String'},
-            {name: 'timestamp', type: 'String'}
+            {name: 'actor_name', type: 'string'},
+            {name: 'amount', type: 'float'},
+            {name: 'category_name', type: 'string'},
+            {name: 'comment', type: 'string'},
+            {name: 'timestamp', type: 'date', dateFormat: 'd.m.Y'}
         ]
     });
     proxyCats = new Ext.data.proxy.Ajax({

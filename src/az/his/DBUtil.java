@@ -86,8 +86,8 @@ public class DBUtil {
         return dblFormatter.format(sum);
     }
 
-    private static java.text.NumberFormat intFormatter = new DecimalFormat("#,##0");
-    private static java.text.NumberFormat int2Formatter = new DecimalFormat("#,##0.00");
+    private static java.text.NumberFormat intFormatter = new DecimalFormat("0");
+    private static java.text.NumberFormat int2Formatter = new DecimalFormat("0.00");
 
     public static String formatCurrency(long sum) {
         if (sum % 100 != 0) {
