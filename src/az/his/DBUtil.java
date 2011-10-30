@@ -1,15 +1,12 @@
 package az.his;
 
-import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.criterion.Restrictions;
 
-import java.io.Serializable;
+import javax.servlet.ServletRequest;
 import java.text.DecimalFormat;
-import java.util.List;
 
 /**
  * Hibernate set up
@@ -18,6 +15,11 @@ public class DBUtil {
     private static SessionFactory factory;
 
     public static Session getSession() throws HibernateException {
+        initFactory();
+        return factory.getCurrentSession();
+    }
+
+    private static void initFactory() {
         if (factory == null) {
             try {
                 factory = new Configuration().configure().buildSessionFactory();
@@ -25,59 +27,15 @@ public class DBUtil {
                 throw new ExceptionInInitializerError(ex);
             }
         }
-        return factory.getCurrentSession();
-    }
-
-    @SuppressWarnings({"unchecked"})
-    public static <E> List<E> findAll(Class<E> entityClass) {
-        Criteria query = factory.getCurrentSession().createCriteria(entityClass);
-        return query.setCacheable(true).list();
-    }
-
-    @SuppressWarnings({"unchecked"})
-    public static <E> E findByNaturalKey(Class<E> entityClass, String propertyName, Object propertyValue) {
-        Criteria query = factory.getCurrentSession().createCriteria(entityClass);
-        query.add(Restrictions.eq(propertyName, propertyValue));
-        return (E) query.setCacheable(true).uniqueResult();
-    }
-
-    @SuppressWarnings({"unchecked"})
-    public static <E> E get(Class<E> entityClass, Serializable id) {
-        return (E) factory.getCurrentSession().get(entityClass, id);
-    }
-
-    @SuppressWarnings({"unchecked"})
-    public static <E> E merge(E object) {
-        E result = (E) factory.getCurrentSession().merge(object);
-        factory.getCurrentSession().flush();
-        return result;
-    }
-
-    public static void persist(Object object) {
-        factory.getCurrentSession().persist(object);
-        factory.getCurrentSession().flush();
-    }
-
-    public static void update(Object object) {
-        factory.getCurrentSession().saveOrUpdate(object);
-        factory.getCurrentSession().flush();
-    }
-
-    @SuppressWarnings({"unchecked"})
-    public static <E> List<E> findByProperty(Class<E> entityClass, String propertyName, Object propertyValue) {
-        Criteria query = factory.getCurrentSession().createCriteria(entityClass);
-        query.add(Restrictions.eq(propertyName, propertyValue));
-        return query.list();
-    }
-
-    @SuppressWarnings("unchecked")
-    public static void delete(Class cls, int id) {
-        Session sess = getSession();
-        sess.delete(get(cls, id));
     }
 
     public static Session openSession() {
+        initFactory();
         return factory.openSession();
+    }
+
+    public static DBManager getDBManFromReq(ServletRequest req){
+        return (DBManager) req.getAttribute("DBM");
     }
 
     private static java.text.NumberFormat dblFormatter = new DecimalFormat("#,###.##");

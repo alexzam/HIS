@@ -33,3 +33,7 @@
     height: 22px;
     margin-left: 3px;
 }
+
+#frmAddTrans > .x-panel-body > .x-box-inner {
+    overflow-x: visible;
+}

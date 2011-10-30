@@ -22,6 +22,7 @@ public class TrCategoryDataServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String type = request.getParameter("type");
+        DBManager dbman = DBUtil.getDBManFromReq(request);
 
         if (type == null) type = "a";
 
@@ -33,7 +34,7 @@ public class TrCategoryDataServlet extends HttpServlet {
         } else if (type.equals("i")) {
             cats = TransactionCategory.getByType(TransactionCategory.CatType.INC);
         } else {
-            cats = DBUtil.findAll(TransactionCategory.class);
+            cats = dbman.findAll(TransactionCategory.class);
         }
 
         try {
@@ -43,7 +44,7 @@ public class TrCategoryDataServlet extends HttpServlet {
             JSONObject item = new JSONObject();
 
             item.put("id", "0");
-            item.put("name", "(Все)");
+            item.put("name", "(Р’СЃРµ)");
             item.put("type", "null");
 
             items.put(item);

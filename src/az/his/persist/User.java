@@ -1,6 +1,6 @@
 package az.his.persist;
 
-import az.his.DBUtil;
+import az.his.DBManager;
 import org.hibernate.Session;
 
 import javax.persistence.*;
@@ -33,13 +33,13 @@ public class User {
     }
 
     @Transient
-    public static List<User> getAll() {
-        return DBUtil.findAll(User.class);
+    public static List<User> getAll(DBManager dbman) {
+        return dbman.findAll(User.class);
     }
 
     @Transient
-    public long getPersonalExpense(Account acc) {
-        Session session = DBUtil.getSession();
+    public long getPersonalExpense(DBManager dbman, Account acc) {
+        Session session = dbman.getSession();
         Long out = (Long) session
                 .createQuery("select sum(amount) from transaction where account = ? and common = true and actor = ?")
                 .setEntity(0, acc)
@@ -51,8 +51,8 @@ public class User {
     }
 
     @Transient
-    public long getPersonalDonation(Account acc) {
-        Session session = DBUtil.getSession();
+    public long getPersonalDonation(DBManager dbman, Account acc) {
+        Session session = dbman.getSession();
         Long out = (Long) session
                 .createQuery("select sum(amount) from transaction where account = ? and common = false and actor = ?")
                 .setEntity(0, acc)

@@ -5,7 +5,6 @@ import az.his.persist.Account;
 import az.his.persist.Transaction;
 import az.his.persist.TransactionCategory;
 import az.his.persist.User;
-import org.hibernate.Session;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,11 +46,12 @@ public class AccountDataServlet extends HttpServlet {
 
     private void delTransactions(HttpServletRequest request) throws ServletException {
         String[] ids = checkParam(request, "ids").split(",");
-        Session sess = DBUtil.getSession();
+        DBManager dbman = DBUtil.getDBManFromReq(request);
+
         for (String id : ids) {
             try {
                 int iid = Integer.parseInt(id);
-                DBUtil.delete(Transaction.class, iid);
+                dbman.delete(Transaction.class, iid);
             } catch (Exception e) {
                 // ignored
             }
@@ -69,6 +69,7 @@ public class AccountDataServlet extends HttpServlet {
         int amount = Math.round(Float.parseFloat(checkParam(request, "amount")) * 100);
         String trType = checkParam(request, "type");
         boolean common;
+        DBManager dbman = DBUtil.getDBManFromReq(request);
 
         int catId;
         if (trType.equals("i")) {
@@ -90,16 +91,16 @@ public class AccountDataServlet extends HttpServlet {
             cat = new TransactionCategory();
             cat.setName(checkParam(request, "catname"));
             cat.setType(TransactionCategory.CatType.EXP);
-            cat = DBUtil.merge(cat);
+            cat = dbman.merge(cat);
         } else {
-            cat = DBUtil.get(TransactionCategory.class, catId);
+            cat = dbman.get(TransactionCategory.class, catId);
         }
 
         String comment = request.getParameter("comment");
         Date time = new Date(Long.parseLong(checkParam(request, "date")));
-        User actor = DBUtil.get(User.class, actId);
+        User actor = dbman.get(User.class, actId);
 
-        Account account = Account.getCommon();
+        Account account = Account.getCommon(dbman);
 
         Transaction trans = new Transaction();
         trans.setActor(actor);
@@ -111,9 +112,9 @@ public class AccountDataServlet extends HttpServlet {
         trans.setCommon(common);
         if (!common) {
             account.setValue(account.getValue() + amount);
-            DBUtil.merge(account);
+            dbman.merge(account);
         }
-        DBUtil.persist(trans);
+        dbman.persist(trans);
 
         if (trType.equals("a")) {
             // Expense form account itself means we should make immediate refund
@@ -122,13 +123,13 @@ public class AccountDataServlet extends HttpServlet {
             trans.setAccount(account);
             trans.setTimestmp(time);
             trans.setAmount(amount);
-            trans.setCategory(DBUtil.get(TransactionCategory.class, TransactionCategory.CAT_REFUND));
+            trans.setCategory(dbman.get(TransactionCategory.class, TransactionCategory.CAT_REFUND));
             trans.setCommon(false);
 
             account.setValue(account.getValue() + amount);
-            DBUtil.merge(account);
+            dbman.merge(account);
 
-            DBUtil.persist(trans);
+            dbman.persist(trans);
         }
     }
 
@@ -169,12 +170,13 @@ public class AccountDataServlet extends HttpServlet {
 
     private JSONObject getStatistic(HttpServletRequest req) throws JSONException {
         JSONObject ret = new JSONObject();
-        Account acc = Account.getCommon();
-        long totalExp = acc.getTotalExp();
+        DBManager dbman = DBUtil.getDBManFromReq(req);
+        Account acc = Account.getCommon(dbman);
+        long totalExp = acc.getTotalExp(dbman);
         long eachExp = totalExp / 2;
-        User user = DBUtil.get(User.class, AuthFilter.getUid(req.getSession()));
-        long persExp = user.getPersonalExpense(acc);
-        long persDonation = user.getPersonalDonation(acc);
+        User user = dbman.get(User.class, AuthFilter.getUid(req.getSession()));
+        long persExp = user.getPersonalExpense(dbman, acc);
+        long persDonation = user.getPersonalDonation(dbman, acc);
 
         ret.put("amount", acc.getAmountPrintable());
         ret.put("totalExp", DBUtil.formatCurrency(totalExp));
@@ -189,6 +191,7 @@ public class AccountDataServlet extends HttpServlet {
 
     private JSONObject getTransactions(HttpServletRequest request) throws JSONException {
         JSONObject ret = new JSONObject();
+        DBManager dbman = DBUtil.getDBManFromReq(request);
 
         Calendar calFrom = new GregorianCalendar();
         calFrom.set(Calendar.DAY_OF_MONTH, 1);
@@ -215,13 +218,13 @@ public class AccountDataServlet extends HttpServlet {
             cat = Integer.parseInt(param);
         }
 
-        List<Transaction> transactions = Transaction.getFiltered(fromDate, toDate, cat);
+        List<Transaction> transactions = Transaction.getFiltered(dbman, fromDate, toDate, cat);
         JSONArray items = new JSONArray();
 
         ret.put("identifier", "id");
 
         for (Transaction transaction : transactions) {
-            items.put(transaction.getJson()); //
+            items.put(transaction.getJson());
         }
 
         ret.put("items", items);

@@ -16,7 +16,8 @@ var account = {
         Ext.data.StoreManager.getByKey('stTrans').load();
     },
 
-//    loadCategories:function(firstTime) {
+    loadCategories:function(firstTime) {
+        Ext.data.StoreManager.getByKey('stCats').load();
 //        catStore.close();
 //        catStore.url = catStoreUrl;
 //        catStore.fetch({
@@ -33,7 +34,7 @@ var account = {
 //                }
 //            }
 //        });
-//    },
+    },
 
     setAddFormFullValidation:function(enable){
         var cmp = Ext.getCmp('tbAddDate');
@@ -83,7 +84,7 @@ var account = {
             params: data,
             success:function() {
                 account.loadTransactions();
-//                account.loadCategories(false);
+                account.loadCategories(false);
                 account.updateAccountStats();
             }
         });
@@ -124,31 +125,31 @@ var account = {
     onAddTypeChange:function(me, val) {
         var type = val.type;
         Ext.getCmp('cbCategory').setDisabled(type == 'i' || type == 'r');
+    },
+
+    onBtDelete: function() {
+        var selected = Ext.getCmp('gridTrans').getSelectionModel().getSelection();
+        var delIds = [];
+
+        for (i in selected){
+            var sel = selected[i];
+            delIds.push(sel.get('id'));
+        }
+
+        if (delIds.length <= 0) return;
+        var idsStr = delIds.join();
+
+        var data = {act:"del", ids:idsStr};
+        Ext.Ajax.request({
+            method:'POST',
+            url:transStoreUrl,
+            params:data,
+            callback:function() {
+                account.loadTransactions();
+                account.updateAccountStats();
+            }
+        });
     }
-//
-//    onBtDelete: function() {
-//        var tab = dijit.byId('tabTrans');
-//        var selItems = tab.selection.selected;
-//        var delIds = new Array();
-//
-//        for (var i = 0; i < selItems.length; i++) {
-//            if (selItems[i] != true) continue;
-//            delIds.push(tab.getItem(i).id[0]);
-//        }
-//
-//        if (delIds.length <= 0) return;
-//        var idsStr = delIds.join();
-//
-//        var data = {act:"del", ids:idsStr};
-//        dojo.xhrPost({
-//            content:data,
-//            url:transStoreUrl,
-//            load:function() {
-//                account.loadTransactions();
-//                account.updateAccountStats();
-//            }
-//        });
-//    }
 };
 
 //dojo.addOnLoad(function() {
@@ -387,6 +388,11 @@ var srcFilterForm = {
             listeners:{
                 change: account.onFilterChange
             }
+        },
+        {
+            xtype: 'button',
+            text: 'Удалить',
+            handler: account.onBtDelete
         }
     ]
 };
@@ -443,16 +449,115 @@ var srcScreen = {
             xtype: 'grid',
             region: 'center',
             store:'stTrans',
+            id: 'gridTrans',
+            multiSelect: true,
             columns:[
-                {header:'Когда', dataIndex:'timestamp', xtype:'datecolumn', format:'d.m.Y'},
+                {
+                    header:'Когда',
+                    dataIndex:'timestamp',
+                    xtype:'datecolumn',
+                    format:'d.m.Y',
+                    editor:{
+                        xtype: 'datefield',
+                        maxValue: new Date(),
+                        format: 'd.m.Y',
+                        allowBlank: false
+                    }
+                },
                 {header:'Кто', dataIndex:'actor_name'},
-                {header:'Сколько', dataIndex:'amount', xtype:'numbercolumn'},
-                {header:'Категория', dataIndex:'category_name'},
-                {header:'Комментарий', dataIndex:'comment', flex: 1}
+                {
+                    header:'Сколько',
+                    dataIndex:'amount',
+                    xtype:'numbercolumn',
+                    summaryType:'sum',
+                    editor:{
+                        xtype: 'numberfield',
+                        hideTrigger: true,
+                        keyNavEnabled: false,
+                        mouseWheelEnabled: false,
+                        allowBlank: false
+                    }
+                },
+                {
+                    header:'Категория',
+                    dataIndex:'category_name',
+                    xtype:'categorycolumn',
+                    editor:{
+                        xtype: 'combo',
+                        queryMode: 'local',
+                        store: 'stCats',
+                        valueField: 'id',
+                        displayField: 'name',
+                        lastQuery: '',
+                        allowBlank: false
+                    }
+                },
+                {
+                    header:'Комментарий',
+                    dataIndex:'comment',
+                    flex: 1,
+                    editor:{xtype: 'textfield'}
+                }
+            ],
+            selType: 'rowmodel',
+            plugins: [
+                Ext.create('Ext.grid.plugin.RowEditing', {
+                    clicksToEdit: 2
+                })
+            ],
+            listeners:{
+                'beforeedit':function(e, editor){
+                    console.dir(arguments);
+                    var type = e.record.data.type;
+                    var column = e.grid.columns[3];
+//                    e.grid.editingPlugin.editor.removeField(column);
+                    column.mode = (type == 'E') ? 0 : 1;
+//                    e.grid.editingPlugin.editor.setField(column);
+                    var editor = column.getEditor();
+                    e.grid.editingPlugin.setColumnField(column, editor);
+                }
+            },
+            features: [
+                {ftype: 'summary'}
             ]
         }
     ]
 };
+
+Ext.define('alexzam.his.account.CatColumn', {
+    extend: 'Ext.grid.column.Column',
+    alias:['widget.categorycolumn'],
+
+    fieldCombo: null,
+    fieldPlain: {
+        xtype: 'displayfield',
+        getModelData: function() {
+            return null;
+        }
+    },
+
+    mode: 0,
+
+    getEditor:function(record, defField){
+        var me = this;
+
+        if (!me.fieldCombo) {
+            me.fieldCombo = Ext.ComponentManager.create(me.editor);
+            Ext.apply(me.fieldCombo, {
+                name: me.dataIndex
+            });
+            delete me.editor;
+
+            me.fieldPlain = Ext.ComponentManager.create(me.fieldPlain);
+            Ext.apply(me.fieldCombo, {
+                name: me.dataIndex
+            });
+        }
+
+        if(me.mode == 0) return me.fieldCombo;
+        return me.fieldPlain;
+    }
+});
 
 var proxyCats;
 var proxyTrans;
@@ -477,6 +582,7 @@ Ext.onReady(function() {
             {name: 'amount', type: 'float'},
             {name: 'category_name', type: 'string'},
             {name: 'comment', type: 'string'},
+            {name: 'type', type: 'string'},
             {name: 'timestamp', type: 'date', dateFormat: 'd.m.Y'}
         ]
     });

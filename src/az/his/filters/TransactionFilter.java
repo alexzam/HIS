@@ -1,5 +1,6 @@
 package az.his.filters;
 
+import az.his.DBManager;
 import az.his.DBUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -20,17 +21,21 @@ public class TransactionFilter implements Filter {
         if (Boolean.TRUE.equals(req.getAttribute(StaticFilter.STATIC_CONTENT))) {
             chain.doFilter(req, resp);
         } else {
-            Session sess = DBUtil.getSession();
+            Session sess = DBUtil.openSession();
             Transaction tx = null;
 
             try {
                 tx = sess.beginTransaction();
+                DBManager dbman = new DBManager(sess);
+                req.setAttribute("DBM", dbman);
                 chain.doFilter(req, resp);
                 tx.commit();
             } catch (Exception e) {
                 Logger log = LoggerFactory.getLogger(this.getClass());
                 log.error("Transaction error", e);
                 if (tx != null) tx.rollback();
+            } finally {
+                sess.close();
             }
         }
     }

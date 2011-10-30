@@ -84,7 +84,7 @@
     </pluginRepositories>
 
     <build>
-        <defaultGoal>compile</defaultGoal>
+        <defaultGoal>package</defaultGoal>
         <directory>${project.basedir}/out</directory>
         <outputDirectory>${project.basedir}/out/warsrc/WEB-INF/classes</outputDirectory>
         <sourceDirectory>./src</sourceDirectory>

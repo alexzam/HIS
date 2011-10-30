@@ -1,5 +1,6 @@
 package az.his.persist;
 
+import az.his.DBManager;
 import az.his.DBUtil;
 import org.hibernate.Query;
 import org.hibernate.type.DateType;
@@ -110,19 +111,27 @@ public class Transaction {
         ret.put("category_name", getCategory().getName());
         ret.put("comment", getComment());
 
+        String type;
+        int catId = getCategory().getId();
+        if(catId == TransactionCategory.CAT_DONATE) type = "D";
+        else if (catId == TransactionCategory.CAT_REFUND) type = "R";
+        else type = "E";
+
+        ret.put("type", type);
+
         return ret;
     }
 
     @Transient
     @SuppressWarnings("unchecked")
-    public static List<Transaction> getFiltered(Date from, Date to, int category) {
+    public static List<Transaction> getFiltered(DBManager dbman, Date from, Date to, int category) {
         String q = "from az.his.persist.Transaction where timestmp >= :from and timestmp <= :to"
                 + ((category > 0) ? " and category = :cat" : "");
-        Query query = DBUtil.getSession().createQuery(q)
+        Query query = dbman.getSession().createQuery(q)
                 .setParameter("from", from, DateType.INSTANCE)
                 .setParameter("to", to, DateType.INSTANCE);
         if (category > 0) {
-            query.setParameter("cat", DBUtil.get(TransactionCategory.class, category));
+            query.setParameter("cat", dbman.get(TransactionCategory.class, category));
         }
         return (List<Transaction>) query.list();
     }

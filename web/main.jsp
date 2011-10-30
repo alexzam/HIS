@@ -1,5 +1,6 @@
+<%@ page import="az.his.DBManager" %>
+<%@ page import="az.his.DBUtil" %>
 <%@ page import="az.his.filters.AuthFilter" %>
-<%@ page import="az.his.persist.Account" %>
 <%@ page import="az.his.persist.User" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.util.List" %>
@@ -13,7 +14,8 @@
         pathRoot = request.getServletContext().getInitParameter("path.root");
     }
 
-    List<User> usersNotMe = User.getAll();
+    DBManager dbman = DBUtil.getDBManFromReq(request);
+    List<User> usersNotMe = User.getAll(dbman);
     User userMe = null;
     for (User user : usersNotMe) {
         if (user.getId() == AuthFilter.getUid(session)) {
@@ -52,49 +54,9 @@
 </head>
 <body class="tundra">
 <!--div dojoType="dijit.layout.BorderContainer">
-    <div dojoType="dijit.layout.ContentPane" region="top" style="height:100px;">
-        <div dojoType="dijit.layout.BorderContainer" gutters="false">
-            <div dojoType="dijit.layout.ContentPane" region="center">
-                <form dojoType="dijit.form.Form" id="frmAddTrans" action="#">
-                </form>
-            </div>
-            <nav dojoType="dijit.layout.ContentPane" region="right" style="text-align:right;">
-                <a href="login?mode=out">Выйти</a>
-                <br/>
-                <span id="account_amount">
-                    <%=Account.getCommon().getAmountPrintable()%> р.
-                </span>
-            </nav>
-        </div>
-    </div>
-    <div dojoType="dijit.layout.BorderContainer" gutters="false" region="right" style="width: 200px;" id="filter_pane">
-        <div dojoType="dijit.layout.ContentPane" region="top">
-            <h1>Фильтровать</h1>
 
-            <form id="frmFilter" dojoType="dijit.form.Form">
-                <table>
-                    <tr>
-                        <td><label for="filter_datefrom">С</label></td>
-                        <td>
-                            <input dojotype='dijit.form.DateTextBox' class="input" name="from" id="filter_datefrom"
-                                   onchange="account.onFilterChange();"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><label for="filter_dateto">По</label></td>
-                        <td>
-                            <input dojotype='dijit.form.DateTextBox' class="input" name="to" id="filter_dateto"
-                                   onchange="account.onFilterChange();"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><label for="filter_сategory">Категория</label></td>
-                        <td><select dojotype="dijit.form.Select" name="cat" id="filter_category" store="catStore"
-                                    class="input" value="0" onchange="account.onFilterChange();"></select></td>
-                    </tr>
-                </table>
-            </form>
-        </div>
+    <div dojoType="dijit.layout.BorderContainer" gutters="false" region="right" style="width: 200px;" id="filter_pane">
+
         <div dojoType="dijit.layout.ContentPane" region="center">
             <button dojotype="dijit.form.Button" id="btDelete">Удалить</button>
         </div>

@@ -67,6 +67,11 @@
     </context-param>
 
     <context-param>
+        <param-name>product.version</param-name>
+        <param-value>${project.version}.${buildNumber}</param-value>
+    </context-param>
+
+    <context-param>
         <param-name>page.main</param-name>
         <param-value>main.jsp</param-value>
     </context-param>
