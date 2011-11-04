@@ -430,111 +430,33 @@ var srcScreen = {
                     header:'Когда',
                     dataIndex:'timestamp',
                     xtype:'datecolumn',
-                    format:'d.m.Y',
-                    editor:{
-                        xtype: 'datefield',
-                        maxValue: new Date(),
-                        format: 'd.m.Y',
-                        allowBlank: false
-                    }
+                    format:'d.m.Y'
                 },
                 {header:'Кто', dataIndex:'actor_name'},
                 {
                     header:'Сколько',
                     dataIndex:'amount',
                     xtype:'numbercolumn',
-                    summaryType:'sum',
-                    editor:{
-                        xtype: 'numberfield',
-                        hideTrigger: true,
-                        keyNavEnabled: false,
-                        mouseWheelEnabled: false,
-                        allowBlank: false
-                    }
+                    summaryType:'sum'
                 },
                 {
                     header:'Категория',
                     dataIndex:'category_name',
-                    xtype:'categorycolumn',
-                    editor:{
-                        xtype: 'combo',
-                        queryMode: 'local',
-                        store: 'stCats',
-                        valueField: 'id',
-                        displayField: 'name',
-                        lastQuery: '',
-                        allowBlank: false
-                    }
+                    xtype:'categorycolumn'
                 },
                 {
                     header:'Комментарий',
                     dataIndex:'comment',
-                    flex: 1,
-                    editor:{xtype: 'textfield'}
+                    flex: 1
                 }
             ],
             selType: 'rowmodel',
-            plugins: [
-                Ext.create('Ext.grid.plugin.RowEditing', {
-                    clicksToEdit: 2
-                })
-            ],
-            listeners:{
-                'beforeedit':function(e, editor) {
-                    console.dir(arguments);
-                    var type = e.record.data.type;
-                    var column = e.grid.columns[3];
-                    column.mode = (type == 'E') ? 0 : 1;
-                    var editor = column.getCEditor(e.grid.editingPlugin);
-
-                    column.setEditor(editor);
-//                    e.grid.editingPlugin.editor.removeField(column);
-
-//                    e.grid.editingPlugin.editor.setField(column);
-//                    e.grid.editingPlugin.setColumnField(column, editor);
-                }
-            },
             features: [
                 {ftype: 'summary'}
             ]
         }
     ]
 };
-
-Ext.define('alexzam.his.account.CatColumn', {
-    extend: 'Ext.grid.column.Column',
-    alias:['widget.categorycolumn'],
-
-    fieldCombo: null,
-    fieldPlain: {
-        xtype: 'displayfield',
-        getModelData: function() {
-            return null;
-        }
-    },
-
-    mode: 0,
-
-    getCEditor:function(edPlugin) {
-        var me = this;
-
-        if (!me.fieldCombo) {
-            me.fieldCombo = Ext.ComponentManager.create(me.initialConfig.editor);
-            Ext.apply(me.fieldCombo, {
-                name: me.dataIndex
-            });
-            delete me.editor;
-
-            me.fieldPlain = Ext.ComponentManager.create(me.fieldPlain);
-            Ext.apply(me.fieldPlain, {
-                name: me.dataIndex
-            });
-        }
-
-        if (me.mode == 0) return me.fieldCombo;
-        return me.fieldPlain;
-    }
-});
 
 Ext.define('Category', {
     extend: 'Ext.data.Model',
