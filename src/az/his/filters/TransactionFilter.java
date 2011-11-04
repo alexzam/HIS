@@ -25,6 +25,7 @@ public class TransactionFilter implements Filter {
             Transaction tx = null;
 
             try {
+                if(!sess.isConnected()) sess.reconnect(sess.disconnect());
                 tx = sess.beginTransaction();
                 DBManager dbman = new DBManager(sess);
                 req.setAttribute("DBM", dbman);
