@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="exploded-war" build-on-make="true" name="HIS:war exploded">
-    <output-path>$PROJECT_DIR$/out/his</output-path>
+    <output-path>$PROJECT_DIR$/out/his-0.1.0.${buildNumber}-dev</output-path>
     <root id="root">
       <element id="javaee-facet-resources" facet="HIS/web/Web" />
       <element id="directory" name="WEB-INF">
@@ -17,6 +17,7 @@
           <element id="library" level="project" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.0.Final" />
           <element id="library" level="project" name="Maven: javax.transaction:jta:1.1" />
           <element id="library" level="project" name="Maven: javassist:javassist:3.12.1.GA" />
+          <element id="library" level="project" name="Maven: org.json:json:20090211" />
         </element>
       </element>
     </root>

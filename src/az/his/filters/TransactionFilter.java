@@ -27,14 +27,14 @@ public class TransactionFilter implements Filter {
             try {
                 if(!sess.isConnected()) sess.reconnect(sess.disconnect());
                 tx = sess.beginTransaction();
-                DBManager dbman = new DBManager(sess);
-                req.setAttribute("DBM", dbman);
+                req.setAttribute("DBM", new DBManager(sess));
                 chain.doFilter(req, resp);
                 tx.commit();
             } catch (Exception e) {
                 Logger log = LoggerFactory.getLogger(this.getClass());
                 log.error("Transaction error", e);
                 if (tx != null) tx.rollback();
+                throw new ServletException(e);
             } finally {
                 sess.close();
             }

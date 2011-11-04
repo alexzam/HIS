@@ -1,7 +1,7 @@
 var account = {
     loadTransactions:function() {
         var frm = Ext.getCmp('frmFilter');
-        if(!frm.getForm().isValid()) return;
+        if (!frm.getForm().isValid()) return;
 
         var q = frm.getForm().getFieldValues();
         if (q.from != null) {
@@ -18,25 +18,9 @@ var account = {
 
     loadCategories:function(firstTime) {
         Ext.data.StoreManager.getByKey('stCats').load();
-//        catStore.close();
-//        catStore.url = catStoreUrl;
-//        catStore.fetch({
-//            onComplete:function() {
-//                var cbCat = dijit.byId('cbCategory');
-//                cbCat.store = catStore;
-//                cbCat.query = {"type":'e'};
-//                var selFilterCat = dijit.byId('filter_category');
-//                if (firstTime) {
-//                    selFilterCat.setStore(catStore, 0);
-//                    account.loadTransactions();
-//                } else {
-//                    selFilterCat.setStore(catStore);
-//                }
-//            }
-//        });
     },
 
-    setAddFormFullValidation:function(enable){
+    setAddFormFullValidation:function(enable) {
         var cmp = Ext.getCmp('tbAddDate');
         cmp.allowBlank = !enable;
         cmp.isValid();
@@ -48,7 +32,7 @@ var account = {
         cmp.isValid();
     },
 
-    resetAddForm:function(){
+    resetAddForm:function() {
         Ext.getCmp('tbAddAmount').setValue(null);
         Ext.getCmp('cbCategory').setValue(null);
     },
@@ -64,7 +48,7 @@ var account = {
 
         account.setAddFormFullValidation(true);
 
-        if(!tbAddDate.isValid() || !tbAddAmount.isValid() || !cbCat.isValid()){
+        if (!tbAddDate.isValid() || !tbAddAmount.isValid() || !cbCat.isValid()) {
             Ext.MessageBox.show({title:'Еггог',msg:'Инвалид!',icon:Ext.MessageBox.ERROR});
             return;
         }
@@ -103,12 +87,13 @@ var account = {
             callback:function(o, s, resp) {
                 var data = Ext.JSON.decode(resp.responseText);
                 Ext.get('account_amount').dom.innerHTML = data.amount + '&nbsp;р.';
-//                dojo.byId('valTotalExp').innerHTML = data.totalExp;
-//                dojo.byId('valEachExp').innerHTML = data.eachExp;
-//                dojo.byId('valPersExp').innerHTML = data.persExp;
-//                dojo.byId('valPersDonation').innerHTML = data.persDonation;
-//                dojo.byId('valPersSpent').innerHTML = data.persSpent;
-//                dojo.byId('valPersBalance').innerHTML = data.persBalance;
+                var store = Ext.data.StoreManager.getByKey('stAccStats');
+                store.getById('TE').set('val', data.totalExp);
+                store.getById('EE').set('val', data.eachExp);
+                store.getById('PE').set('val', data.persExp);
+                store.getById('PD').set('val', data.persDonation);
+                store.getById('PS').set('val', data.persSpent);
+                store.getById('PB').set('val', data.persBalance);
             }
         });
     },
@@ -131,7 +116,7 @@ var account = {
         var selected = Ext.getCmp('gridTrans').getSelectionModel().getSelection();
         var delIds = [];
 
-        for (i in selected){
+        for (i in selected) {
             var sel = selected[i];
             delIds.push(sel.get('id'));
         }
@@ -153,26 +138,6 @@ var account = {
 };
 
 //dojo.addOnLoad(function() {
-//    transStore = new dojo.data.ItemFileWriteStore({
-//        url: transStoreUrl,
-//        clearOnClose: true,
-//        urlPreventCache: true
-//    });
-//
-//    catStore = new dojo.data.ItemFileReadStore({
-//        clearOnClose: true,
-//        urlPreventCache: true
-//    });
-//
-//    account.loadCategories(true);
-//
-//    dijit.byId('cbCategory').query = {"type":'e'};
-//
-//    dijit.byId('rbTypeExpPers').onChange = account.onAddTypeChange;
-//    dijit.byId('rbTypeExpAcc').onChange = account.onAddTypeChange;
-//    dijit.byId('rbTypeInc').onChange = account.onAddTypeChange;
-//    dijit.byId('rbTypeRef').onChange = account.onAddTypeChange;
-//
 //    var from = new Date();
 //    from.setDate(1);
 //    dijit.byId('filter_datefrom').set('value', from);
@@ -442,7 +407,16 @@ var srcScreen = {
             width: 200,
             layout:'border',
             items:[
-                srcFilterForm
+                srcFilterForm,
+                {
+                    xtype:'grid',
+                    region:'south',
+                    store:'stAccStats',
+                    columns:[
+                        {header:'Чего', dataIndex:'name', sortable:false, menuDisabled: true},
+                        {header:'Сколько', dataIndex:'val', flex:1, sortable:false, menuDisabled: true}
+                    ]
+                }
             ]
         },
         {
@@ -506,15 +480,18 @@ var srcScreen = {
                 })
             ],
             listeners:{
-                'beforeedit':function(e, editor){
+                'beforeedit':function(e, editor) {
                     console.dir(arguments);
                     var type = e.record.data.type;
                     var column = e.grid.columns[3];
-//                    e.grid.editingPlugin.editor.removeField(column);
                     column.mode = (type == 'E') ? 0 : 1;
+                    var editor = column.getCEditor(e.grid.editingPlugin);
+
+                    column.setEditor(editor);
+//                    e.grid.editingPlugin.editor.removeField(column);
+
 //                    e.grid.editingPlugin.editor.setField(column);
-                    var editor = column.getEditor();
-                    e.grid.editingPlugin.setColumnField(column, editor);
+//                    e.grid.editingPlugin.setColumnField(column, editor);
                 }
             },
             features: [
@@ -538,25 +515,57 @@ Ext.define('alexzam.his.account.CatColumn', {
 
     mode: 0,
 
-    getEditor:function(record, defField){
+    getCEditor:function(edPlugin) {
         var me = this;
 
         if (!me.fieldCombo) {
-            me.fieldCombo = Ext.ComponentManager.create(me.editor);
+            me.fieldCombo = Ext.ComponentManager.create(me.initialConfig.editor);
             Ext.apply(me.fieldCombo, {
                 name: me.dataIndex
             });
             delete me.editor;
 
             me.fieldPlain = Ext.ComponentManager.create(me.fieldPlain);
-            Ext.apply(me.fieldCombo, {
+            Ext.apply(me.fieldPlain, {
                 name: me.dataIndex
             });
         }
 
-        if(me.mode == 0) return me.fieldCombo;
+        if (me.mode == 0) return me.fieldCombo;
         return me.fieldPlain;
     }
+});
+
+Ext.define('Category', {
+    extend: 'Ext.data.Model',
+    fields: [
+        {name: 'id', type: 'string'},
+        {name: 'name', type: 'string'},
+        {name: 'type', type: 'string'}
+    ]
+});
+
+Ext.define('Transaction', {
+    extend: 'Ext.data.Model',
+    fields: [
+        {name: 'id', type: 'string'},
+        {name: 'actor_id', type: 'int'},
+        {name: 'actor_name', type: 'string'},
+        {name: 'amount', type: 'float'},
+        {name: 'category_name', type: 'string'},
+        {name: 'comment', type: 'string'},
+        {name: 'type', type: 'string'},
+        {name: 'timestamp', type: 'date', dateFormat: 'd.m.Y'}
+    ]
+});
+
+Ext.define('AccStat', {
+    extend: 'Ext.data.Model',
+    fields: [
+        {name: 'id', type: 'string'},
+        {name: 'name', type: 'string'},
+        {name: 'val', type: 'string'}
+    ]
 });
 
 var proxyCats;
@@ -565,27 +574,6 @@ var proxyTrans;
 Ext.onReady(function() {
     Ext.util.Format.thousandSeparator = ' ';
 
-    Ext.define('Category', {
-        extend: 'Ext.data.Model',
-        fields: [
-            {name: 'id', type: 'String'},
-            {name: 'name', type: 'String'},
-            {name: 'type', type: 'String'}
-        ]
-    });
-    Ext.define('Transaction', {
-        extend: 'Ext.data.Model',
-        fields: [
-            {name: 'id', type: 'string'},
-            {name: 'actor_id', type: 'int'},
-            {name: 'actor_name', type: 'string'},
-            {name: 'amount', type: 'float'},
-            {name: 'category_name', type: 'string'},
-            {name: 'comment', type: 'string'},
-            {name: 'type', type: 'string'},
-            {name: 'timestamp', type: 'date', dateFormat: 'd.m.Y'}
-        ]
-    });
     proxyCats = new Ext.data.proxy.Ajax({
         url: catStoreUrl,
         model: 'Category',
@@ -627,6 +615,19 @@ Ext.onReady(function() {
         storeId: 'stTrans',
         proxy: proxyTrans,
         autoLoad: true
+    });
+
+    Ext.create('Ext.data.Store', {
+        model: 'AccStat',
+        storeId: 'stAccStats',
+        data : [
+            {id: 'TE', name: 'Общие расходы', val: '0'},
+            {id: 'EE', name: 'На каждого', val: '0'},
+            {id: 'PE', name: 'Мои траты', val: '0'},
+            {id: 'PD', name: 'Мой вклад в Казну', val: '0'},
+            {id: 'PS', name: 'Всего моих расходов', val: '0'},
+            {id: 'PB', name: 'Мой баланс', val: '0'}
+        ]
     });
 
     Ext.create('Ext.container.Viewport', srcScreen);
