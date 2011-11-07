@@ -441,8 +441,7 @@ var srcScreen = {
                 },
                 {
                     header:'Категория',
-                    dataIndex:'category_name',
-                    xtype:'categorycolumn'
+                    dataIndex:'category_name'
                 },
                 {
                     header:'Комментарий',
@@ -553,6 +552,10 @@ Ext.onReady(function() {
     });
 
     Ext.create('Ext.container.Viewport', srcScreen);
+
+    var d = new Date();
+    d.setDate(1);
+    Ext.getCmp('tbFilterFrom').setValue(d);
 
     account.updateAccountStats();
 });

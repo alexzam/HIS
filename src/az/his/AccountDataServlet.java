@@ -110,10 +110,6 @@ public class AccountDataServlet extends HttpServlet {
         trans.setCategory(cat);
         trans.setComment(comment);
         trans.setCommon(common);
-        if (!common) {
-            account.setValue(account.getValue() + amount);
-            dbman.merge(account);
-        }
         dbman.persist(trans);
 
         if (trType.equals("a")) {
@@ -125,10 +121,6 @@ public class AccountDataServlet extends HttpServlet {
             trans.setAmount(amount);
             trans.setCategory(dbman.get(TransactionCategory.class, TransactionCategory.CAT_REFUND));
             trans.setCommon(false);
-
-            account.setValue(account.getValue() + amount);
-            dbman.merge(account);
-
             dbman.persist(trans);
         }
     }

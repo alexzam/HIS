@@ -17,7 +17,7 @@ import java.util.List;
  * Transaction to track.
  */
 @Entity(name = "transaction")
-public class Transaction {
+public class Transaction implements DBListener {
     private int id;
     private int amount;
     private Date timestmp;
@@ -26,6 +26,8 @@ public class Transaction {
     private Account account;
     private TransactionCategory category;
     private boolean common;
+    private boolean commonReady = false;
+    private boolean amountReady = false;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,6 +44,13 @@ public class Transaction {
     }
 
     public void setAmount(int amount) {
+        if (amountReady && isPersistent()) {
+        if (!common) {
+            long val = getAccount().getValue() - this.amount + amount;
+            getAccount().setValue(val);
+        }
+        }
+        if (!amountReady && isPersistent()) amountReady = true;
         this.amount = amount;
     }
 
@@ -68,7 +77,21 @@ public class Transaction {
     }
 
     public void setCommon(boolean common) {
+        if (commonReady && isPersistent()) {
+            if (!this.common && common) {
+                // Do not include in acc sum
+                getAccount().setValue(getAccount().getValue() - amount);
+            } else if (this.common && !common) {
+                getAccount().setValue(getAccount().getValue() + amount);
+            }
+        }
+        if (!commonReady && isPersistent()) commonReady = true;
         this.common = common;
+    }
+
+    @Transient
+    private boolean isPersistent() {
+        return (getId() != 0);
     }
 
     @ManyToOne
@@ -113,7 +136,7 @@ public class Transaction {
 
         String type;
         int catId = getCategory().getId();
-        if(catId == TransactionCategory.CAT_DONATE) type = "D";
+        if (catId == TransactionCategory.CAT_DONATE) type = "D";
         else if (catId == TransactionCategory.CAT_REFUND) type = "R";
         else type = "E";
 
@@ -138,5 +161,17 @@ public class Transaction {
 
     public void setAmount(double amount) {
         setAmount((int) Math.round(amount * 100));
+    }
+
+    @Override
+    public void beforeDelete() {
+        if (!common)
+            getAccount().setValue(getAccount().getValue() - amount);
+    }
+
+    @Override
+    public void beforeInsert() {
+        if (!common)
+            getAccount().setValue(getAccount().getValue() + amount);
     }
 }
