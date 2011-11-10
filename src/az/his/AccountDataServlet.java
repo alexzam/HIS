@@ -53,7 +53,7 @@ public class AccountDataServlet extends HttpServlet {
                 int iid = Integer.parseInt(id);
                 dbman.delete(Transaction.class, iid);
             } catch (Exception e) {
-                // ignored
+                throw new ServletException(e);
             }
         }
     }

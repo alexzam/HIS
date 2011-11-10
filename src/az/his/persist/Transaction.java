@@ -164,13 +164,20 @@ public class Transaction implements DBListener {
     }
 
     @Override
-    public void beforeDelete() {
+    public void beforeDelete(DBManager dbman) {
+        // Fix account sum
         if (!common)
             getAccount().setValue(getAccount().getValue() - amount);
+
+        // Delete empty category
+        Long res = (Long) dbman.getSession().createQuery("select count(id) from transaction where category = ?")
+                .setEntity(0, getCategory())
+                .uniqueResult();
+        if(res <= 1) dbman.getSession().delete(getCategory());
     }
 
     @Override
-    public void beforeInsert() {
+    public void beforeInsert(DBManager dbman) {
         if (!common)
             getAccount().setValue(getAccount().getValue() + amount);
     }

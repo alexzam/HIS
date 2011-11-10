@@ -30,9 +30,9 @@ public class TrCategoryDataServlet extends HttpServlet {
         JSONObject ret = new JSONObject();
         JSONArray items = new JSONArray();
         if (type.equals("e")) {
-            cats = TransactionCategory.getByType(TransactionCategory.CatType.EXP);
+            cats = TransactionCategory.getByType(dbman, TransactionCategory.CatType.EXP);
         } else if (type.equals("i")) {
-            cats = TransactionCategory.getByType(TransactionCategory.CatType.INC);
+            cats = TransactionCategory.getByType(dbman, TransactionCategory.CatType.INC);
         } else {
             cats = dbman.findAll(TransactionCategory.class);
         }
@@ -43,11 +43,12 @@ public class TrCategoryDataServlet extends HttpServlet {
 
             JSONObject item = new JSONObject();
 
-            item.put("id", "0");
-            item.put("name", "(Все)");
-            item.put("type", "null");
-
-            items.put(item);
+            if (type.equals("a")) {
+                item.put("id", "0");
+                item.put("name", "(Все)");
+                item.put("type", "null");
+                items.put(item);
+            }
 
             for (TransactionCategory cat : cats) {
                 item = new JSONObject();

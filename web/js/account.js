@@ -16,8 +16,20 @@ var account = {
         Ext.data.StoreManager.getByKey('stTrans').load();
     },
 
-    loadCategories:function(firstTime) {
+    loadCategories:function() {
+        var cmp = Ext.getCmp('cbCategory');
+        var val = cmp.getValue();
+        cmp.setValue('');
         Ext.data.StoreManager.getByKey('stCats').load();
+        cmp.setValue(val);
+        cmp.getPicker().setLoading(false);
+
+        cmp = Ext.getCmp('cbFilterCategory');
+        val = cmp.getValue();
+        cmp.setValue('');
+        Ext.data.StoreManager.getByKey('stFilterCats').load();
+        cmp.setValue(val);
+        cmp.getPicker().setLoading(false);
     },
 
     setAddFormFullValidation:function(enable) {
@@ -68,7 +80,7 @@ var account = {
             params: data,
             success:function() {
                 account.loadTransactions();
-                account.loadCategories(false);
+                account.loadCategories();
                 account.updateAccountStats();
             }
         });
@@ -131,21 +143,12 @@ var account = {
             params:data,
             callback:function() {
                 account.loadTransactions();
+                account.loadCategories();
                 account.updateAccountStats();
             }
         });
     }
 };
-
-//dojo.addOnLoad(function() {
-//    var from = new Date();
-//    from.setDate(1);
-//    dijit.byId('filter_datefrom').set('value', from);
-//
-//    account.updateAccountStats();
-//
-//    dijit.byId('btDelete').onClick = account.onBtDelete;
-//});
 
 var srcAddForm = {
     xtype: 'form',
@@ -490,6 +493,7 @@ Ext.define('AccStat', {
 });
 
 var proxyCats;
+var proxyAddCats;
 var proxyTrans;
 
 Ext.onReady(function() {
@@ -498,6 +502,16 @@ Ext.onReady(function() {
     proxyCats = new Ext.data.proxy.Ajax({
         url: catStoreUrl,
         model: 'Category',
+        reader: {
+            type: 'json',
+            root: 'items'
+        }
+    });
+
+    proxyAddCats = new Ext.data.proxy.Ajax({
+        url: catStoreUrl,
+        model: 'Category',
+        extraParams: {type: 'e'},
         reader: {
             type: 'json',
             root: 'items'
@@ -516,15 +530,10 @@ Ext.onReady(function() {
     new Ext.data.Store({
         model: 'Category',
         storeId: 'stCats',
-        proxy: proxyCats,
-        autoLoad: true,
-        filters:[
-            {
-                property: 'type',
-                value: 'e'
-            }
-        ]
+        proxy: proxyAddCats,
+        autoLoad: true
     });
+
     new Ext.data.Store({
         model: 'Category',
         storeId: 'stFilterCats',

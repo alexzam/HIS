@@ -40,7 +40,7 @@ public class DBManager {
 
     public void persist(Object object) {
         if (object instanceof DBListener) {
-            ((DBListener) object).beforeInsert();
+            ((DBListener) object).beforeInsert(this);
         }
         session.persist(object);
     }
@@ -60,7 +60,7 @@ public class DBManager {
     public void delete(Class cls, int id) {
         Object obj = get(cls, id);
         if (obj instanceof DBListener) {
-            ((DBListener) obj).beforeDelete();
+            ((DBListener) obj).beforeDelete(this);
         }
         session.delete(obj);
     }
