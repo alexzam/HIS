@@ -15,10 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
+import java.util.*;
 
 /**
  * For fetching account data in JSON
@@ -184,26 +181,34 @@ public class AccountDataServlet extends HttpServlet {
     private JSONObject getTransactions(HttpServletRequest request) throws JSONException {
         JSONObject ret = new JSONObject();
         DBManager dbman = DBUtil.getDBManFromReq(request);
-
-        Calendar calFrom = new GregorianCalendar();
-        calFrom.set(Calendar.DAY_OF_MONTH, 1);
-        Date fromDate = calFrom.getTime();
-
-        calFrom.add(Calendar.MONTH, 1);
-        Date toDate = calFrom.getTime();
+        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Baku"));
 
         int cat = 0;
 
         String param = request.getParameter("from");
+        Calendar calendar = new GregorianCalendar();
         if (param != null && !param.equals("")) {
-            fromDate = new Date(Long.parseLong(param));
+            calendar.setTimeInMillis(Long.parseLong(param));
+        } else {
+            calendar.set(Calendar.DAY_OF_MONTH, 1);
         }
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        Date fromDate = calendar.getTime();
 
+        calendar = new GregorianCalendar();
+        calendar.add(Calendar.MONTH, 1);
         param = request.getParameter("to");
         if (param != null && !param.equals("")) {
             // Plus day to include "to" date to filter
-            toDate = new Date(Long.parseLong(param) + 24 * 3600 * 1000);
+            calendar.setTimeInMillis(Long.parseLong(param));
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
         }
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        Date toDate = calendar.getTime();
 
         param = request.getParameter("cat");
         if (param != null && !param.equals("")) {
