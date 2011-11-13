@@ -37,3 +37,11 @@
 #frmAddTrans > .x-panel-body > .x-box-inner {
     overflow-x: visible;
 }
+
+.acc-transrow-D {
+    color: #009900;
+}
+
+.acc-transrow-R {
+    color: #0000FF;
+}

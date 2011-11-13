@@ -14,13 +14,15 @@
     <link rel="stylesheet" href="css/main.css" type="text/css">
 </head>
 <body style="text-align:center;">
-<div>HIS v.<%=getServletConfig().getServletContext().getInitParameter("product.version")%></div>
-
 <% for (User user : users) { %>
 <div class="login_user">
     <a href="login?mode=in&uid=<%=user.getId()%>"><%=user.getName()%>
     </a>
 </div>
 <% } %>
+
+<div style="margin-top:100px;font-style:italic;">
+    HIS v.<%=getServletConfig().getServletContext().getInitParameter("product.version")%>
+</div>
 </body>
 </html>

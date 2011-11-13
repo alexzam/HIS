@@ -455,7 +455,14 @@ var srcScreen = {
             selType: 'rowmodel',
             features: [
                 {ftype: 'summary'}
-            ]
+            ],
+            viewConfig: {
+                getRowClass: function(record) {
+                    var t = record.get('type');
+                    if (t.length == 1) return "acc-transrow-" + t;
+                    else return '';
+                }
+            }
         }
     ]
 };
