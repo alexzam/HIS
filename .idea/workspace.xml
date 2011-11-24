@@ -2,17 +2,28 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c4426239-6baa-465d-8984-67f61ac505fe" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/az/AccountScreen.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/az/view/account/FilterPanel.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/az/view/account/TopPanel.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/az/view/account/TransactionGrid.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/ext-conf.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/test.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/az/model/account/AccStat.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/az/model/account/Category.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/az/model/account/Transaction.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/az/model/account/proxy/Category.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/az/model/account/proxy/CategoryAdd.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/az/model/account/proxy/Transaction.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/az/model/account/store/AccStat.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/az/model/account/store/Category.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/az/model/account/store/Transaction.js" />
+      <change type="DELETED" beforePath="C:\Projects\self\HIS\slf4j-api-1.6.1.jar" afterPath="" />
       <change type="DELETED" beforePath="C:\Projects\self\HIS\web\js\ext\ext-all-debug-w-comments.js" afterPath="" />
       <change type="DELETED" beforePath="C:\Projects\self\HIS\web\js\ext\ext-debug.js" afterPath="" />
       <change type="DELETED" beforePath="C:\Projects\self\HIS\web\js\ext\ext.js" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/HIS.iml" afterPath="$PROJECT_DIR$/HIS.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/buildNumber.properties" afterPath="$PROJECT_DIR$/buildNumber.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/account.js" afterPath="$PROJECT_DIR$/web/js/account.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/az/AccountScreen.js" afterPath="$PROJECT_DIR$/web/js/az/AccountScreen.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/az/view/account/FilterPanel.js" afterPath="$PROJECT_DIR$/web/js/az/view/account/FilterPanel.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/az/view/account/TopPanel.js" afterPath="$PROJECT_DIR$/web/js/az/view/account/TopPanel.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/az/view/account/TransactionGrid.js" afterPath="$PROJECT_DIR$/web/js/az/view/account/TransactionGrid.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/main.jsp" afterPath="$PROJECT_DIR$/web/main.jsp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/test.html" afterPath="$PROJECT_DIR$/web/test.html" />
     </list>
     <ignored path="HIS.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -82,25 +93,7 @@
       <file leaf-file-name="account.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/web/js/account.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="365" column="1" selection-start="9842" selection-end="11250" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="main.jsp" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web/main.jsp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="41" column="46" selection-start="0" selection-end="2053" vertical-scroll-proportion="-11.5">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AccountScreen.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web/js/az/AccountScreen.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="37" selection-start="338" selection-end="384" vertical-scroll-proportion="0.0">
+            <state line="154" column="18" selection-start="4655" selection-end="4655" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -109,10 +102,19 @@
       <file leaf-file-name="FilterPanel.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/web/js/az/view/account/FilterPanel.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="75" column="23" selection-start="2588" selection-end="2588" vertical-scroll-proportion="0.0">
+            <state line="9" column="48" selection-start="342" selection-end="342" vertical-scroll-proportion="0.0">
               <folding>
-                <element signature="e#297#2449#0" expanded="false" />
+                <element signature="e#375#2845#0" expanded="false" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Transaction.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/js/az/model/account/store/Transaction.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="6" column="48" selection-start="0" selection-end="233" vertical-scroll-proportion="0.0">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -120,7 +122,34 @@
       <file leaf-file-name="TransactionGrid.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/web/js/az/view/account/TransactionGrid.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="10" selection-start="257" selection-end="257" vertical-scroll-proportion="0.2631579">
+            <state line="8" column="33" selection-start="325" selection-end="325" vertical-scroll-proportion="0.1986755">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Transaction.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/js/az/model/account/proxy/Transaction.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="12" column="51" selection-start="351" selection-end="351" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Category.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/js/az/model/account/store/Category.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="7" column="4" selection-start="0" selection-end="224" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AccountScreen.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/js/az/AccountScreen.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="27" column="12" selection-start="688" selection-end="688" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -129,26 +158,10 @@
       <file leaf-file-name="TopPanel.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/web/js/az/view/account/TopPanel.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="39" column="18" selection-start="1062" selection-end="1062" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="test.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web/test.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="18" column="19" selection-start="635" selection-end="635" vertical-scroll-proportion="-11.25">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ext-conf.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web/js/ext-conf.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="4" column="40" selection-start="142" selection-end="142" vertical-scroll-proportion="0.0">
-              <folding />
+            <state line="203" column="64" selection-start="9182" selection-end="9214" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="e#322#9083#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -175,21 +188,21 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/az/his/persist/Transaction.java" />
-        <option value="$PROJECT_DIR$/src/az/his/persist/TransactionCategory.java" />
-        <option value="$PROJECT_DIR$/src/az/his/TrCategoryDataServlet.java" />
-        <option value="$PROJECT_DIR$/src/az/his/AccountDataServlet.java" />
-        <option value="$PROJECT_DIR$/web/js/account.js" />
-        <option value="$PROJECT_DIR$/web/css/main.css" />
-        <option value="$PROJECT_DIR$/web/login.jsp" />
-        <option value="$PROJECT_DIR$/pom.xml" />
-        <option value="$PROJECT_DIR$/dev2.properties" />
-        <option value="$PROJECT_DIR$/web/main.jsp" />
+        <option value="$PROJECT_DIR$/web/js/az/model/account/Transaction.js" />
+        <option value="$PROJECT_DIR$/web/js/az/model/account/AccStat.js" />
         <option value="$PROJECT_DIR$/web/test.html" />
-        <option value="$PROJECT_DIR$/web/js/ext-conf.js" />
+        <option value="$PROJECT_DIR$/web/js/az/model/account/proxy/CategoryAdd.js" />
+        <option value="$PROJECT_DIR$/web/js/az/model/account/proxy/Category.js" />
+        <option value="$PROJECT_DIR$/web/js/az/model/account/store/CategoryFilter.js" />
+        <option value="$PROJECT_DIR$/web/js/az/model/account/store/Category.js" />
         <option value="$PROJECT_DIR$/web/js/az/view/account/TopPanel.js" />
-        <option value="$PROJECT_DIR$/web/js/az/view/account/FilterPanel.js" />
+        <option value="$PROJECT_DIR$/web/main.jsp" />
+        <option value="$PROJECT_DIR$/web/js/az/model/account/proxy/Transaction.js" />
+        <option value="$PROJECT_DIR$/web/js/az/model/account/store/Transaction.js" />
+        <option value="$PROJECT_DIR$/web/js/az/model/account/store/AccStat.js" />
+        <option value="$PROJECT_DIR$/web/js/account.js" />
         <option value="$PROJECT_DIR$/web/js/az/AccountScreen.js" />
+        <option value="$PROJECT_DIR$/web/js/az/view/account/FilterPanel.js" />
         <option value="$PROJECT_DIR$/web/js/az/view/account/TransactionGrid.js" />
       </list>
     </option>
@@ -261,20 +274,6 @@
         <PATH_ELEMENT>
           <option name="myItemId" value="HIS" />
           <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ProjectNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="" />
-          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$RootNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="HIS" />
-          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="Lifecycle" />
-          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$LifecycleNode" />
         </PATH_ELEMENT>
       </PATH>
       <PATH>
@@ -373,25 +372,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
-      <pane id="Scope">
-        <subPane subId="Project Files">
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="HIS">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="HIS">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -460,6 +440,28 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="ext" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="HIS" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="HIS" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="js" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="az" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -490,8 +492,113 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="HIS" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="HIS" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="js" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="az" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="account" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="HIS" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="HIS" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="js" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="az" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="account" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="store" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="HIS" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="HIS" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="js" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="az" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="account" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="proxy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
+      <pane id="Scope">
+        <subPane subId="Project Files">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="HIS">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="HIS">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="PackagesPane" />
       <pane id="Favorites" />
     </panes>
   </component>
@@ -513,13 +620,13 @@
     <property name="GoToClass.includeLibraries" value="false" />
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="GoToFile.includeJavaFiles" value="false" />
-    <property name="options.lastSelected" value="MavenSettings" />
     <property name="Persistence.ERD.SimpleMode" value="false" />
-    <property name="GenerateAntBuildDialog.forceTargetJdk" value="true" />
+    <property name="options.lastSelected" value="reference.settings.project.maven.repository.indices" />
     <property name="project.structure.side.proportion" value="0.2" />
+    <property name="GenerateAntBuildDialog.forceTargetJdk" value="true" />
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.includeInheritedMembers" value="false" />
-    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.last.edited" value="Libraries" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit4" />
     <property name="OverrideImplement.combined" value="true" />
     <property name="project.structure.proportion" value="0.15" />
@@ -693,17 +800,6 @@
         <option name="Maven.BeforeRunTask" enabled="false" />
       </method>
     </configuration>
-    <configuration default="true" type="JavascriptDebugSession" factoryName="Local">
-      <JSDebuggerConfigurationSettings>
-        <option name="engineId" />
-        <option name="fileUrl" />
-      </JSDebuggerConfigurationSettings>
-      <method>
-        <option name="AntTarget" enabled="false" />
-        <option name="BuildArtifacts" enabled="false" />
-        <option name="Maven.BeforeRunTask" enabled="false" />
-      </method>
-    </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit">
       <extension name="coverage" enabled="false" merge="false" />
       <module name="" />
@@ -730,11 +826,27 @@
         <option name="Maven.BeforeRunTask" enabled="false" />
       </method>
     </configuration>
-    <configuration default="true" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local">
+    <configuration default="true" type="JavascriptDebugSession" factoryName="Local">
+      <JSDebuggerConfigurationSettings>
+        <option name="engineId" value="embedded" />
+        <option name="fileUrl" />
+      </JSDebuggerConfigurationSettings>
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
+      </method>
+    </configuration>
+    <configuration default="true" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Remote">
+      <option name="LOCAL" value="false" />
       <deployment />
-      <server-settings />
+      <server-settings>
+        <data>
+          <option name="transportHostId" />
+        </data>
+      </server-settings>
       <predefined_log_file id="TOMCAT_LOCALHOST_LOG_ID" enabled="true" />
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <extension name="coverage" />
       <method>
         <option name="AntTarget" enabled="false" />
         <option name="BuildArtifacts" enabled="false" />
@@ -753,16 +865,11 @@
         <option name="Maven.BeforeRunTask" enabled="false" />
       </method>
     </configuration>
-    <configuration default="true" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Remote">
-      <option name="LOCAL" value="false" />
+    <configuration default="true" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local">
       <deployment />
-      <server-settings>
-        <data>
-          <option name="transportHostId" />
-        </data>
-      </server-settings>
+      <server-settings />
       <predefined_log_file id="TOMCAT_LOCALHOST_LOG_ID" enabled="true" />
-      <extension name="coverage" />
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <method>
         <option name="AntTarget" enabled="false" />
         <option name="BuildArtifacts" enabled="false" />
@@ -1046,10 +1153,10 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3283582" sideWeight="0.0" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.17804877" sideWeight="0.33136094" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21039805" sideWeight="0.30261138" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.282697" sideWeight="0.67164177" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21039805" sideWeight="0.686636" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29276693" sideWeight="0.0" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2095857" sideWeight="0.33640552" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15597075" sideWeight="0.453149" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2095857" sideWeight="0.6528418" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.546851" sideWeight="0.0" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -1141,110 +1248,118 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/az/his/DBUtil.java">
+    <entry file="file://$PROJECT_DIR$/web/js/ext/ext/core/src/class/Base.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="31" column="26" selection-start="794" selection-end="794" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/az/his/persist/Transaction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="150" column="0" selection-start="3793" selection-end="3793" vertical-scroll-proportion="0.20023696" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/az/his/AccountDataServlet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="187" column="0" selection-start="6599" selection-end="6599" vertical-scroll-proportion="1.0841233" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/his.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="47" selection-start="115" selection-end="115" vertical-scroll-proportion="0.0">
+        <state line="179" column="8" selection-start="5948" selection-end="5948" vertical-scroll-proportion="0.714044">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/dev.properties">
+    <entry file="file://$PROJECT_DIR$/web/js/az/model/account/Category.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="121" vertical-scroll-proportion="0.0">
+        <state line="5" column="33" selection-start="206" selection-end="206" vertical-scroll-proportion="0.12417219">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
+    <entry file="file://$PROJECT_DIR$/web/js/az/model/account/proxy/CategoryAdd.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="222" column="93" selection-start="7909" selection-end="7909" vertical-scroll-proportion="1.465798">
+        <state line="3" column="26" selection-start="142" selection-end="142" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/css/main.css">
+    <entry file="file://$PROJECT_DIR$/web/js/az/model/account/proxy/Category.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="45" column="18" selection-start="784" selection-end="784" vertical-scroll-proportion="0.83253586">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/login.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="18" selection-start="132" selection-end="132" vertical-scroll-proportion="0.07462686">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/main.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="41" column="46" selection-start="0" selection-end="2053" vertical-scroll-proportion="-11.5">
+        <state line="5" column="42" selection-start="0" selection-end="401" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/web/test.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="19" selection-start="635" selection-end="635" vertical-scroll-proportion="-11.25">
+        <state line="14" column="43" selection-start="517" selection-end="517" vertical-scroll-proportion="0.36206895">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/js/ext-conf.js">
+    <entry file="file://$PROJECT_DIR$/web/main.jsp">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="40" selection-start="142" selection-end="142" vertical-scroll-proportion="0.0">
+        <state line="47" column="46" selection-start="1605" selection-end="1617" vertical-scroll-proportion="-8.916667">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/js/account.js">
+    <entry file="file://$PROJECT_DIR$/web/js/az/model/account/proxy/Transaction.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="365" column="1" selection-start="9842" selection-end="11250" vertical-scroll-proportion="0.0">
+        <state line="12" column="51" selection-start="351" selection-end="351" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/js/az/model/account/store/Category.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="7" column="4" selection-start="0" selection-end="224" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/web/js/az/view/account/TopPanel.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="39" column="18" selection-start="1062" selection-end="1062" vertical-scroll-proportion="0.0">
+        <state line="203" column="64" selection-start="9182" selection-end="9214" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="e#322#9083#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/js/az/model/account/store/Transaction.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="48" selection-start="0" selection-end="233" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/js/az/model/account/AccStat.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/js/az/model/account/store/AccStat.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="7" column="17" selection-start="209" selection-end="209" vertical-scroll-proportion="0.17384106">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/js/account.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="154" column="18" selection-start="4655" selection-end="4655" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/js/az/AccountScreen.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="27" column="12" selection-start="688" selection-end="688" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/web/js/az/view/account/FilterPanel.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="75" column="23" selection-start="2588" selection-end="2588" vertical-scroll-proportion="0.0">
+        <state line="9" column="48" selection-start="342" selection-end="342" vertical-scroll-proportion="0.0">
           <folding>
-            <element signature="e#297#2449#0" expanded="false" />
+            <element signature="e#375#2845#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/js/az/AccountScreen.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="37" selection-start="338" selection-end="384" vertical-scroll-proportion="0.0">
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/web/js/az/view/account/TransactionGrid.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="10" selection-start="257" selection-end="257" vertical-scroll-proportion="0.2631579">
+        <state line="8" column="33" selection-start="325" selection-end="325" vertical-scroll-proportion="0.1986755">
           <folding />
         </state>
       </provider>
@@ -1255,7 +1370,7 @@
       <state key="ArtifactsStructureConfigurable.UI">
         <settings>
           <artifact-editor />
-          <last-edited>HIS:ear</last-edited>
+          <last-edited>HIS:war</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -1273,7 +1388,7 @@
       </state>
       <state key="FacetStructureConfigurable.UI">
         <settings>
-          <last-edited>Hibernate</last-edited>
+          <last-edited>Detection</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -1322,7 +1437,7 @@
       </state>
       <state key="ProjectLibrariesConfigurable.UI">
         <settings>
-          <last-edited>Hibernate</last-edited>
+          <last-edited>Maven: javax:javaee-api:6.0</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

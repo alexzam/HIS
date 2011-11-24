@@ -3,22 +3,23 @@ Ext.define('alexzam.his.view.account.TransactionGrid', {
     alias:'widget.his.account.TransactionGrid',
 
     requires:[
-//        'Ext.layout.container.Border'
+        'alexzam.his.model.account.store.Transaction',
+        'alexzam.his.model.account.proxy.Transaction',
+        'Ext.grid.column.Date',
+        'Ext.grid.feature.Summary'
     ],
 
-    config:{
-        region:'center'
-//        ,
 //        store:'stTrans',
 //        id:'gridTrans',
 //        multiSelect:true,
-//        columns:[
-//            {
-//                header:'Когда',
-//                dataIndex:'timestamp',
-//                xtype:'datecolumn',
-//                format:'d.m.Y'
-//            },
+    columns:[
+        {
+            header:'Когда',
+            dataIndex:'timestamp',
+            xtype:'datecolumn',
+            format:'d.m.Y'
+        }
+//            ,
 //            {header:'Кто', dataIndex:'actor_name'},
 //            {
 //                header:'Сколько',
@@ -35,18 +36,32 @@ Ext.define('alexzam.his.view.account.TransactionGrid', {
 //                dataIndex:'comment',
 //                flex:1
 //            }
-//        ],
-//        selType:'rowmodel',
-//        features:[
-//            {ftype:'summary'}
-//        ],
-//        viewConfig:{
-//            getRowClass:function (record)
-//            {
-//                var t = record.get('type');
-//                if (t.length == 1) return "acc-transrow-" + t;
-//                else return '';
-//            }
-//        }
+    ],
+
+    selType:'rowmodel',
+
+    features:[
+        {ftype:'summary'}
+    ],
+
+    viewConfig:{
+        getRowClass:function (record)
+        {
+            var t = record.get('type');
+            if (t.length == 1) return "acc-transrow-" + t;
+            else return '';
+        }
+    },
+
+    initComponent:function ()
+    {
+        this.callParent();
+
+        var store = Ext.create('alexzam.his.model.account.store.Transaction', {
+            storeId:'stTrans',
+            proxy:Ext.create('alexzam.his.model.account.proxy.Transaction', {
+                rootUrl:this.rootUrl
+            })
+        });
     }
 });
