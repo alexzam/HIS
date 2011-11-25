@@ -6,36 +6,38 @@ Ext.define('alexzam.his.view.account.TransactionGrid', {
         'alexzam.his.model.account.store.Transaction',
         'alexzam.his.model.account.proxy.Transaction',
         'Ext.grid.column.Date',
+        'Ext.grid.column.Number',
         'Ext.grid.feature.Summary'
     ],
 
-//        store:'stTrans',
-//        id:'gridTrans',
-//        multiSelect:true,
+    multiSelect:true,
+
     columns:[
         {
             header:'Когда',
             dataIndex:'timestamp',
             xtype:'datecolumn',
             format:'d.m.Y'
+        },
+        {
+            header:'Кто',
+            dataIndex:'actor_name'
+        },
+        {
+            header:'Сколько',
+            dataIndex:'amount',
+            xtype:'numbercolumn',
+            summaryType:'sum'
+        },
+        {
+            header:'Категория',
+            dataIndex:'category_name'
+        },
+        {
+            header:'Комментарий',
+            dataIndex:'comment',
+            flex:1
         }
-//            ,
-//            {header:'Кто', dataIndex:'actor_name'},
-//            {
-//                header:'Сколько',
-//                dataIndex:'amount',
-//                xtype:'numbercolumn',
-//                summaryType:'sum'
-//            },
-//            {
-//                header:'Категория',
-//                dataIndex:'category_name'
-//            },
-//            {
-//                header:'Комментарий',
-//                dataIndex:'comment',
-//                flex:1
-//            }
     ],
 
     selType:'rowmodel',
@@ -55,13 +57,13 @@ Ext.define('alexzam.his.view.account.TransactionGrid', {
 
     initComponent:function ()
     {
-        this.callParent();
-
-        var store = Ext.create('alexzam.his.model.account.store.Transaction', {
+        this.store = Ext.create('alexzam.his.model.account.store.Transaction', {
             storeId:'stTrans',
             proxy:Ext.create('alexzam.his.model.account.proxy.Transaction', {
                 rootUrl:this.rootUrl
             })
         });
+
+        this.callParent();
     }
 });

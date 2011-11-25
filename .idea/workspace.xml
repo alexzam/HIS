@@ -2,27 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c4426239-6baa-465d-8984-67f61ac505fe" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/az/model/account/AccStat.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/az/model/account/Category.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/az/model/account/Transaction.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/az/model/account/proxy/Category.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/az/model/account/proxy/CategoryAdd.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/az/model/account/proxy/Transaction.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/az/model/account/store/AccStat.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/az/model/account/store/Category.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/az/model/account/store/Transaction.js" />
-      <change type="DELETED" beforePath="C:\Projects\self\HIS\slf4j-api-1.6.1.jar" afterPath="" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/az/view/account/AddTransactionForm.js" />
       <change type="DELETED" beforePath="C:\Projects\self\HIS\web\js\ext\ext-all-debug-w-comments.js" afterPath="" />
       <change type="DELETED" beforePath="C:\Projects\self\HIS\web\js\ext\ext-debug.js" afterPath="" />
       <change type="DELETED" beforePath="C:\Projects\self\HIS\web\js\ext\ext.js" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/HIS.iml" afterPath="$PROJECT_DIR$/HIS.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/buildNumber.properties" afterPath="$PROJECT_DIR$/buildNumber.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/account.js" afterPath="$PROJECT_DIR$/web/js/account.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/az/AccountScreen.js" afterPath="$PROJECT_DIR$/web/js/az/AccountScreen.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/az/view/account/FilterPanel.js" afterPath="$PROJECT_DIR$/web/js/az/view/account/FilterPanel.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/az/view/account/TopPanel.js" afterPath="$PROJECT_DIR$/web/js/az/view/account/TopPanel.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/az/view/account/TransactionGrid.js" afterPath="$PROJECT_DIR$/web/js/az/view/account/TransactionGrid.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/main.jsp" afterPath="$PROJECT_DIR$/web/main.jsp" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/test.html" afterPath="$PROJECT_DIR$/web/test.html" />
     </list>
     <ignored path="HIS.iws" />
@@ -119,10 +105,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TransactionGrid.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="TransactionGrid.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/web/js/az/view/account/TransactionGrid.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="8" column="33" selection-start="325" selection-end="325" vertical-scroll-proportion="0.1986755">
+            <state line="8" column="31" selection-start="323" selection-end="323" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -149,19 +135,35 @@
       <file leaf-file-name="AccountScreen.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/web/js/az/AccountScreen.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="27" column="12" selection-start="688" selection-end="688" vertical-scroll-proportion="0.0">
+            <state line="19" column="53" selection-start="462" selection-end="499" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TopPanel.js" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="TopPanel.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/web/js/az/view/account/TopPanel.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="203" column="64" selection-start="9182" selection-end="9214" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="e#322#9083#0" expanded="false" />
-              </folding>
+            <state line="43" column="10" selection-start="1140" selection-end="1140" vertical-scroll-proportion="0.69536424">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AddTransactionForm.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/js/az/view/account/AddTransactionForm.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="180" column="32" selection-start="5863" selection-end="5863" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/test.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="15" column="40" selection-start="541" selection-end="541" vertical-scroll-proportion="-9.375">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -188,22 +190,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/web/js/az/model/account/Transaction.js" />
         <option value="$PROJECT_DIR$/web/js/az/model/account/AccStat.js" />
-        <option value="$PROJECT_DIR$/web/test.html" />
         <option value="$PROJECT_DIR$/web/js/az/model/account/proxy/CategoryAdd.js" />
         <option value="$PROJECT_DIR$/web/js/az/model/account/proxy/Category.js" />
         <option value="$PROJECT_DIR$/web/js/az/model/account/store/CategoryFilter.js" />
         <option value="$PROJECT_DIR$/web/js/az/model/account/store/Category.js" />
-        <option value="$PROJECT_DIR$/web/js/az/view/account/TopPanel.js" />
         <option value="$PROJECT_DIR$/web/main.jsp" />
         <option value="$PROJECT_DIR$/web/js/az/model/account/proxy/Transaction.js" />
         <option value="$PROJECT_DIR$/web/js/az/model/account/store/Transaction.js" />
         <option value="$PROJECT_DIR$/web/js/az/model/account/store/AccStat.js" />
         <option value="$PROJECT_DIR$/web/js/account.js" />
-        <option value="$PROJECT_DIR$/web/js/az/AccountScreen.js" />
         <option value="$PROJECT_DIR$/web/js/az/view/account/FilterPanel.js" />
         <option value="$PROJECT_DIR$/web/js/az/view/account/TransactionGrid.js" />
+        <option value="$PROJECT_DIR$/web/test.html" />
+        <option value="$PROJECT_DIR$/web/js/az/AccountScreen.js" />
+        <option value="$PROJECT_DIR$/web/js/az/view/account/AddTransactionForm.js" />
+        <option value="$PROJECT_DIR$/web/js/az/view/account/TopPanel.js" />
       </list>
     </option>
   </component>
@@ -1147,14 +1149,14 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2495935" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.45235363" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32872504" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3292683" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3283582" sideWeight="0.0" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.17804877" sideWeight="0.33136094" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2095857" sideWeight="0.33640552" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15597075" sideWeight="0.453149" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.15597075" sideWeight="0.67127496" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2095857" sideWeight="0.6528418" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.546851" sideWeight="0.0" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
@@ -1248,13 +1250,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/web/js/ext/ext/core/src/class/Base.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="179" column="8" selection-start="5948" selection-end="5948" vertical-scroll-proportion="0.714044">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web/js/az/model/account/Category.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="5" column="33" selection-start="206" selection-end="206" vertical-scroll-proportion="0.12417219">
@@ -1272,13 +1267,6 @@
     <entry file="file://$PROJECT_DIR$/web/js/az/model/account/proxy/Category.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="5" column="42" selection-start="0" selection-end="401" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/test.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="43" selection-start="517" selection-end="517" vertical-scroll-proportion="0.36206895">
           <folding />
         </state>
       </provider>
@@ -1301,15 +1289,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="7" column="4" selection-start="0" selection-end="224" vertical-scroll-proportion="0.0">
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/js/az/view/account/TopPanel.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="203" column="64" selection-start="9182" selection-end="9214" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="e#322#9083#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1341,13 +1320,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/js/az/AccountScreen.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="12" selection-start="688" selection-end="688" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web/js/az/view/account/FilterPanel.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="9" column="48" selection-start="342" selection-end="342" vertical-scroll-proportion="0.0">
@@ -1359,7 +1331,35 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/web/js/az/view/account/TransactionGrid.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="33" selection-start="325" selection-end="325" vertical-scroll-proportion="0.1986755">
+        <state line="8" column="31" selection-start="323" selection-end="323" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/test.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="15" column="40" selection-start="541" selection-end="541" vertical-scroll-proportion="-9.375">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/js/az/AccountScreen.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="19" column="53" selection-start="462" selection-end="499" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/js/az/view/account/AddTransactionForm.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="180" column="32" selection-start="5863" selection-end="5863" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/js/az/view/account/TopPanel.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="43" column="10" selection-start="1140" selection-end="1140" vertical-scroll-proportion="0.69536424">
           <folding />
         </state>
       </provider>

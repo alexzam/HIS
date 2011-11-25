@@ -17,6 +17,7 @@ Ext.define('alexzam.his.AccountScreen', {
             {
                 xtype:'his.account.TopPanel',
                 rootUrl:me.rootUrl,
+                userRadioOptions:me.userRadioOptions,
                 region:'north',
                 height:125
             },
