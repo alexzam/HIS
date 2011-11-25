@@ -89,10 +89,6 @@ var account = {
         account.setAddFormFullValidation(false);
     },
 
-    logout: function() {
-        document.location = "login?mode=out";
-    },
-
     updateAccountStats:function() {
         Ext.Ajax.request({
             url:transStoreUrl + '?act=getamount',
@@ -117,11 +113,6 @@ var account = {
         var tbTo = Ext.getCmp('tbFilterTo');
         tbTo.setMinValue(tbFrom.getValue());
         tbFrom.setMaxValue(tbTo.getValue());
-    },
-
-    onAddTypeChange:function(me, val) {
-        var type = val.type;
-        Ext.getCmp('cbCategory').setDisabled(type == 'i' || type == 'r');
     },
 
     onBtDelete: function() {

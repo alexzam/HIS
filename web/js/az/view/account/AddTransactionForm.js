@@ -10,7 +10,8 @@ Ext.define('alexzam.his.view.account.AddTransactionForm', {
         'Ext.button.Button',
         'Ext.form.field.Radio',
         'alexzam.his.model.account.proxy.CategoryAdd',
-        'alexzam.his.model.account.store.Category'
+        'alexzam.his.model.account.store.Category',
+        'alexzam.his.view.account.TrTypeRadioGroup'
     ],
 
     title:'Добавить транзакцию',
@@ -66,58 +67,12 @@ Ext.define('alexzam.his.view.account.AddTransactionForm', {
                     ]
                 },
                 {
-                    xtype:'radiogroup',
+                    xtype:'alexzam.account.TrTypeRadioGroup',
                     width:250,
-                    layout:'vbox',
                     height:50,
-                    allowBlank:false,
                     listeners:{
-//                        change:account.onAddTypeChange
-                    },
-                    items:[
-                        {
-                            xtype:'panel',
-                            layout:'hbox',
-                            border:0,
-                            width:250,
-                            items:[
-                                {
-                                    xtype:'radio',
-                                    boxLabel:'Трата из своих',
-                                    name:'type',
-                                    inputValue:'p',
-                                    margin:'0 5 0 0'
-                                },
-                                {
-                                    xtype:'radio',
-                                    boxLabel:'Трата из Казны',
-                                    name:'type',
-                                    inputValue:'a'
-                                }
-                            ]
-                        },
-                        {
-                            xtype:'panel',
-                            layout:'hbox',
-                            border:0,
-                            width:250,
-                            items:[
-                                {
-                                    xtype:'radio',
-                                    boxLabel:'Вклад в Казну',
-                                    name:'type',
-                                    inputValue:'i',
-                                    margin:'0 5 0 0'
-                                },
-                                {
-                                    xtype:'radio',
-                                    boxLabel:'Возмещение из Казны',
-                                    name:'type',
-                                    inputValue:'r'
-                                }
-                            ]
-                        }
-                    ]
+                        typechanged:this.onTypeChanged
+                    }
                 }
             ]
         },
@@ -182,5 +137,10 @@ Ext.define('alexzam.his.view.account.AddTransactionForm', {
         me.items[0] = me.rgActor;
 
         me.callParent();
+    },
+
+    onTypeChanged:function(type){
+        console.log('Bang!');
+//        Ext.getCmp('cbCategory').setDisabled(type == 'i' || type == 'r');
     }
 });

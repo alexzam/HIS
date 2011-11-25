@@ -2,14 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c4426239-6baa-465d-8984-67f61ac505fe" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/az/view/account/AddTransactionForm.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/az/view/account/TrTypeRadioGroup.js" />
       <change type="DELETED" beforePath="C:\Projects\self\HIS\web\js\ext\ext-all-debug-w-comments.js" afterPath="" />
       <change type="DELETED" beforePath="C:\Projects\self\HIS\web\js\ext\ext-debug.js" afterPath="" />
       <change type="DELETED" beforePath="C:\Projects\self\HIS\web\js\ext\ext.js" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/az/AccountScreen.js" afterPath="$PROJECT_DIR$/web/js/az/AccountScreen.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/account.js" afterPath="$PROJECT_DIR$/web/js/account.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/az/view/account/AddTransactionForm.js" afterPath="$PROJECT_DIR$/web/js/az/view/account/AddTransactionForm.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/az/view/account/TopPanel.js" afterPath="$PROJECT_DIR$/web/js/az/view/account/TopPanel.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/az/view/account/TransactionGrid.js" afterPath="$PROJECT_DIR$/web/js/az/view/account/TransactionGrid.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/test.html" afterPath="$PROJECT_DIR$/web/test.html" />
     </list>
     <ignored path="HIS.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -79,54 +78,7 @@
       <file leaf-file-name="account.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/web/js/account.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="154" column="18" selection-start="4655" selection-end="4655" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="FilterPanel.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web/js/az/view/account/FilterPanel.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="9" column="48" selection-start="342" selection-end="342" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="e#375#2845#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Transaction.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web/js/az/model/account/store/Transaction.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="6" column="48" selection-start="0" selection-end="233" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TransactionGrid.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web/js/az/view/account/TransactionGrid.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="8" column="31" selection-start="323" selection-end="323" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Transaction.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web/js/az/model/account/proxy/Transaction.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="12" column="51" selection-start="351" selection-end="351" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Category.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web/js/az/model/account/store/Category.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="7" column="4" selection-start="0" selection-end="224" vertical-scroll-proportion="0.0">
+            <state line="117" column="4" selection-start="3698" selection-end="3698" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -141,29 +93,31 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TopPanel.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="TopPanel.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/web/js/az/view/account/TopPanel.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="43" column="10" selection-start="1140" selection-end="1140" vertical-scroll-proportion="0.69536424">
+            <state line="51" column="45" selection-start="1307" selection-end="1307" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AddTransactionForm.js" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="AddTransactionForm.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/web/js/az/view/account/AddTransactionForm.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="180" column="32" selection-start="5863" selection-end="5863" vertical-scroll-proportion="0.0">
+            <state line="141" column="4" selection-start="4080" selection-end="4080" vertical-scroll-proportion="0.76076555">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="test.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web/test.html">
+      <file leaf-file-name="TrTypeRadioGroup.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/js/az/view/account/TrTypeRadioGroup.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="15" column="40" selection-start="541" selection-end="541" vertical-scroll-proportion="-9.375">
-              <folding />
+            <state line="9" column="35" selection-start="239" selection-end="239" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="e#250#1390#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -190,7 +144,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/web/js/az/model/account/AccStat.js" />
         <option value="$PROJECT_DIR$/web/js/az/model/account/proxy/CategoryAdd.js" />
         <option value="$PROJECT_DIR$/web/js/az/model/account/proxy/Category.js" />
         <option value="$PROJECT_DIR$/web/js/az/model/account/store/CategoryFilter.js" />
@@ -199,13 +152,14 @@
         <option value="$PROJECT_DIR$/web/js/az/model/account/proxy/Transaction.js" />
         <option value="$PROJECT_DIR$/web/js/az/model/account/store/Transaction.js" />
         <option value="$PROJECT_DIR$/web/js/az/model/account/store/AccStat.js" />
-        <option value="$PROJECT_DIR$/web/js/account.js" />
         <option value="$PROJECT_DIR$/web/js/az/view/account/FilterPanel.js" />
         <option value="$PROJECT_DIR$/web/js/az/view/account/TransactionGrid.js" />
         <option value="$PROJECT_DIR$/web/test.html" />
         <option value="$PROJECT_DIR$/web/js/az/AccountScreen.js" />
-        <option value="$PROJECT_DIR$/web/js/az/view/account/AddTransactionForm.js" />
         <option value="$PROJECT_DIR$/web/js/az/view/account/TopPanel.js" />
+        <option value="$PROJECT_DIR$/web/js/account.js" />
+        <option value="$PROJECT_DIR$/web/js/az/view/account/TrTypeRadioGroup.js" />
+        <option value="$PROJECT_DIR$/web/js/az/view/account/AddTransactionForm.js" />
       </list>
     </option>
   </component>
@@ -1077,7 +1031,7 @@
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
   <component name="StructureViewFactory">
-    <option name="ACTIVE_ACTIONS" value="SHOW_INHERITED" />
+    <option name="ACTIVE_ACTIONS" value="ALPHA_COMPARATOR" />
   </component>
   <component name="SvnConfiguration" maxAnnotateRevisions="500">
     <option name="USER" value="" />
@@ -1139,7 +1093,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-4" y="-4" width="1288" height="778" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3292683" sideWeight="0.756213" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3289941" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -1250,55 +1204,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/web/js/az/model/account/Category.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="33" selection-start="206" selection-end="206" vertical-scroll-proportion="0.12417219">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/js/az/model/account/proxy/CategoryAdd.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="26" selection-start="142" selection-end="142" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/js/az/model/account/proxy/Category.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="42" selection-start="0" selection-end="401" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/main.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="47" column="46" selection-start="1605" selection-end="1617" vertical-scroll-proportion="-8.916667">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/js/az/model/account/proxy/Transaction.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="51" selection-start="351" selection-end="351" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/js/az/model/account/store/Category.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="4" selection-start="0" selection-end="224" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/js/az/model/account/store/Transaction.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="48" selection-start="0" selection-end="233" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web/js/az/model/account/AccStat.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
@@ -1309,13 +1214,6 @@
     <entry file="file://$PROJECT_DIR$/web/js/az/model/account/store/AccStat.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="7" column="17" selection-start="209" selection-end="209" vertical-scroll-proportion="0.17384106">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/js/account.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="154" column="18" selection-start="4655" selection-end="4655" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -1350,16 +1248,74 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/js/az/view/account/AddTransactionForm.js">
+    <entry file="file://$PROJECT_DIR$/web/js/az/model/account/store/Transaction.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="180" column="32" selection-start="5863" selection-end="5863" vertical-scroll-proportion="0.0">
+        <state line="6" column="48" selection-start="0" selection-end="233" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/js/account.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="117" column="4" selection-start="3698" selection-end="3698" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/js/ext/ext/container/AbstractContainer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="14" column="0" selection-start="637" selection-end="637" vertical-scroll-proportion="0.02538071">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/js/ext/ext/container/Container.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="161" column="36" selection-start="7980" selection-end="7980" vertical-scroll-proportion="0.7106599">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/js/ext/ext/form/FieldContainer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="110" column="31" selection-start="4207" selection-end="4207" vertical-scroll-proportion="0.54635763">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/js/ext/ext/form/CheckboxGroup.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="61" column="26" selection-start="3025" selection-end="3025" vertical-scroll-proportion="0.7450331">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/js/ext/ext/form/RadioGroup.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="64" column="30" selection-start="3028" selection-end="3028" vertical-scroll-proportion="0.57416266">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/web/js/az/view/account/TopPanel.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="43" column="10" selection-start="1140" selection-end="1140" vertical-scroll-proportion="0.69536424">
+        <state line="51" column="45" selection-start="1307" selection-end="1307" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/js/az/view/account/TrTypeRadioGroup.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="35" selection-start="239" selection-end="239" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="e#250#1390#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/js/az/view/account/AddTransactionForm.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="141" column="4" selection-start="4080" selection-end="4080" vertical-scroll-proportion="0.76076555">
           <folding />
         </state>
       </provider>

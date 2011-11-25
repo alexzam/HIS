@@ -19,9 +19,8 @@ Ext.define('alexzam.his.view.account.TopPanel', {
                 {
                     xtype:'button',
                     region:'north',
-                    text:'Выйти'
-//                        ,
-//                        handler:account.logout
+                    text:'Выйти',
+                    handler:this.onBtLogout
                 },
                 {
                     xtype:'panel',
@@ -47,5 +46,9 @@ Ext.define('alexzam.his.view.account.TopPanel', {
         }));
 
         me.callParent();
+    },
+
+    onBtLogout:function(){
+        document.location = "login?mode=out";
     }
 });
