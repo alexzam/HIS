@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DependencyValidationManager">
+    <option name="SKIP_IMPORT_STATEMENTS" value="false" />
+  </component>
   <component name="EntryPointsManager">
     <entry_points version="2.0" />
+  </component>
+  <component name="FacetAutodetectingManager">
+    <autodetection-disabled>
+      <facet-type id="web">
+        <modules>
+          <module name="HIS" />
+        </modules>
+      </facet-type>
+    </autodetection-disabled>
   </component>
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="hibernate" url="file://$PROJECT_DIR$/src/hibernate.cfg.xml" />
