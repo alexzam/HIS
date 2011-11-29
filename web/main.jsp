@@ -41,18 +41,24 @@
     <script type="text/javascript">
         Ext.require('alexzam.his.AccountScreen');
 
+        Ext.onReady(function ()
+        {
+            Ext.create('alexzam.his.AccountScreen', {
+                rootUrl:'<%=pathRoot%>',
+                //transStoreUrl: 'account-data',
+                //catStoreUrl: 'trcategory-data'
+                uid: <%=AuthFilter.getUid(session)%>,
+                userRadioOptions:[
+                    {boxLabel:'<%=userMe.getName()%> (Я)', inputValue:'0', checked:true}
+                    <% for (User user : usersNotMe) { %>
+                    ,
+                    {boxLabel:'<%=user.getName()%>', inputValue:'<%=user.getId()%>'}
+                    <% } %>
+                ] // TODO Enrich by name:actor
+            });
+        });
         Ext.create('alexzam.his.AccountScreen', {
-            pathRoot:'<%=pathRoot%>',
-            //transStoreUrl: 'account-data',
-            //catStoreUrl: 'trcategory-data'
-            uid: <%=AuthFilter.getUid(session)%>,
-            userRadioOptions:[
-                {boxLabel:'<%=userMe.getName()%> (Я)', inputValue:'0', checked:true}
-                <% for (User user : usersNotMe) { %>
-                ,
-                {boxLabel:'<%=user.getName()%>', inputValue:'<%=user.getId()%>'}
-                <% } %>
-            ] // TODO Enrich by name:actor
+
         });
     </script>
 </head>

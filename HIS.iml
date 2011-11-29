@@ -11,6 +11,10 @@
         <webroots>
           <root url="file://$MODULE_DIR$/out/warsrc" relative="/" />
         </webroots>
+        <sourceRoots>
+          <root url="file://$MODULE_DIR$/web" />
+          <root url="file://$MODULE_DIR$/src" />
+        </sourceRoots>
       </configuration>
     </facet>
     <facet type="javaeeApplication" name="JavaEE">
@@ -35,8 +39,6 @@
       <excludeFolder url="file://$MODULE_DIR$/.git" />
       <excludeFolder url="file://$MODULE_DIR$/.idea" />
       <excludeFolder url="file://$MODULE_DIR$/out" />
-      <excludeFolder url="file://$MODULE_DIR$/src warsrc/WEB-INF/classes" />
-      <excludeFolder url="file://$MODULE_DIR$/warsrc/WEB-INF/classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

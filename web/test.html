@@ -1,8 +1,9 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>Казна</title>
+    <title>РљР°Р·РЅР°</title>
 
+    <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="js/ext/resources/css/ext-all.css"/>
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <script type="text/javascript" src="js/ext/ext-core-dev.js"></script>
@@ -13,11 +14,10 @@
         Ext.onReady(function ()
         {
             Ext.create('alexzam.his.AccountScreen', {
-                pathRoot:'.',
+                rootUrl:'.',
                 uid:1,
                 userRadioOptions:[
-                    {boxLabel:'Me (Я)', inputValue:'1', checked:true}
-                    ,
+                    {boxLabel:'Me (РЇ)', inputValue:'1', checked:true},
                     {boxLabel:'nOTmE', inputValue:'2'}
                 ]
             });

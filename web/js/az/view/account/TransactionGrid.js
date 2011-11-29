@@ -3,50 +3,67 @@ Ext.define('alexzam.his.view.account.TransactionGrid', {
     alias:'widget.his.account.TransactionGrid',
 
     requires:[
-//        'Ext.layout.container.Border'
+        'alexzam.his.model.account.store.Transaction',
+        'alexzam.his.model.account.proxy.Transaction',
+        'Ext.grid.column.Date',
+        'Ext.grid.column.Number',
+        'Ext.grid.feature.Summary'
     ],
 
-    config:{
-        region:'center'
-//        ,
-//        store:'stTrans',
-//        id:'gridTrans',
-//        multiSelect:true,
-//        columns:[
-//            {
-//                header:'Когда',
-//                dataIndex:'timestamp',
-//                xtype:'datecolumn',
-//                format:'d.m.Y'
-//            },
-//            {header:'Кто', dataIndex:'actor_name'},
-//            {
-//                header:'Сколько',
-//                dataIndex:'amount',
-//                xtype:'numbercolumn',
-//                summaryType:'sum'
-//            },
-//            {
-//                header:'Категория',
-//                dataIndex:'category_name'
-//            },
-//            {
-//                header:'Комментарий',
-//                dataIndex:'comment',
-//                flex:1
-//            }
-//        ],
-//        selType:'rowmodel',
-//        features:[
-//            {ftype:'summary'}
-//        ],
-//        viewConfig:{
-//            getRowClass:function (record)
-//            {
-//                var t = record.get('type');
-//                if (t.length == 1) return "acc-transrow-" + t;
-//                else return '';
-//            }
-//        }
+    multiSelect:true,
+
+    columns:[
+        {
+            header:'Когда',
+            dataIndex:'timestamp',
+            xtype:'datecolumn',
+            format:'d.m.Y'
+        },
+        {
+            header:'Кто',
+            dataIndex:'actor_name'
+        },
+        {
+            header:'Сколько',
+            dataIndex:'amount',
+            xtype:'numbercolumn',
+            summaryType:'sum'
+        },
+        {
+            header:'Категория',
+            dataIndex:'category_name'
+        },
+        {
+            header:'Комментарий',
+            dataIndex:'comment',
+            flex:1
+        }
+    ],
+
+    selType:'rowmodel',
+
+    features:[
+        {ftype:'summary'}
+    ],
+
+    viewConfig:{
+        getRowClass:function (record)
+        {
+            var t = record.get('type');
+            if (t.length == 1) return "acc-transrow-" + t;
+            else return '';
+        }
+    },
+
+    initComponent:function ()
+    {
+        this.store = Ext.create('alexzam.his.model.account.store.Transaction', {
+            storeId:'stTrans',
+            proxy:Ext.create('alexzam.his.model.account.proxy.Transaction', {
+                rootUrl:this.rootUrl
+            })
+        });
+
+        this.callParent();
     }
 });

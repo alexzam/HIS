@@ -7,12 +7,34 @@ Ext.define('alexzam.his.AccountScreen', {
         'alexzam.his.view.account.TransactionGrid'
     ],
 
-    config:{
-        layout:'border',
-        items:[
-//            {xtype:'his.account.TopPanel'},
-//            {xtype:'his.account.FilterPanel'},
-            {xtype:'his.account.TransactionGrid'}
-        ]
+    layout:'border',
+
+    initComponent:function ()
+    {
+        var me = this;
+
+        me.items = [
+            {
+                xtype:'his.account.TopPanel',
+                rootUrl:me.rootUrl,
+                userRadioOptions:me.userRadioOptions,
+                region:'north',
+                height:125
+            },
+            {
+                xtype:'his.account.FilterPanel',
+                rootUrl:me.rootUrl,
+                region:'east',
+                width:200
+            },
+            {
+                xtype:'his.account.TransactionGrid',
+                region:'center',
+                rootUrl:me.rootUrl
+            }
+        ];
+
+        me.callParent();
     }
+
 });
