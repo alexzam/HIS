@@ -23,7 +23,6 @@ Ext.define('alexzam.his.view.account.AddTransactionForm', {
         {
             xtype:'datefield',
             fieldLabel:'Когда',
-            id:'tbAddDate',
             name:'date',
             maxValue:new Date(),
             format:'d.m.Y',
@@ -37,6 +36,7 @@ Ext.define('alexzam.his.view.account.AddTransactionForm', {
             height:80,
             border:0,
             bodyPadding:'0 0 0 5px',
+            itemId:'panel2',
             items:[
                 {
                     xtype:'panel',
@@ -56,8 +56,7 @@ Ext.define('alexzam.his.view.account.AddTransactionForm', {
                             validateOnChange:false,
                             width:155,
                             labelAlign:'left',
-                            allowBlank:true,
-                            id:'tbAddAmount'
+                            allowBlank:true
                         },
                         {
                             xtype:'panel',
@@ -70,9 +69,7 @@ Ext.define('alexzam.his.view.account.AddTransactionForm', {
                     xtype:'alexzam.account.TrTypeRadioGroup',
                     width:250,
                     height:50,
-                    listeners:{
-                        typechanged:this.onTypeChanged
-                    }
+                    itemId:'rgTrType'
                 }
             ]
         },
@@ -82,12 +79,13 @@ Ext.define('alexzam.his.view.account.AddTransactionForm', {
             height:80,
             border:0,
             bodyPadding:'0 5px 0 5px',
+            itemId:'panel3',
             items:[
                 {
                     xtype:'combo',
                     fieldLabel:'Категория',
                     name:'cat',
-                    id:'cbCategory',
+                    itemId:'cbCategory',
                     queryMode:'local',
                     store:'stCats',
                     valueField:'id',
@@ -113,6 +111,7 @@ Ext.define('alexzam.his.view.account.AddTransactionForm', {
     ],
 
     rgActor:null,
+    cbCategory:null,
 
     initComponent:function ()
     {
@@ -137,10 +136,12 @@ Ext.define('alexzam.his.view.account.AddTransactionForm', {
         me.items[0] = me.rgActor;
 
         me.callParent();
+
+        me.getComponent('panel2').getComponent('rgTrType').on('typechanged', me.onTypeChanged, me);
+        me.cbCategory = me.getComponent('panel3').getComponent('cbCategory');
     },
 
     onTypeChanged:function(type){
-        console.log('Bang!');
-//        Ext.getCmp('cbCategory').setDisabled(type == 'i' || type == 'r');
+        this.cbCategory.setDisabled(type == 'i' || type == 'r');
     }
 });

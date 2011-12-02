@@ -40,7 +40,8 @@ Ext.define('alexzam.his.view.account.TopPanel', {
             layout:'fit',
             items:[
                 Ext.create('alexzam.his.view.account.AddTransactionForm', {
-                    userRadioOptions:me.userRadioOptions
+                    userRadioOptions:me.userRadioOptions,
+                    rootUrl:me.rootUrl
                 })
             ]
         }));

@@ -57,9 +57,6 @@
                 ] // TODO Enrich by name:actor
             });
         });
-        Ext.create('alexzam.his.AccountScreen', {
-
-        });
     </script>
 </head>
 <body>

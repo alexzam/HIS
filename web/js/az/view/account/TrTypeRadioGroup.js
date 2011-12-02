@@ -5,9 +5,6 @@ Ext.define('alexzam.his.view.account.TrTypeRadioGroup', {
     layout:'vbox',
 
     allowBlank:false,
-    listeners:{
-        change:this.onChange
-    },
     items:[
         {
             xtype:'panel',
@@ -17,14 +14,14 @@ Ext.define('alexzam.his.view.account.TrTypeRadioGroup', {
             items:[
                 {
                     xtype:'radio',
-                    boxLabel:'Трата из своих',
+                    boxLabel:'РўСЂР°С‚Р° РёР· СЃРІРѕРёС…',
                     name:'type',
                     inputValue:'p',
                     margin:'0 5 0 0'
                 },
                 {
                     xtype:'radio',
-                    boxLabel:'Трата из Казны',
+                    boxLabel:'РўСЂР°С‚Р° РёР· РљР°Р·РЅС‹',
                     name:'type',
                     inputValue:'a'
                 }
@@ -38,14 +35,14 @@ Ext.define('alexzam.his.view.account.TrTypeRadioGroup', {
             items:[
                 {
                     xtype:'radio',
-                    boxLabel:'Вклад в Казну',
+                    boxLabel:'Р’РєР»Р°Рґ РІ РљР°Р·РЅСѓ',
                     name:'type',
                     inputValue:'i',
                     margin:'0 5 0 0'
                 },
                 {
                     xtype:'radio',
-                    boxLabel:'Возмещение из Казны',
+                    boxLabel:'Р’РѕР·РјРµС‰РµРЅРёРµ РёР· РљР°Р·РЅС‹',
                     name:'type',
                     inputValue:'r'
                 }
@@ -54,14 +51,15 @@ Ext.define('alexzam.his.view.account.TrTypeRadioGroup', {
     ],
 
     initComponent:function(){
-        this.callParent();
-        this.addEvents('typechanged');
-//        this.on('change', this.onChange);
+        var me = this;
+
+        me.callParent();
+        me.addEvents('typechanged');
     },
 
-    onChange:function (me, val)
+    onChange:function (newVal)
     {
-        var type = val.type;
-        this.fireEvent('typechanged', type);
+        if(!Ext.isArray(newVal.type))
+            this.fireEvent('typechanged', newVal.type);
     }
 });
