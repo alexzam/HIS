@@ -1,6 +1,6 @@
-Ext.define('alexzam.his.view.account.FilterPanel', {
+Ext.define('alexzam.his.view.account.RightPanel', {
     extend:'Ext.panel.Panel',
-    alias:'widget.his.account.FilterPanel',
+    alias:'widget.his.account.RightPanel',
 
     requires:[
         'Ext.layout.container.Border',

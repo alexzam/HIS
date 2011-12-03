@@ -3,7 +3,7 @@ Ext.define('alexzam.his.AccountScreen', {
 
     requires:[
         'alexzam.his.view.account.TopPanel',
-        'alexzam.his.view.account.FilterPanel',
+        'alexzam.his.view.account.RightPanel',
         'alexzam.his.view.account.TransactionGrid'
     ],
 
@@ -22,7 +22,7 @@ Ext.define('alexzam.his.AccountScreen', {
                 height:125
             },
             {
-                xtype:'his.account.FilterPanel',
+                xtype:'his.account.RightPanel',
                 rootUrl:me.rootUrl,
                 region:'east',
                 width:200
