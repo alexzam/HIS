@@ -6,93 +6,41 @@ Ext.define('alexzam.his.view.account.RightPanel', {
         'Ext.layout.container.Border',
         'alexzam.his.model.account.store.Category',
         'alexzam.his.model.account.proxy.Category',
-        'alexzam.his.model.account.store.AccStat'
+        'alexzam.his.model.account.store.AccStat',
+        'alexzam.his.view.account.FilterForm'
     ],
 
     layout:'border',
-    items:[
-        {
-//                xtype:'form',
-            id:'frmFilter',
+
+    frmFilter:null,
+    grdStats:null,
+
+    initComponent:function () {
+        var me = this;
+
+        var storeStats = Ext.create('alexzam.his.model.account.store.AccStat', {
+            storeId:'stAccStats'
+        });
+
+        me.frmFilter = Ext.create('alexzam.his.view.account.FilterForm', {
             region:'center',
-            title:'Фильтр',
-            layout:'vbox',
-            bodyPadding:5,
-            autoScroll:true
-//                items:[
-//                    {
-//                        xtype:'datefield',
-//                        fieldLabel:'С',
-//                        id:'tbFilterFrom',
-//                        name:'from',
-//                        format:'d.m.Y',
-//                        validateOnChange:false,
-//                        labelWidth:65,
-//                        width:175,
-//                        listeners:{
-//                            change:account.onFilterChange
-//                        }
-//                    },
-//                    {
-//                        xtype:'datefield',
-//                        fieldLabel:'По',
-//                        id:'tbFilterTo',
-//                        name:'to',
-//                        format:'d.m.Y',
-//                        validateOnChange:false,
-//                        labelWidth:65,
-//                        width:175,
-//                        listeners:{
-//                            change:account.onFilterChange
-//                        }
-//                    },
-//                    {
-//                        xtype:'combo',
-//                        fieldLabel:'Категория',
-//                        name:'cat',
-//                        id:'cbFilterCategory',
-//                        queryMode:'local',
-//                        store:'stFilterCats',
-//                        valueField:'id',
-//                        displayField:'name',
-//                        lastQuery:'',
-//                        labelWidth:65,
-//                        width:175,
-//                        listeners:{
-//                            change:account.onFilterChange
-//                        }
-//                    },
-//                    {
-//                        xtype:'button',
-//                        text:'Удалить',
-//                        handler:account.onBtDelete
-//                    }
-//                ]
-        },
-        {
-            xtype:'grid',
+            rootUrl:me.rootUrl
+        });
+
+        me.grdStats = Ext.create('Ext.grid.Panel', {
             region:'south',
-//                store:'stAccStats',
+            store:storeStats,
             columns:[
                 {header:'Чего', dataIndex:'name', sortable:false, menuDisabled:true},
                 {header:'Сколько', dataIndex:'val', flex:1, sortable:false, menuDisabled:true}
             ]
-        }
-    ],
-
-    initComponent:function ()
-    {
-        this.callParent();
-
-        var store = Ext.create('alexzam.his.model.account.store.Category', {
-            storeId:'stFilterCats',
-            proxy:Ext.create('alexzam.his.model.account.proxy.Category', {
-                rootUrl:this.rootUrl
-            })
         });
 
-        var store2 = Ext.create('alexzam.his.model.account.store.AccStat', {
-            storeId:'stAccStats'
-        });
+        me.items = [
+            me.frmFilter,
+            me.grdStats
+        ];
+
+        me.callParent();
     }
 });

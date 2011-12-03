@@ -6,11 +6,11 @@ Ext.define('alexzam.his.model.account.store.AccStat', {
 
     model:'alexzam.his.model.account.AccStat',
     data:[
-        {id:'TE', name:'Общие расходы', val:'0'},
-        {id:'EE', name:'На каждого', val:'0'},
-        {id:'PE', name:'Мои траты', val:'0'},
-        {id:'PD', name:'Мой вклад в Казну', val:'0'},
-        {id:'PS', name:'Всего моих расходов', val:'0'},
-        {id:'PB', name:'Мой баланс', val:'0'}
+        {id:'TE', name:'РћР±С‰РёРµ СЂР°СЃС…РѕРґС‹', val:'0'},
+        {id:'EE', name:'РќР° РєР°Р¶РґРѕРіРѕ', val:'0'},
+        {id:'PE', name:'РњРѕРё С‚СЂР°С‚С‹', val:'0'},
+        {id:'PD', name:'РњРѕР№ РІРєР»Р°Рґ РІ РљР°Р·РЅСѓ', val:'0'},
+        {id:'PS', name:'Р’СЃРµРіРѕ РјРѕРёС… СЂР°СЃС…РѕРґРѕРІ', val:'0'},
+        {id:'PB', name:'РњРѕР№ Р±Р°Р»Р°РЅСЃ', val:'0'}
     ]
 });
