@@ -32,8 +32,7 @@ Ext.define('alexzam.his.view.account.TopPanel', {
         }
     ],
 
-    initComponent:function ()
-    {
+    initComponent:function () {
         var me = this;
         me.items.push(Ext.create('Ext.panel.Panel', {
             region:'center',
@@ -41,7 +40,9 @@ Ext.define('alexzam.his.view.account.TopPanel', {
             items:[
                 Ext.create('alexzam.his.view.account.AddTransactionForm', {
                     userRadioOptions:me.userRadioOptions,
-                    rootUrl:me.rootUrl
+                    rootUrl:me.rootUrl,
+                    uid:me.uid,
+                    bubbleEvents:['transchanged']
                 })
             ]
         }));
@@ -49,7 +50,7 @@ Ext.define('alexzam.his.view.account.TopPanel', {
         me.callParent();
     },
 
-    onBtLogout:function(){
+    onBtLogout:function() {
         document.location = "login?mode=out";
     }
 });

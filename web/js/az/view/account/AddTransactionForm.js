@@ -28,7 +28,8 @@ Ext.define('alexzam.his.view.account.AddTransactionForm', {
             format:'d.m.Y',
             validateOnChange:false,
             allowBlank:true,
-            labelWidth:40
+            labelWidth:40,
+            itemId:'dtAdd'
         },
         {
             xtype:'panel',
@@ -43,6 +44,7 @@ Ext.define('alexzam.his.view.account.AddTransactionForm', {
                     layout:'hbox',
                     width:250,
                     border:0,
+                    itemId:'panel0',
                     items:[
                         {
                             xtype:'numberfield',
@@ -56,7 +58,8 @@ Ext.define('alexzam.his.view.account.AddTransactionForm', {
                             validateOnChange:false,
                             width:155,
                             labelAlign:'left',
-                            allowBlank:true
+                            allowBlank:true,
+                            itemId:'numAmount'
                         },
                         {
                             xtype:'panel',
@@ -104,23 +107,30 @@ Ext.define('alexzam.his.view.account.AddTransactionForm', {
         },
         {
             xtype:'button',
-            text:'Добавить'
-//            ,
-            //handler:account.addSubmit
+            text:'Добавить',
+            itemId:'btSubmit',
+            handler:function() {
+                this.ownerCt.onBtSubmit();
+            }
         }
     ],
 
     rgActor:null,
     cbCategory:null,
+    dtAdd:null,
+    numAmount:null,
 
-    initComponent:function ()
-    {
+    initComponent:function () {
         var me = this;
         var store = Ext.create('alexzam.his.model.account.store.Category', {
             storeId:'stCats',
             proxy:Ext.create('alexzam.his.model.account.proxy.CategoryAdd', {
                 rootUrl:me.rootUrl
             })
+        });
+
+        Ext.Array.forEach(me.userRadioOptions, function(item) {
+            item.name = 'actor';
         });
 
         me.rgActor = Ext.create('Ext.form.RadioGroup', {
@@ -138,10 +148,65 @@ Ext.define('alexzam.his.view.account.AddTransactionForm', {
         me.callParent();
 
         me.getComponent('panel2').getComponent('rgTrType').on('typechanged', me.onTypeChanged, me);
+
         me.cbCategory = me.getComponent('panel3').getComponent('cbCategory');
+        me.dtAdd = me.getComponent('dtAdd');
+        me.numAmount = me.getComponent('panel2').getComponent('panel0').getComponent('numAmount');
+
+        me.addEvents('transchanged');
     },
 
-    onTypeChanged:function(type){
+    onTypeChanged:function(type) {
         this.cbCategory.setDisabled(type == 'i' || type == 'r');
+    },
+
+    setCmpValidation:function(cmp, enable) {
+        cmp.allowBlank = !enable;
+        cmp.isValid();
+    },
+
+    setFullValidation:function(enable) {
+        var me = this;
+        me.setCmpValidation(me.dtAdd, enable);
+        me.setCmpValidation(me.numAmount, enable);
+        me.setCmpValidation(me.cbCategory, enable);
+    },
+
+    onBtSubmit:function() {
+        var me = this;
+
+        if (!me.getForm().isValid()) return;
+
+        var data = me.getValues();
+
+        me.setFullValidation(true);
+
+        if (!me.dtAdd.isValid() || !me.numAmount.isValid() || !me.cbCategory.isValid()) {
+            return;
+        }
+
+        data.date = me.dtAdd.getValue().getTime();
+        if (me.cbCategory.getRawValue() == data.cat) {
+            // New category
+            data.catname = data.cat;
+            data.cat = 0;
+        }
+
+        if (data.actor == 0) data.actor = me.uid;
+        data.act = 'put';
+
+        Ext.Ajax.request({
+            url: me.rootUrl + 'account-data',
+            params: data,
+            success:function() {
+                me.fireEvent('transchanged');
+//                account.loadTransactions();
+//                account.loadCategories();
+//                account.updateAccountStats();
+            }
+        });
+
+//        account.resetAddForm();
+        me.setFullValidation(false);
     }
 });

@@ -1,20 +1,4 @@
 var account = {
-    loadTransactions:function() {
-        var frm = Ext.getCmp('frmFilter');
-        if (!frm.getForm().isValid()) return;
-
-        var q = frm.getForm().getFieldValues();
-        if (q.from != null) {
-            q.from = q.from.getTime();
-        }
-        if (q.to != null) {
-            q.to = q.to.getTime();
-        }
-
-        proxyTrans.extraParams = q;
-
-        Ext.data.StoreManager.getByKey('stTrans').load();
-    },
 
     loadCategories:function() {
         var cmp = Ext.getCmp('cbCategory');
@@ -47,46 +31,6 @@ var account = {
     resetAddForm:function() {
         Ext.getCmp('tbAddAmount').setValue(null);
         Ext.getCmp('cbCategory').setValue(null);
-    },
-
-    addSubmit:function() {
-        var frm = Ext.getCmp('frmAddTrans');
-        if (!frm.getForm().isValid()) return;
-
-        var data = frm.getValues();
-        var tbAddDate = Ext.getCmp('tbAddDate');
-        var tbAddAmount = Ext.getCmp('tbAddAmount');
-        var cbCat = Ext.getCmp('cbCategory');
-
-        account.setAddFormFullValidation(true);
-
-        if (!tbAddDate.isValid() || !tbAddAmount.isValid() || !cbCat.isValid()) {
-            Ext.MessageBox.show({title:'Еггог',msg:'Инвалид!',icon:Ext.MessageBox.ERROR});
-            return;
-        }
-
-        data.date = tbAddDate.getValue().getTime();
-        if (cbCat.getRawValue() == data.cat) {
-            // New category
-            data.catname = data.cat;
-            data.cat = 0;
-        }
-
-        if (data.actor == 0) data.actor = uid;
-        data.act = 'put';
-
-        Ext.Ajax.request({
-            url: transStoreUrl,
-            params: data,
-            success:function() {
-                account.loadTransactions();
-                account.loadCategories();
-                account.updateAccountStats();
-            }
-        });
-
-        account.resetAddForm();
-        account.setAddFormFullValidation(false);
     },
 
     updateAccountStats:function() {

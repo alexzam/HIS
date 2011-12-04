@@ -2,12 +2,10 @@
 <%@ page import="az.his.DBUtil" %>
 <%@ page import="az.his.filters.AuthFilter" %>
 <%@ page import="az.his.persist.User" %>
-<%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%!
     private static String pathRoot = null;
-    private static SimpleDateFormat dateFormatter = new SimpleDateFormat("dd.MM.yyyy");
 %>
 <%
     if (pathRoot == null)

@@ -42,5 +42,12 @@ Ext.define('alexzam.his.view.account.RightPanel', {
         ];
 
         me.callParent();
+    },
+
+    getFilterData:function(){
+        var frm = this.frmFilter.getForm();
+        if (!frm.isValid()) return null;
+
+        return frm.getFieldValues();
     }
 });
