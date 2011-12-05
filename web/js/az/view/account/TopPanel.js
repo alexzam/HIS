@@ -26,11 +26,14 @@ Ext.define('alexzam.his.view.account.TopPanel', {
                     xtype:'panel',
                     region:'center',
                     layout:'fit',
+                    itemId:'pnlAmount',
                     html:'<span id="account_amount">load</span>'
                 }
             ]
         }
     ],
+
+    spanAmount:null,
 
     initComponent:function () {
         var me = this;
@@ -52,5 +55,16 @@ Ext.define('alexzam.his.view.account.TopPanel', {
 
     onBtLogout:function() {
         document.location = "login?mode=out";
+    },
+
+    setAccAmount:function(val) {
+        this.spanAmount.innerHTML = val + '&nbsp;р.';
+    },
+
+    afterRender:function(){
+        var me = this;
+        me.callParent(arguments);
+
+        me.spanAmount = me.getComponent(0).getComponent('pnlAmount').getEl().getById('account_amount').dom;
     }
 });

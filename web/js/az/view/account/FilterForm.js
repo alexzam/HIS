@@ -59,22 +59,32 @@ Ext.define('alexzam.his.view.account.FilterForm', {
     dtFrom:null,
     dtTo:null,
     cmbCat:null,
+    storeCat:null,
 
     initComponent:function() {
         var me = this;
-        var store = Ext.create('alexzam.his.model.account.store.Category', {
-            storeId:'stFilterCats',
+        me.storeCat = Ext.create('alexzam.his.model.account.store.Category', {
             proxy:Ext.create('alexzam.his.model.account.proxy.Category', {
                 rootUrl:me.rootUrl
             })
         });
 
-        me.items[2].store = store; // Not so good but seems most efficient
+        me.items[2].store = me.storeCat; // Not so good but seems most efficient
 
         me.callParent();
 
         me.dtFrom = me.getComponent('dtFrom');
         me.dtTo = me.getComponent('dtTo');
         me.cmbCat = me.getComponent('cmbCat');
+    },
+
+    reloadCategories:function(){
+        var me = this;
+        var cmp = me.cmbCat;
+        var val = cmp.getValue();
+        cmp.setValue('');
+        me.storeCat.load();
+        cmp.setValue(val);
+        cmp.getPicker().setLoading(false);
     }
 });

@@ -1,21 +1,4 @@
 var account = {
-
-    loadCategories:function() {
-        var cmp = Ext.getCmp('cbCategory');
-        var val = cmp.getValue();
-        cmp.setValue('');
-        Ext.data.StoreManager.getByKey('stCats').load();
-        cmp.setValue(val);
-        cmp.getPicker().setLoading(false);
-
-        cmp = Ext.getCmp('cbFilterCategory');
-        val = cmp.getValue();
-        cmp.setValue('');
-        Ext.data.StoreManager.getByKey('stFilterCats').load();
-        cmp.setValue(val);
-        cmp.getPicker().setLoading(false);
-    },
-
     setAddFormFullValidation:function(enable) {
         var cmp = Ext.getCmp('tbAddDate');
         cmp.allowBlank = !enable;
@@ -31,23 +14,6 @@ var account = {
     resetAddForm:function() {
         Ext.getCmp('tbAddAmount').setValue(null);
         Ext.getCmp('cbCategory').setValue(null);
-    },
-
-    updateAccountStats:function() {
-        Ext.Ajax.request({
-            url:transStoreUrl + '?act=getamount',
-            callback:function(o, s, resp) {
-                var data = Ext.JSON.decode(resp.responseText);
-                Ext.get('account_amount').dom.innerHTML = data.amount + '&nbsp;р.';
-                var store = Ext.data.StoreManager.getByKey('stAccStats');
-                store.getById('TE').set('val', data.totalExp);
-                store.getById('EE').set('val', data.eachExp);
-                store.getById('PE').set('val', data.persExp);
-                store.getById('PD').set('val', data.persDonation);
-                store.getById('PS').set('val', data.persSpent);
-                store.getById('PB').set('val', data.persBalance);
-            }
-        });
     },
 
     onFilterChange:function() {

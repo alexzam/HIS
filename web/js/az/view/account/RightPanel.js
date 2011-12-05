@@ -14,13 +14,10 @@ Ext.define('alexzam.his.view.account.RightPanel', {
 
     frmFilter:null,
     grdStats:null,
+    storeStats:null,
 
     initComponent:function () {
         var me = this;
-
-        var storeStats = Ext.create('alexzam.his.model.account.store.AccStat', {
-            storeId:'stAccStats'
-        });
 
         me.frmFilter = Ext.create('alexzam.his.view.account.FilterForm', {
             region:'center',
@@ -29,7 +26,7 @@ Ext.define('alexzam.his.view.account.RightPanel', {
 
         me.grdStats = Ext.create('Ext.grid.Panel', {
             region:'south',
-            store:storeStats,
+            store:me.storeStats,
             columns:[
                 {header:'Чего', dataIndex:'name', sortable:false, menuDisabled:true},
                 {header:'Сколько', dataIndex:'val', flex:1, sortable:false, menuDisabled:true}
@@ -44,10 +41,14 @@ Ext.define('alexzam.his.view.account.RightPanel', {
         me.callParent();
     },
 
-    getFilterData:function(){
+    getFilterData:function() {
         var frm = this.frmFilter.getForm();
         if (!frm.isValid()) return null;
 
         return frm.getFieldValues();
+    },
+
+    reloadCategories:function() {
+        this.frmFilter.reloadCategories();
     }
 });

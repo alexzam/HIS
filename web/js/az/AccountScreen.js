@@ -4,17 +4,22 @@ Ext.define('alexzam.his.AccountScreen', {
     requires:[
         'alexzam.his.view.account.TopPanel',
         'alexzam.his.view.account.RightPanel',
-        'alexzam.his.view.account.TransactionGrid'
+        'alexzam.his.view.account.TransactionGrid',
+        'Ext.Ajax'
     ],
 
     layout:'border',
 
     rightPanel:null,
+    topPanel:null,
     grdTrans:null,
+    storeStats:null,
 
     initComponent:function ()
     {
         var me = this;
+
+        me.storeStats = Ext.create('alexzam.his.model.account.store.AccStat', {});
 
         me.items = [
             {
@@ -24,6 +29,7 @@ Ext.define('alexzam.his.AccountScreen', {
                 uid:me.uid,
                 region:'north',
                 height:125,
+                itemId:'panelT',
                 listeners:{
                     transchanged:me.onTransactionsChanged,
                     scope:me
@@ -34,7 +40,8 @@ Ext.define('alexzam.his.AccountScreen', {
                 rootUrl:me.rootUrl,
                 region:'east',
                 width:200,
-                itemId: 'panelR'
+                itemId: 'panelR',
+                storeStats:me.storeStats
             },
             {
                 xtype:'his.account.TransactionGrid',
@@ -47,7 +54,10 @@ Ext.define('alexzam.his.AccountScreen', {
         me.callParent();
 
         me.rightPanel=me.getComponent('panelR');
+        me.topPanel=me.getComponent('panelT');
         me.grdTrans=me.getComponent('grdTrans');
+
+        me.reloadAccStats();
     },
 
     onTransactionsChanged:function(){
@@ -63,5 +73,26 @@ Ext.define('alexzam.his.AccountScreen', {
             q.to = q.to.getTime();
         }
         me.grdTrans.reloadTrans(q);
+
+        me.rightPanel.reloadCategories();
+        me.reloadAccStats();
+    },
+
+    reloadAccStats:function(){
+        var me = this;
+        Ext.Ajax.request({
+            url:me.rootUrl + 'account-data?act=getamount',
+            callback:function(o, s, resp) {
+                var data = Ext.JSON.decode(resp.responseText);
+                me.topPanel.setAccAmount(data.amount);
+                var store = me.storeStats;
+                store.getById('TE').set('val', data.totalExp);
+                store.getById('EE').set('val', data.eachExp);
+                store.getById('PE').set('val', data.persExp);
+                store.getById('PD').set('val', data.persDonation);
+                store.getById('PS').set('val', data.persSpent);
+                store.getById('PB').set('val', data.persBalance);
+            }
+        });
     }
 });

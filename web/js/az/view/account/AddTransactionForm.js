@@ -90,7 +90,6 @@ Ext.define('alexzam.his.view.account.AddTransactionForm', {
                     name:'cat',
                     itemId:'cbCategory',
                     queryMode:'local',
-                    store:'stCats',
                     valueField:'id',
                     displayField:'name',
                     lastQuery:'',
@@ -119,11 +118,11 @@ Ext.define('alexzam.his.view.account.AddTransactionForm', {
     cbCategory:null,
     dtAdd:null,
     numAmount:null,
+    storeCat:null,
 
     initComponent:function () {
         var me = this;
-        var store = Ext.create('alexzam.his.model.account.store.Category', {
-            storeId:'stCats',
+        me.storeCat = Ext.create('alexzam.his.model.account.store.Category', {
             proxy:Ext.create('alexzam.his.model.account.proxy.CategoryAdd', {
                 rootUrl:me.rootUrl
             })
@@ -144,6 +143,7 @@ Ext.define('alexzam.his.view.account.AddTransactionForm', {
         });
 
         me.items[0] = me.rgActor;
+        me.items[3].items[0].store = me.storeCat;
 
         me.callParent();
 
@@ -200,8 +200,13 @@ Ext.define('alexzam.his.view.account.AddTransactionForm', {
             params: data,
             success:function() {
                 me.fireEvent('transchanged');
-//                account.loadTransactions();
-//                account.loadCategories();
+
+                var cmp = me.cbCategory;
+                var val = cmp.getValue();
+                cmp.setValue('');
+                me.storeCat.load();
+                cmp.setValue(val);
+                cmp.getPicker().setLoading(false);
 //                account.updateAccountStats();
             }
         });
