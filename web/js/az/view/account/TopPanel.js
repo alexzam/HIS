@@ -34,6 +34,7 @@ Ext.define('alexzam.his.view.account.TopPanel', {
     ],
 
     spanAmount:null,
+    frmTrans:null,
 
     initComponent:function () {
         var me = this;
@@ -45,6 +46,7 @@ Ext.define('alexzam.his.view.account.TopPanel', {
                     userRadioOptions:me.userRadioOptions,
                     rootUrl:me.rootUrl,
                     uid:me.uid,
+                    itemId:'frmTrans',
                     bubbleEvents:['transchanged']
                 })
             ]
@@ -61,10 +63,15 @@ Ext.define('alexzam.his.view.account.TopPanel', {
         this.spanAmount.innerHTML = val + '&nbsp;р.';
     },
 
-    afterRender:function(){
+    afterRender:function() {
         var me = this;
         me.callParent(arguments);
 
         me.spanAmount = me.getComponent(0).getComponent('pnlAmount').getEl().getById('account_amount').dom;
+        me.frmTrans = me.getComponent('frmTrans');
+    },
+
+    reloadCats:function() {
+        this.frmTrans.reloadCats();
     }
 });

@@ -15,8 +15,7 @@ Ext.define('alexzam.his.AccountScreen', {
     grdTrans:null,
     storeStats:null,
 
-    initComponent:function ()
-    {
+    initComponent:function () {
         var me = this;
 
         me.storeStats = Ext.create('alexzam.his.model.account.store.AccStat', {});
@@ -41,7 +40,12 @@ Ext.define('alexzam.his.AccountScreen', {
                 region:'east',
                 width:200,
                 itemId: 'panelR',
-                storeStats:me.storeStats
+                storeStats:me.storeStats,
+                listeners:{
+                    transreload:me.onTransReload,
+                    transdelete:me.onBtTransDelete,
+                    scope:me
+                }
             },
             {
                 xtype:'his.account.TransactionGrid',
@@ -53,18 +57,18 @@ Ext.define('alexzam.his.AccountScreen', {
 
         me.callParent();
 
-        me.rightPanel=me.getComponent('panelR');
-        me.topPanel=me.getComponent('panelT');
-        me.grdTrans=me.getComponent('grdTrans');
+        me.rightPanel = me.getComponent('panelR');
+        me.topPanel = me.getComponent('panelT');
+        me.grdTrans = me.getComponent('grdTrans');
 
         me.reloadAccStats();
     },
 
-    onTransactionsChanged:function(){
+    onTransReload:function() {
         var me = this;
         var q = me.rightPanel.getFilterData();
 
-        if(q == null) return;
+        if (q == null) return;
 
         if (q.from != null) {
             q.from = q.from.getTime();
@@ -73,12 +77,17 @@ Ext.define('alexzam.his.AccountScreen', {
             q.to = q.to.getTime();
         }
         me.grdTrans.reloadTrans(q);
+    },
 
+    onTransactionsChanged:function() {
+        var me = this;
+
+        me.onTransReload();
         me.rightPanel.reloadCategories();
         me.reloadAccStats();
     },
 
-    reloadAccStats:function(){
+    reloadAccStats:function() {
         var me = this;
         Ext.Ajax.request({
             url:me.rootUrl + 'account-data?act=getamount',
@@ -92,6 +101,31 @@ Ext.define('alexzam.his.AccountScreen', {
                 store.getById('PD').set('val', data.persDonation);
                 store.getById('PS').set('val', data.persSpent);
                 store.getById('PB').set('val', data.persBalance);
+            }
+        });
+    },
+
+    onBtTransDelete: function() {
+        var me = this;
+        var selected = me.grdTrans.getSelectionModel().getSelection();
+        var delIds = [];
+
+        for (i in selected) {
+            var sel = selected[i];
+            delIds.push(sel.get('id'));
+        }
+
+        if (delIds.length <= 0) return;
+        var idsStr = delIds.join();
+
+        var data = {act:"del", ids:idsStr};
+        Ext.Ajax.request({
+            method:'POST',
+            url:me.rootUrl + 'account-data',
+            params:data,
+            callback:function() {
+                me.onTransactionsChanged();
+                me.topPanel.reloadCats();
             }
         });
     }

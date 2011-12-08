@@ -15,10 +15,7 @@ Ext.define('alexzam.his.view.account.FilterForm', {
             validateOnChange:false,
             labelWidth:65,
             width:175,
-            itemId:'dtFrom',
-            listeners:{
-//                change:account.onFilterChange
-            }
+            itemId:'dtFrom'
         },
         {
             xtype:'datefield',
@@ -28,10 +25,7 @@ Ext.define('alexzam.his.view.account.FilterForm', {
             validateOnChange:false,
             labelWidth:65,
             width:175,
-            itemId:'dtTo',
-            listeners:{
-//                change:account.onFilterChange
-            }
+            itemId:'dtTo'
         },
         {
             xtype:'combo',
@@ -43,16 +37,14 @@ Ext.define('alexzam.his.view.account.FilterForm', {
             lastQuery:'',
             labelWidth:65,
             width:175,
-            itemId:'cmbCat',
-            listeners:{
-//                change:account.onFilterChange
-            }
+            itemId:'cmbCat'
         },
         {
             xtype:'button',
-            text:'Удалить'
-//            ,
-//            handler:account.onBtDelete
+            text:'Удалить',
+            handler:function(){
+                this.ownerCt.fireEvent('transdelete');
+            }
         }
     ],
 
@@ -76,9 +68,15 @@ Ext.define('alexzam.his.view.account.FilterForm', {
         me.dtFrom = me.getComponent('dtFrom');
         me.dtTo = me.getComponent('dtTo');
         me.cmbCat = me.getComponent('cmbCat');
+
+        me.dtFrom.on('change', me.onFilterChange, me);
+        me.dtTo.on('change', me.onFilterChange, me);
+        me.cmbCat.on('change', me.onFilterChange, me);
+
+        me.addEvents(['transreload', 'transdelete']);
     },
 
-    reloadCategories:function(){
+    reloadCategories:function() {
         var me = this;
         var cmp = me.cmbCat;
         var val = cmp.getValue();
@@ -86,5 +84,13 @@ Ext.define('alexzam.his.view.account.FilterForm', {
         me.storeCat.load();
         cmp.setValue(val);
         cmp.getPicker().setLoading(false);
+    },
+
+    onFilterChange:function() {
+        var me = this;
+        me.fireEvent('transreload');
+
+        me.dtTo.setMinValue(me.dtFrom.getValue());
+        me.dtFrom.setMaxValue(me.dtTo.getValue());
     }
 });

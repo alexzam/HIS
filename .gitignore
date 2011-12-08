@@ -1,4 +1,4 @@
-/.idea
+/.idea/*
 /out
 //*.iml
 /.idea/libraries/Maven__org_hibernate_hibernate_core_3_6_8_Final.xml

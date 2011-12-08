@@ -200,18 +200,27 @@ Ext.define('alexzam.his.view.account.AddTransactionForm', {
             params: data,
             success:function() {
                 me.fireEvent('transchanged');
-
-                var cmp = me.cbCategory;
-                var val = cmp.getValue();
-                cmp.setValue('');
-                me.storeCat.load();
-                cmp.setValue(val);
-                cmp.getPicker().setLoading(false);
-//                account.updateAccountStats();
+                me.reloadCats();
             }
         });
 
-//        account.resetAddForm();
+        me.resetForm();
         me.setFullValidation(false);
+    },
+
+    resetForm:function() {
+        var me = this;
+        me.dtAdd.setValue(null);
+        me.cbCategory.setValue(null);
+    },
+
+    reloadCats:function() {
+        var me = this;
+        var cmp = me.cbCategory;
+        var val = cmp.getValue();
+        cmp.setValue('');
+        me.storeCat.load();
+        cmp.setValue(val);
+        cmp.getPicker().setLoading(false);
     }
 });
