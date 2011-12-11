@@ -19,8 +19,7 @@ Ext.define('alexzam.his.view.account.TopPanel', {
                 {
                     xtype:'button',
                     region:'north',
-                    text:'Выйти',
-                    handler:this.onBtLogout
+                    text:'Выйти'
                 },
                 {
                     xtype:'panel',
@@ -38,6 +37,9 @@ Ext.define('alexzam.his.view.account.TopPanel', {
 
     initComponent:function () {
         var me = this;
+
+        me.items[0].items[0].handler=me.onBtLogout;
+
         me.items.push(Ext.create('Ext.panel.Panel', {
             region:'center',
             layout:'fit',
@@ -53,6 +55,7 @@ Ext.define('alexzam.his.view.account.TopPanel', {
         }));
 
         me.callParent();
+        me.frmTrans = me.getComponent(1).getComponent('frmTrans');
     },
 
     onBtLogout:function() {
@@ -68,7 +71,6 @@ Ext.define('alexzam.his.view.account.TopPanel', {
         me.callParent(arguments);
 
         me.spanAmount = me.getComponent(0).getComponent('pnlAmount').getEl().getById('account_amount').dom;
-        me.frmTrans = me.getComponent('frmTrans');
     },
 
     reloadCats:function() {

@@ -42,7 +42,7 @@ Ext.define('alexzam.his.view.account.FilterForm', {
         {
             xtype:'button',
             text:'Удалить',
-            handler:function(){
+            handler:function() {
                 this.ownerCt.fireEvent('transdelete');
             }
         }
@@ -74,6 +74,10 @@ Ext.define('alexzam.his.view.account.FilterForm', {
         me.cmbCat.on('change', me.onFilterChange, me);
 
         me.addEvents(['transreload', 'transdelete']);
+
+        var d = new Date();
+        d.setDate(1);
+        me.dtFrom.setValue(d);
     },
 
     reloadCategories:function() {
