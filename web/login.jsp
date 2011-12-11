@@ -13,11 +13,10 @@
     <title>HIS Login</title>
     <link rel="stylesheet" href="css/main.css" type="text/css">
 </head>
-<body style="text-align:center;">
+<body class="login">
 <% for (User user : users) { %>
 <div class="login_user">
-    <a href="login?mode=in&uid=<%=user.getId()%>"><%=user.getName()%>
-    </a>
+    <a href="login?mode=in&uid=<%=user.getId()%>"><%=user.getName()%></a>
 </div>
 <% } %>
 
