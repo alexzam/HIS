@@ -151,6 +151,7 @@
                     <outputDirectory>${project.build.directory}</outputDirectory>
                     <warSourceDirectory>${project.build.directory}/warsrc</warSourceDirectory>
                     <packagingExcludes>**/javaee-api-6.0.jar</packagingExcludes>
+                    <webXml>web/WEB-INF/web.xml</webXml>
                 </configuration>
             </plugin>
 
@@ -189,7 +190,7 @@
                                 <copy
                                         file="${project.build.directory}/${project.build.finalName}.war"
                                         tofile="${project.build.directory}/${project.artifactId}.war"
-                                        overwrite="true" />
+                                        overwrite="true"/>
                             </target>
                         </configuration>
                     </execution>
@@ -231,6 +232,24 @@
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20090211</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>3.1.0.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>3.1.0.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
         </dependency>
     </dependencies>
 
