@@ -1,5 +1,6 @@
 package az.his;
 
+import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -7,12 +8,19 @@ import org.hibernate.cfg.Configuration;
 
 import javax.servlet.ServletRequest;
 import java.text.DecimalFormat;
+import java.util.List;
 
 /**
  * Hibernate set up
  */
 public class DBUtil {
     private static SessionFactory factory;
+
+    private SessionFactory springSessionFactory;
+
+    public DBUtil(SessionFactory springSessionFactory) {
+        this.springSessionFactory = springSessionFactory;
+    }
 
     public static Session getSession() throws HibernateException {
         initFactory();
@@ -51,5 +59,13 @@ public class DBUtil {
         if (sum % 100 != 0) {
             return int2Formatter.format((double) sum / 100);
         } else return intFormatter.format((double) sum / 100);
+    }
+
+    // Service methods
+
+    @SuppressWarnings({"unchecked"})
+    public <E> List<E> findAll(Class<E> entityClass) {
+        Criteria query = springSessionFactory.getCurrentSession().createCriteria(entityClass);
+        return query.setCacheable(true).list();
     }
 }
