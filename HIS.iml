@@ -11,10 +11,6 @@
         <webroots>
           <root url="file://$MODULE_DIR$/out/warsrc" relative="/" />
         </webroots>
-        <sourceRoots>
-          <root url="file://$MODULE_DIR$/web" />
-          <root url="file://$MODULE_DIR$/src" />
-        </sourceRoots>
       </configuration>
     </facet>
     <facet type="hibernate" name="Hibernate">
@@ -80,6 +76,8 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-orm:3.1.0.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-jdbc:3.1.0.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-tx:3.1.0.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: cglib:cglib:2.2.2" level="project" />
+    <orderEntry type="library" name="Maven: asm:asm:3.3.1" level="project" />
   </component>
 </module>
 

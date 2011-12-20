@@ -22,6 +22,10 @@ public class DBUtil {
         this.springSessionFactory = springSessionFactory;
     }
 
+    public DBManager getDbManager() {
+        return new DBManager(springSessionFactory.getCurrentSession());
+    }
+
     public static Session getSession() throws HibernateException {
         initFactory();
         return factory.getCurrentSession();
