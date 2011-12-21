@@ -5,6 +5,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.springframework.orm.hibernate3.SessionFactoryUtils;
 
 import javax.servlet.ServletRequest;
 import java.text.DecimalFormat;
@@ -23,7 +24,11 @@ public class DBUtil {
     }
 
     public DBManager getDbManager() {
-        return new DBManager(springSessionFactory.getCurrentSession());
+        return new DBManager(getSpringSession());
+    }
+
+    private Session getSpringSession() {
+        return SessionFactoryUtils.getSession(springSessionFactory, true);
     }
 
     public static Session getSession() throws HibernateException {
@@ -69,7 +74,7 @@ public class DBUtil {
 
     @SuppressWarnings({"unchecked"})
     public <E> List<E> findAll(Class<E> entityClass) {
-        Criteria query = springSessionFactory.getCurrentSession().createCriteria(entityClass);
+        Criteria query = getSpringSession().createCriteria(entityClass);
         return query.setCacheable(true).list();
     }
 }
