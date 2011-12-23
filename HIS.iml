@@ -24,7 +24,9 @@
     </facet>
     <facet type="Spring" name="Spring">
       <configuration>
-        <fileset id="web: application context" name="MVC application context" removed="true" />
+        <fileset id="web: application context" name="MVC application context" removed="true">
+          <file>file://$MODULE_DIR$/web/WEB-INF/security.xml</file>
+        </fileset>
         <fileset id="web: his servlet context" name="MVC his servlet context" removed="true">
           <dependency>web: application context</dependency>
           <file>file://$MODULE_DIR$/out/warsrc/WEB-INF/his-servlet.xml</file>
@@ -78,6 +80,10 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-tx:3.1.0.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: cglib:cglib:2.2.2" level="project" />
     <orderEntry type="library" name="Maven: asm:asm:3.3.1" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.security:spring-security-core:3.1.0.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.security:spring-security-crypto:3.1.0.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.security:spring-security-config:3.1.0.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.security:spring-security-web:3.1.0.RELEASE" level="project" />
   </component>
 </module>
 
