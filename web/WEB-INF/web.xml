@@ -79,8 +79,8 @@
     <context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
-			classpath:/WEB-INF/applicationContext.xml
-			classpath:/WEB-INF/security.xml
+			/WEB-INF/applicationContext.xml
+			/WEB-INF/security.xml
 		</param-value>
 	</context-param>
 

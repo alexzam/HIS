@@ -10,10 +10,11 @@
     <http pattern="/css/**" security="none"/>
     <http pattern="/js/**" security="none"/>
 
-    <http access-denied-page="/login">
+    <http access-denied-page="/login" entry-point-ref="entryPoint">
+
         <intercept-url pattern="/login*" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
         <intercept-url pattern="/**" access="ROLE_USER"/>
-        <logout logout-url="/login/out" />
+        <logout logout-url="/login/out"/>
     </http>
 
     <authentication-manager alias="authMan">
@@ -24,4 +25,8 @@
             </user-service>
         </authentication-provider>
     </authentication-manager>
+
+    <b:bean id="entryPoint" class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+        <b:property name="loginFormUrl" value="/login" />
+    </b:bean>
 </b:beans>
