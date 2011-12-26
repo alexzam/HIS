@@ -27,6 +27,9 @@
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
     <!--<servlet>-->
     <!--<servlet-name>AccountDataServlet</servlet-name>-->
     <!--<servlet-class>az.his.AccountDataServlet</servlet-class>-->
