@@ -25,7 +25,7 @@ public class LoginController {
     @Resource(name = "dbUtil")
     private DBUtil dbUtil;
 
-    @Autowired
+    @Resource(name = "authMan")
     private AuthenticationManager authManager;
 
     @RequestMapping(method = RequestMethod.GET)

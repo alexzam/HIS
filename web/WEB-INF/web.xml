@@ -6,7 +6,7 @@
          version="2.5">
     <display-name>HIS</display-name>
 
-    <filter>
+     <filter>
         <filter-name>springSecurityFilterChain</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
     </filter>
@@ -76,8 +76,8 @@
     <context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
-			/WEB-INF/applicationContext.xml
-			/WEB-INF/security.xml
+			classpath:/WEB-INF/applicationContext.xml
+			classpath:/WEB-INF/security.xml
 		</param-value>
 	</context-param>
 

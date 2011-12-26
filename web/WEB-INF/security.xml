@@ -16,7 +16,7 @@
         <logout logout-url="/login/out" />
     </http>
 
-    <authentication-manager>
+    <authentication-manager alias="authMan">
         <authentication-provider>
             <user-service>
                 <user name="1" password="u1" authorities="ROLE_USER"/>

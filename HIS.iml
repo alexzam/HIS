@@ -34,6 +34,7 @@
         <fileset id="fileset1" name="My Fileset" removed="false">
           <file>file://$MODULE_DIR$/web/WEB-INF/applicationContext.xml</file>
           <file>file://$MODULE_DIR$/web/WEB-INF/his-servlet.xml</file>
+          <file>file://$MODULE_DIR$/web/WEB-INF/security.xml</file>
         </fileset>
       </configuration>
     </facet>
