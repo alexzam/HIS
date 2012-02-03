@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="css/main.css" type="text/css">
 </head>
 <body class="login">
-<%--@elvariable id="users" type="java.util.List"--%>
 <c:forEach items="${users}" var="u">
     <div class="login_user">
         <a href="login?mode=in&uid=${u.getId()}">${u.getName()}</a>

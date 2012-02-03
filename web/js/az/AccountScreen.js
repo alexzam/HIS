@@ -90,7 +90,7 @@ Ext.define('alexzam.his.AccountScreen', {
     reloadAccStats:function() {
         var me = this;
         Ext.Ajax.request({
-            url:me.rootUrl + 'account-data?act=getamount',
+            url:me.rootUrl + 'account/stats',
             callback:function(o, s, resp) {
                 var data = Ext.JSON.decode(resp.responseText);
                 me.topPanel.setAccAmount(data.amount);
@@ -121,7 +121,7 @@ Ext.define('alexzam.his.AccountScreen', {
         var data = {act:"del", ids:idsStr};
         Ext.Ajax.request({
             method:'POST',
-            url:me.rootUrl + 'account-data',
+            url:me.rootUrl + 'account/data',
             params:data,
             callback:function() {
                 me.onTransactionsChanged();
