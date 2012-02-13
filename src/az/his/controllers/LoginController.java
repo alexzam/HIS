@@ -44,6 +44,6 @@ public class LoginController {
         Authentication auth = authManager.authenticate(userpass);
 
         SecurityContextHolder.getContext().setAuthentication(auth);
-        return "redirect:login";
+        return "redirect:account";
     }
 }
