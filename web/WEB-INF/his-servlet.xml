@@ -20,6 +20,25 @@
     <context:annotation-config/>
     <context:component-scan base-package="az.his.controllers"/>
 
+    <bean id="txManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+        <property name="configLocation" value="classpath:hibernate.cfg.xml"/>
+        <property name="configurationClass" value="org.hibernate.cfg.AnnotationConfiguration"/>
+        <property name="packagesToScan" value="az.his.persist"/>
+        <!--<property name="hibernateProperties">-->
+        <!--<value>-->
+        <!--hibernate.dialect=${hibernate.dialect}-->
+        <!--</value>-->
+        <!--</property>-->
+    </bean>
+
+    <bean id="dbUtil" class="az.his.DBUtil">
+        <constructor-arg ref="sessionFactory"/>
+    </bean>
+
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/jsp/"/>
         <property name="suffix" value=".jsp"/>
@@ -39,5 +58,5 @@
         </property>
     </bean>
 
-    <tx:annotation-driven transaction-manager="txManager"/>
+    <tx:annotation-driven transaction-manager="txManager" mode="aspectj"/>
 </beans>

@@ -68,4 +68,8 @@ public class DBManager {
     public Session getSession() {
         return session;
     }
+
+    public void flush() {
+        getSession().flush();
+    }
 }

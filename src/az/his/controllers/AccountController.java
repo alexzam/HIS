@@ -209,8 +209,9 @@ public class AccountController {
      * @throws ServletException Standart
      */
     @RequestMapping(value = "/data", method = RequestMethod.POST, params = "act=del")
+    @ResponseBody
     @Transactional
-    public void delTransactions(
+    public String delTransactions(
             @RequestParam("ids") String rawIds
     ) throws ServletException {
         String[] ids = rawIds.split(",");
@@ -220,10 +221,12 @@ public class AccountController {
             try {
                 int iid = Integer.parseInt(id);
                 dbman.delete(Transaction.class, iid);
+                dbman.flush();
             } catch (Exception e) {
                 throw new ServletException(e);
             }
         }
+        return "";
     }
 
     @RequestMapping(value = "/stats", method = RequestMethod.GET)
