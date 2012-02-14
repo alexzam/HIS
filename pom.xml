@@ -120,6 +120,7 @@
         </resources>
         <filters>
             <filter>${config}.properties</filter>
+            <filter>buildNumber.properties</filter>
         </filters>
 
         <plugins>
@@ -152,7 +153,6 @@
                     <outputDirectory>${project.build.directory}</outputDirectory>
                     <warSourceDirectory>${project.build.directory}/warsrc</warSourceDirectory>
                     <packagingExcludes>**/javaee-api-6.0.jar</packagingExcludes>
-                    <webXml>web/WEB-INF/web.xml</webXml>
                 </configuration>
             </plugin>
 
