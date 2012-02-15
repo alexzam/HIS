@@ -198,6 +198,7 @@ public class AccountController {
             trans.setCommon(false);
             dbman.persist(trans);
         }
+        dbman.flush();
 
         return "{}";
     }

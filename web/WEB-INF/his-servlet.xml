@@ -28,11 +28,6 @@
         <property name="configLocation" value="classpath:hibernate.cfg.xml"/>
         <property name="configurationClass" value="org.hibernate.cfg.AnnotationConfiguration"/>
         <property name="packagesToScan" value="az.his.persist"/>
-        <!--<property name="hibernateProperties">-->
-        <!--<value>-->
-        <!--hibernate.dialect=${hibernate.dialect}-->
-        <!--</value>-->
-        <!--</property>-->
     </bean>
 
     <bean id="dbUtil" class="az.his.DBUtil">
