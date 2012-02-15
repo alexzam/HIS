@@ -87,7 +87,7 @@
         <defaultGoal>package</defaultGoal>
         <directory>${project.basedir}/out</directory>
         <outputDirectory>${project.basedir}/out/warsrc/WEB-INF/classes</outputDirectory>
-        <sourceDirectory>./src</sourceDirectory>
+        <sourceDirectory>src</sourceDirectory>
         <testSourceDirectory>test</testSourceDirectory>
         <finalName>${project.artifactId}-${project.version}.${buildNumber}-${config}</finalName>
         <resources>
@@ -114,11 +114,13 @@
                 <includes>
                     <include>import.sql</include>
                     <include>hibernate.cfg.xml</include>
+                    <include>log4j.properties</include>
                 </includes>
             </resource>
         </resources>
         <filters>
             <filter>${config}.properties</filter>
+            <filter>buildNumber.properties</filter>
         </filters>
 
         <plugins>
@@ -189,7 +191,7 @@
                                 <copy
                                         file="${project.build.directory}/${project.build.finalName}.war"
                                         tofile="${project.build.directory}/${project.artifactId}.war"
-                                        overwrite="true" />
+                                        overwrite="true"/>
                             </target>
                         </configuration>
                     </execution>
@@ -231,6 +233,72 @@
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20090211</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>3.1.0.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>3.1.0.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <version>3.1.0.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib</artifactId>
+            <version>2.2.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>3.1.0.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>3.1.0.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>3.1.0.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.16</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aspects</artifactId>
+            <version>3.1.0.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>1.6.12</version>
         </dependency>
     </dependencies>
 

@@ -10,7 +10,7 @@ Ext.define('alexzam.his.model.account.proxy.Category', {
     },
 
     constructor:function(config){
-        config.url = config.rootUrl + 'trcategory-data';
+        config.url = config.rootUrl + 'account/catdata';
 
         return this.callParent(arguments);
     }

@@ -2,10 +2,12 @@
 <%@ page import="az.his.DBUtil" %>
 <%@ page import="az.his.persist.User" %>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.LinkedList" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    DBManager dbman = DBUtil.getDBManFromReq(request);
-    List<User> users = User.getAll(dbman);
+    //    DBManager dbman = DBUtil.getDBManFromReq(request);
+//    List<User> users = User.getAll(dbman);
+    List<User> users = new LinkedList<User>();
 %>
 <!DOCTYPE HTML>
 <html>
@@ -16,7 +18,8 @@
 <body class="login">
 <% for (User user : users) { %>
 <div class="login_user">
-    <a href="login?mode=in&uid=<%=user.getId()%>"><%=user.getName()%></a>
+    <a href="login?mode=in&uid=<%=user.getId()%>"><%=user.getName()%>
+    </a>
 </div>
 <% } %>
 

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<b:beans xmlns:b="http://www.springframework.org/schema/beans"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://www.springframework.org/schema/security"
+         xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/security
+       http://www.springframework.org/schema/security/spring-security.xsd">
+
+    <http pattern="/css/**" security="none"/>
+    <http pattern="/js/**" security="none"/>
+
+    <http access-denied-page="/login" entry-point-ref="entryPoint">
+
+        <intercept-url pattern="/login*" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/**" access="ROLE_USER"/>
+        <logout logout-url="/login/out"/>
+    </http>
+
+    <authentication-manager alias="authMan">
+        <authentication-provider>
+            <user-service>
+                <user name="1" password="u1" authorities="ROLE_USER"/>
+                <user name="2" password="u2" authorities="ROLE_USER"/>
+            </user-service>
+        </authentication-provider>
+    </authentication-manager>
+
+    <b:bean id="entryPoint" class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+        <b:property name="loginFormUrl" value="/login" />
+    </b:bean>
+</b:beans>

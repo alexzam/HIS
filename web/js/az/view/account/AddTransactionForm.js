@@ -196,7 +196,7 @@ Ext.define('alexzam.his.view.account.AddTransactionForm', {
         data.act = 'put';
 
         Ext.Ajax.request({
-            url: me.rootUrl + 'account-data',
+            url: me.rootUrl + 'account/data',
             params: data,
             success:function() {
                 me.fireEvent('transchanged');

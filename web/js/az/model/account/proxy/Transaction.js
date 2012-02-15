@@ -10,7 +10,7 @@ Ext.define('alexzam.his.model.account.proxy.Transaction', {
     },
 
     constructor:function(config){
-        config.url = config.rootUrl + 'account-data';
+        config.url = config.rootUrl + 'account/data';
 
         return this.callParent(arguments);
     }

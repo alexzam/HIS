@@ -13,10 +13,10 @@
         <property name="show_sql">true</property>
         <property name="transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</property>
 
-        <mapping package="az.his.persist"/>
-        <mapping class="az.his.persist.Transaction"/>
-        <mapping class="az.his.persist.Account"/>
-        <mapping class="az.his.persist.TransactionCategory"/>
-        <mapping class="az.his.persist.User"/>
+        <!--<mapping package="az.his.persist"/>-->
+        <!--<mapping class="az.his.persist.Transaction"/>-->
+        <!--<mapping class="az.his.persist.Account"/>-->
+        <!--<mapping class="az.his.persist.TransactionCategory"/>-->
+        <!--<mapping class="az.his.persist.User"/>-->
     </session-factory>
 </hibernate-configuration>
