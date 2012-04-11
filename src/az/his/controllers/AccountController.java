@@ -129,6 +129,7 @@ public class AccountController {
      * @param rawDate   Unix date of transaction.
      * @param comment   Comment to transaction.
      * @throws ServletException Standart
+     * @return Empty JSON as nothing needs to be returned
      */
     @RequestMapping(value = "/data", method = RequestMethod.POST, params = "act=put")
     @Transactional
@@ -162,12 +163,20 @@ public class AccountController {
 
         TransactionCategory cat;
         if (catId == 0) {
-            // New category
-            cat = new TransactionCategory();
+            // New category if needed
             if (catName == null) throw new ServletException("Category name should be filled (param 'catname')");
-            cat.setName(catName);
-            cat.setType(TransactionCategory.CatType.EXP);
-            cat = dbman.merge(cat);
+
+            List<TransactionCategory> cats = dbman.findByProperty(TransactionCategory.class, "name", catName);
+            if (cats.size() == 0) {
+                // New category
+                cat = new TransactionCategory();
+                cat.setName(catName);
+                cat.setType(TransactionCategory.CatType.EXP);
+                cat = dbman.merge(cat);
+            } else {
+                // Reuse category
+                cat = cats.get(0);
+            }
         } else {
             cat = dbman.get(TransactionCategory.class, catId);
         }
@@ -208,6 +217,7 @@ public class AccountController {
      *
      * @param rawIds Transaction ID comma-separated list.
      * @throws ServletException Standart
+     * @return Empty string
      */
     @RequestMapping(value = "/data", method = RequestMethod.POST, params = "act=del")
     @ResponseBody
