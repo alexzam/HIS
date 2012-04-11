@@ -21,28 +21,28 @@ Ext.define('alexzam.his.view.account.AddTransactionForm', {
     items:[
         null,
         {
-            xtype:'datefield',
-            fieldLabel:'Когда',
-            name:'date',
-            maxValue:new Date(),
-            format:'d.m.Y',
-            validateOnChange:false,
-            allowBlank:true,
-            labelWidth:40,
-            itemId:'dtAdd'
-        },
-        {
             xtype:'panel',
             layout:'vbox',
-            height:80,
+            height:50,
             border:0,
             bodyPadding:'0 0 0 5px',
-            itemId:'panel2',
+            itemId:'panel1',
             items:[
+                {
+                    xtype:'datefield',
+                    fieldLabel:'Когда',
+                    name:'date',
+                    maxValue:new Date(),
+                    format:'d.m.Y',
+                    validateOnChange:false,
+                    allowBlank:true,
+                    labelWidth:50,
+                    itemId:'dtAdd'
+                },
                 {
                     xtype:'panel',
                     layout:'hbox',
-                    width:250,
+                    width:210,
                     border:0,
                     itemId:'panel0',
                     items:[
@@ -56,7 +56,7 @@ Ext.define('alexzam.his.view.account.AddTransactionForm', {
                             mouseWheelEnabled:false,
                             labelWidth:50,
                             validateOnChange:false,
-                            width:155,
+                            width:180,
                             labelAlign:'left',
                             allowBlank:true,
                             itemId:'numAmount'
@@ -67,19 +67,19 @@ Ext.define('alexzam.his.view.account.AddTransactionForm', {
                             html:'<span class="labCurrency">RUR</span>'
                         }
                     ]
-                },
-                {
-                    xtype:'alexzam.account.TrTypeRadioGroup',
-                    width:250,
-                    height:50,
-                    itemId:'rgTrType'
                 }
             ]
         },
         {
+            xtype:'alexzam.account.TrTypeRadioGroup',
+            width:250,
+            height:50,
+            itemId:'rgTrType'
+        },
+        {
             xtype:'panel',
             layout:'vbox',
-            height:80,
+            height:50,
             border:0,
             bodyPadding:'0 5px 0 5px',
             itemId:'panel3',
@@ -133,7 +133,6 @@ Ext.define('alexzam.his.view.account.AddTransactionForm', {
         });
 
         me.rgActor = Ext.create('Ext.form.RadioGroup', {
-            fieldLabel:'Кто',
             labelAlign:'top',
             vertical:true,
             columns:1,
@@ -147,11 +146,11 @@ Ext.define('alexzam.his.view.account.AddTransactionForm', {
 
         me.callParent();
 
-        me.getComponent('panel2').getComponent('rgTrType').on('typechanged', me.onTypeChanged, me);
+        me.getComponent('rgTrType').on('typechanged', me.onTypeChanged, me);
 
         me.cbCategory = me.getComponent('panel3').getComponent('cbCategory');
         me.dtAdd = me.getComponent('dtAdd');
-        me.numAmount = me.getComponent('panel2').getComponent('panel0').getComponent('numAmount');
+        me.numAmount = me.getComponent('panel1').getComponent('panel0').getComponent('numAmount');
 
         me.addEvents('transchanged');
     },

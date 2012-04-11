@@ -1,8 +1,8 @@
 <%@ page import="az.his.DBManager" %>
 <%@ page import="az.his.DBUtil" %>
-<%@ page import="az.his.filters.AuthFilter" %>
 <%@ page import="az.his.persist.User" %>
 <%@ page import="java.util.List" %>
+<%@ page import="az.his.AuthUtil" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%!
     private static String pathRoot = null;
@@ -18,7 +18,7 @@
     User userMe = null;
     for (User user : usersNotMe)
     {
-        if (user.getId() == AuthFilter.getUid(session))
+        if (user.getId() == AuthUtil.getUid())
         {
             userMe = user;
             usersNotMe.remove(user);
@@ -43,16 +43,14 @@
         {
             Ext.create('alexzam.his.AccountScreen', {
                 rootUrl:'<%=pathRoot%>',
-                //transStoreUrl: 'account-data',
-                //catStoreUrl: 'trcategory-data'
-                uid: <%=AuthFilter.getUid(session)%>,
+                uid: <%=AuthUtil.getUid()%>,
                 userRadioOptions:[
                     {boxLabel:'<%=userMe.getName()%> (Я)', inputValue:'0', checked:true}
                     <% for (User user : usersNotMe) { %>
                     ,
                     {boxLabel:'<%=user.getName()%>', inputValue:'<%=user.getId()%>'}
                     <% } %>
-                ] // TODO Enrich by name:actor
+                ]
             });
         });
     </script>
