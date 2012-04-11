@@ -100,7 +100,9 @@ Ext.define('alexzam.his.view.account.AddTransactionForm', {
                     xtype:'textfield',
                     fieldLabel:'Комментарий',
                     name:'comment',
-                    labelWidth:80
+                    labelWidth:80,
+                    maxLength:255,
+                    maxLengthText:"Комментарий не должен быть длиннее 255 символов"
                 }
             ]
         },
@@ -149,7 +151,7 @@ Ext.define('alexzam.his.view.account.AddTransactionForm', {
         me.getComponent('rgTrType').on('typechanged', me.onTypeChanged, me);
 
         me.cbCategory = me.getComponent('panel3').getComponent('cbCategory');
-        me.dtAdd = me.getComponent('dtAdd');
+        me.dtAdd = me.getComponent('panel1').getComponent('dtAdd');
         me.numAmount = me.getComponent('panel1').getComponent('panel0').getComponent('numAmount');
 
         me.addEvents('transchanged');
