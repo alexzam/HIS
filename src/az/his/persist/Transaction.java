@@ -170,10 +170,12 @@ public class Transaction implements DBListener {
             getAccount().setValue(getAccount().getValue() - amount);
 
         // Delete empty category
-        Long res = (Long) dbman.getSession().createQuery("select count(id) from transaction where category = ?")
-                .setEntity(0, getCategory())
-                .uniqueResult();
-        if(res <= 1) dbman.getSession().delete(getCategory());
+        if (getCategory().getType() != TransactionCategory.CatType.NONE) {
+            Long res = (Long) dbman.getSession().createQuery("select count(id) from transaction where category = ?")
+                    .setEntity(0, getCategory())
+                    .uniqueResult();
+            if (res <= 1) dbman.getSession().delete(getCategory());
+        }
     }
 
     @Override
