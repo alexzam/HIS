@@ -36,7 +36,11 @@ Ext.define('alexzam.his.view.account.TransactionGrid', {
         {
             header:'Комментарий',
             dataIndex:'comment',
-            flex:1
+            flex:1,
+            autoScroll:true,
+            renderer:function(val) {
+                return "<span title='" + val + "'>" + val + "</span>";
+            }
         }
     ],
 
