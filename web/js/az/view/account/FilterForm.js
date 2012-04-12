@@ -73,7 +73,7 @@ Ext.define('alexzam.his.view.account.FilterForm', {
         me.dtTo.on('change', me.onFilterChange, me);
         me.cmbCat.on('change', me.onFilterChange, me);
 
-        me.addEvents(['transreload', 'transdelete']);
+        me.addEvents(['filterupdate', 'transdelete']);
 
         var d = new Date();
         d.setDate(1);
@@ -92,7 +92,7 @@ Ext.define('alexzam.his.view.account.FilterForm', {
 
     onFilterChange:function() {
         var me = this;
-        me.fireEvent('transreload');
+        me.fireEvent('filterupdate');
 
         me.dtTo.setMinValue(me.dtFrom.getValue());
         me.dtFrom.setMaxValue(me.dtTo.getValue());

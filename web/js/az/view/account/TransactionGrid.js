@@ -72,11 +72,19 @@ Ext.define('alexzam.his.view.account.TransactionGrid', {
         });
 
         me.callParent();
+
+        me.getView().getFeature(0).disable();
     },
 
     reloadTrans:function(data) {
         var me = this;
         me.proxyTrans.extraParams = data;
         me.store.load();
+    },
+
+    enableSummary:function(enable){
+        var feat = this.getView().getFeature(0);
+        if(enable) feat.enable();
+        else feat.disable();
     }
 });

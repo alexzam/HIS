@@ -22,7 +22,7 @@ Ext.define('alexzam.his.view.account.RightPanel', {
         me.frmFilter = Ext.create('alexzam.his.view.account.FilterForm', {
             region:'center',
             rootUrl:me.rootUrl,
-            bubbleEvents:['transreload', 'transdelete']
+            bubbleEvents:['filterupdate', 'transdelete']
         });
 
         me.grdStats = Ext.create('Ext.grid.Panel', {

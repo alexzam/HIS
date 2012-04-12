@@ -42,7 +42,7 @@ Ext.define('alexzam.his.AccountScreen', {
                 itemId: 'panelR',
                 storeStats:me.storeStats,
                 listeners:{
-                    transreload:me.onTransReload,
+                    filterupdate:me.onTransReload,
                     transdelete:me.onBtTransDelete,
                     scope:me
                 }
@@ -77,6 +77,8 @@ Ext.define('alexzam.his.AccountScreen', {
             q.to = q.to.getTime();
         }
         me.grdTrans.reloadTrans(q);
+
+        me.grdTrans.enableSummary(q.cat > 0);
     },
 
     onTransactionsChanged:function() {
