@@ -127,7 +127,7 @@ public class Transaction implements DBListener {
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
 
         ret.put("id", getId());
-        ret.put("amount", DBUtil.formatCurrency(getAmount()));
+        ret.put("amount", ((double)getAmount())/100);
         ret.put("timestamp", df.format(getTimestmp()));
         ret.put("actor_id", getActor().getId());
         ret.put("actor_name", getActor().getName());

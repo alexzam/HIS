@@ -144,7 +144,7 @@ public class AccountController {
             @RequestParam("comment") String comment
     ) throws ServletException {
 
-        int amount = Math.round(rawAmount) * 100;
+        int amount = Math.round(rawAmount * 100);
         boolean common;
         DBManager dbman = dbUtil.getDbManager();
 
@@ -268,7 +268,7 @@ public class AccountController {
 
     @RequestMapping(value = "/data", method = RequestMethod.GET)
     @Transactional(readOnly = true)
-    private void getTransactions(
+    public void getTransactions(
             HttpServletResponse resp,
             @RequestParam(value = "from", required = false) Long rawFrom,
             @RequestParam(value = "to", required = false) Long rawTo,

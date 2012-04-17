@@ -3,6 +3,7 @@
  */
 Ext.BLANK_IMAGE_URL = 'js/ext/resources/images/default/s.gif';
 Ext.util.Format.thousandSeparator = ' ';
+Ext.util.Format.decimalSeparator = ',';
 
 Ext.Loader.setConfig({
     enabled:true,
