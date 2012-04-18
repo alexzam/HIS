@@ -37,7 +37,8 @@ Ext.define('alexzam.his.view.account.AddTransactionForm', {
                     validateOnChange:false,
                     allowBlank:true,
                     labelWidth:50,
-                    itemId:'dtAdd'
+                    itemId:'dtAdd',
+                    startDay:1
                 },
                 {
                     xtype:'panel',

@@ -15,7 +15,8 @@ Ext.define('alexzam.his.view.account.FilterForm', {
             validateOnChange:false,
             labelWidth:65,
             width:175,
-            itemId:'dtFrom'
+            itemId:'dtFrom',
+            startDay:1
         },
         {
             xtype:'datefield',
@@ -25,7 +26,8 @@ Ext.define('alexzam.his.view.account.FilterForm', {
             validateOnChange:false,
             labelWidth:65,
             width:175,
-            itemId:'dtTo'
+            itemId:'dtTo',
+            startDay:1
         },
         {
             xtype:'combo',
