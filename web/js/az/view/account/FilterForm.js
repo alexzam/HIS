@@ -85,9 +85,14 @@ Ext.define('alexzam.his.view.account.FilterForm', {
         var cmp = me.cmbCat;
         var val = cmp.getValue();
         cmp.setValue('');
-        me.storeCat.load();
-        cmp.setValue(val);
-        cmp.getPicker().setLoading(false);
+        me.storeCat.load({
+            callback:function() {
+                var found = me.storeCat.find('id', val);
+                if (found >= 0) cmp.setValue(val);
+                else cmp.setValue(0);
+                cmp.getPicker().setLoading(false);
+            }
+        });
     },
 
     onFilterChange:function() {
