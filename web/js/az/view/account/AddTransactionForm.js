@@ -101,6 +101,7 @@ Ext.define('alexzam.his.view.account.AddTransactionForm', {
                     xtype:'textfield',
                     fieldLabel:'Комментарий',
                     name:'comment',
+                    itemId:'tbComment',
                     labelWidth:80,
                     maxLength:255,
                     maxLengthText:"Комментарий не должен быть длиннее 255 символов"
@@ -121,6 +122,7 @@ Ext.define('alexzam.his.view.account.AddTransactionForm', {
     cbCategory:null,
     dtAdd:null,
     numAmount:null,
+    tbComment:null,
     storeCat:null,
 
     initComponent:function () {
@@ -154,6 +156,7 @@ Ext.define('alexzam.his.view.account.AddTransactionForm', {
         me.cbCategory = me.getComponent('panel3').getComponent('cbCategory');
         me.dtAdd = me.getComponent('panel1').getComponent('dtAdd');
         me.numAmount = me.getComponent('panel1').getComponent('panel0').getComponent('numAmount');
+        me.tbComment = me.getComponent('panel3').getComponent('tbComment');
 
         me.addEvents('transchanged');
     },
@@ -212,8 +215,9 @@ Ext.define('alexzam.his.view.account.AddTransactionForm', {
 
     resetForm:function() {
         var me = this;
-        me.dtAdd.setValue(null);
         me.cbCategory.setValue(null);
+        me.numAmount.setValue(null);
+        me.tbComment.setValue(null);
     },
 
     reloadCats:function() {
