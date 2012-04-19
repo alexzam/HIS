@@ -26,7 +26,7 @@ Ext.define('alexzam.his.view.account.TopPanel', {
                     region:'center',
                     layout:'fit',
                     itemId:'pnlAmount',
-                    html:'<span id="account_amount">load</span>'
+                    html:'<span id="account_amount"></span>'
                 }
             ]
         }
