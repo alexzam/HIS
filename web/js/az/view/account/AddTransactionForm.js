@@ -95,7 +95,12 @@ Ext.define('alexzam.his.view.account.AddTransactionForm', {
                     displayField:'name',
                     lastQuery:'',
                     labelWidth:80,
-                    allowBlank:true
+                    allowBlank:true,
+                    listeners:{
+                        blur : function() {
+                            this.setValue(this.getValue().trim());
+                        }
+                    }
                 },
                 {
                     xtype:'textfield',
