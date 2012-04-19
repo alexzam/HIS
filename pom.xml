@@ -6,7 +6,7 @@
     <groupId>az.his</groupId>
     <artifactId>his</artifactId>
     <packaging>war</packaging>
-    <version>0.1.1</version>
+    <version>0.1.2</version>
     <name>HIS</name>
     <properties>
         <config>dev</config>
