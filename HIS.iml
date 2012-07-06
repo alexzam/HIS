@@ -11,6 +11,10 @@
         <webroots>
           <root url="file://$MODULE_DIR$/out/warsrc" relative="/" />
         </webroots>
+        <sourceRoots>
+          <root url="file://$MODULE_DIR$/web" />
+          <root url="file://$MODULE_DIR$/src" />
+        </sourceRoots>
       </configuration>
     </facet>
     <facet type="hibernate" name="Hibernate">

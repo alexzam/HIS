@@ -15,6 +15,10 @@ Ext.define('alexzam.his.AccountScreen', {
     grdTrans:null,
     storeStats:null,
 
+    tbar: [
+        { xtype: 'button', text: 'Button 1' }
+    ],
+
     initComponent:function () {
         var me = this;
 
