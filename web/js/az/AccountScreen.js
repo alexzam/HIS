@@ -8,23 +8,47 @@ Ext.define('alexzam.his.AccountScreen', {
         'Ext.Ajax'
     ],
 
-    layout:'border',
+    layout:'fit',
 
     rightPanel:null,
     topPanel:null,
     grdTrans:null,
     storeStats:null,
 
-    tbar: [
-        { xtype: 'button', text: 'Button 1' }
+    items:[
+        {
+            xtype:'panel',
+            layout:'border',
+            itemId:'pnlOuter',
+            tbar: [
+                {
+                    text: 'Казна',
+                    disabled:true
+                },
+                {
+                    text: 'Отчёты',
+                    handler:function(){
+                        document.location = "reports";
+                    }
+                },
+                '->',
+                {
+                    text:'Выйти',
+                    handler:function() {
+                        document.location = "login?mode=out";
+                    }
+                }
+            ]
+        }
     ],
+
 
     initComponent:function () {
         var me = this;
 
         me.storeStats = Ext.create('alexzam.his.model.account.store.AccStat', {});
 
-        me.items = [
+        me.items[0].items = [
             {
                 xtype:'his.account.TopPanel',
                 rootUrl:me.rootUrl,
@@ -61,9 +85,10 @@ Ext.define('alexzam.his.AccountScreen', {
 
         me.callParent();
 
-        me.rightPanel = me.getComponent('panelR');
-        me.topPanel = me.getComponent('panelT');
-        me.grdTrans = me.getComponent('grdTrans');
+        var pnlOuter = me.getComponent('pnlOuter');
+        me.rightPanel = pnlOuter.getComponent('panelR');
+        me.topPanel = pnlOuter.getComponent('panelT');
+        me.grdTrans = pnlOuter.getComponent('grdTrans');
 
         me.reloadAccStats();
     },

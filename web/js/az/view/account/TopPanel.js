@@ -14,21 +14,9 @@ Ext.define('alexzam.his.view.account.TopPanel', {
             xtype:'panel',
             region:'east',
             width:230,
-            layout:'border',
-            items:[
-                {
-                    xtype:'button',
-                    region:'north',
-                    text:'Выйти'
-                },
-                {
-                    xtype:'panel',
-                    region:'center',
-                    layout:'fit',
-                    itemId:'pnlAmount',
-                    html:'<span id="account_amount"></span>'
-                }
-            ]
+            layout:'fit',
+            itemId:'pnlAmount',
+            html:'<span id="account_amount"></span>'
         }
     ],
 
@@ -37,8 +25,6 @@ Ext.define('alexzam.his.view.account.TopPanel', {
 
     initComponent:function () {
         var me = this;
-
-        me.items[0].items[0].handler=me.onBtLogout;
 
         me.items.push(Ext.create('Ext.panel.Panel', {
             region:'center',
@@ -58,10 +44,6 @@ Ext.define('alexzam.his.view.account.TopPanel', {
         me.frmTrans = me.getComponent(1).getComponent('frmTrans');
     },
 
-    onBtLogout:function() {
-        document.location = "login?mode=out";
-    },
-
     setAccAmount:function(val) {
         this.spanAmount.innerHTML = val + '&nbsp;р.';
     },
@@ -70,7 +52,7 @@ Ext.define('alexzam.his.view.account.TopPanel', {
         var me = this;
         me.callParent(arguments);
 
-        me.spanAmount = me.getComponent(0).getComponent('pnlAmount').getEl().getById('account_amount').dom;
+        me.spanAmount = me.getComponent('pnlAmount').getEl().getById('account_amount').dom;
     },
 
     reloadCats:function() {
