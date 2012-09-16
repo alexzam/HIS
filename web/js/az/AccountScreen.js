@@ -5,6 +5,7 @@ Ext.define('alexzam.his.AccountScreen', {
         'alexzam.his.view.account.TopPanel',
         'alexzam.his.view.account.RightPanel',
         'alexzam.his.view.account.TransactionGrid',
+        'alexzam.his.view.toolbar.Toolbar',
         'Ext.Ajax'
     ],
 
@@ -20,25 +21,11 @@ Ext.define('alexzam.his.AccountScreen', {
             xtype:'panel',
             layout:'border',
             itemId:'pnlOuter',
-            tbar: [
-                {
-                    text: 'Казна',
-                    disabled:true
-                },
-                {
-                    text: 'Отчёты',
-                    handler:function(){
-                        document.location = "reports";
-                    }
-                },
-                '->',
-                {
-                    text:'Выйти',
-                    handler:function() {
-                        document.location = "login?mode=out";
-                    }
-                }
-            ]
+            dockedItems:[{
+                xtype:'his.Toolbar',
+                dock:'top',
+                disableId:'acc'
+            }]
         }
     ],
 
