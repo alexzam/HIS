@@ -57,7 +57,6 @@ Ext.define('alexzam.his.view.account.AddTransactionForm', {
                             mouseWheelEnabled:false,
                             labelWidth:50,
                             validateOnChange:false,
-                            width:180,
                             labelAlign:'left',
                             allowBlank:true,
                             itemId:'numAmount'
@@ -73,7 +72,6 @@ Ext.define('alexzam.his.view.account.AddTransactionForm', {
         },
         {
             xtype:'alexzam.account.TrTypeRadioGroup',
-            width:250,
             height:50,
             itemId:'rgTrType'
         },
@@ -98,7 +96,8 @@ Ext.define('alexzam.his.view.account.AddTransactionForm', {
                     allowBlank:true,
                     listeners:{
                         blur : function() {
-                            this.setValue(this.getValue().trim());
+                            var value = this.getValue();
+                            this.setValue((value != null) ? value.trim() : null);
                         }
                     }
                 },

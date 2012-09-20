@@ -34,7 +34,7 @@
 
     <link rel="stylesheet" type="text/css" href="js/ext/resources/css/ext-all.css"/>
     <link rel="stylesheet" type="text/css" href="css/main.css">
-    <script type="text/javascript" src="js/ext/ext-core-dev.js"></script>
+    <script type="text/javascript" src="js/ext/ext-dev.js"></script>
     <script type="text/javascript" src="js/ext-conf.js"></script>
     <script type="text/javascript">
         Ext.require('alexzam.his.AccountScreen');

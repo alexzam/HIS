@@ -3,7 +3,11 @@ Ext.define('alexzam.his.view.account.FilterForm', {
     alias:'widget.his.account.FilterForm',
 
     title:'Фильтр',
-    layout:'vbox',
+    layout:{
+        type:'vbox',
+        align:'stretch',
+        constrainAlign:true
+    },
     bodyPadding:5,
     autoScroll:true,
     items:[
@@ -14,7 +18,6 @@ Ext.define('alexzam.his.view.account.FilterForm', {
             format:'d.m.Y',
             validateOnChange:false,
             labelWidth:65,
-            width:175,
             itemId:'dtFrom',
             startDay:1
         },
@@ -25,7 +28,6 @@ Ext.define('alexzam.his.view.account.FilterForm', {
             format:'d.m.Y',
             validateOnChange:false,
             labelWidth:65,
-            width:175,
             itemId:'dtTo',
             startDay:1
         },
@@ -38,7 +40,6 @@ Ext.define('alexzam.his.view.account.FilterForm', {
             displayField:'name',
             lastQuery:'',
             labelWidth:65,
-            width:175,
             itemId:'cmbCat'
         },
         {

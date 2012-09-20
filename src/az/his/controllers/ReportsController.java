@@ -36,7 +36,7 @@ public class ReportsController {
                         "and tc.id != " + TransactionCategory.CAT_DONATE +
                         "and tc.id != " + TransactionCategory.CAT_REFUND +
                         "group by tc.name " +
-                        "order by sum(t.amount) asc").list();
+                        "order by sum(t.amount) desc").list();
 
         JSONArray items = new JSONArray();
         for (Object result : results) {

@@ -6,7 +6,10 @@ Ext.define('alexzam.his.view.reports.CatSpendColumnChart', {
         'Ext.chart.theme.Base',
         'Ext.chart.series.Bar',
         'Ext.chart.axis.Numeric',
-        'Ext.chart.axis.Category'
+        'Ext.chart.axis.Category',
+        'Ext.data.Request',
+        'Ext.data.Store',
+        'Ext.data.reader.Json'
     ],
 
     alias:'widget.his.chart.catspend',

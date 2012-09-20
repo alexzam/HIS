@@ -12,7 +12,6 @@ Ext.define('alexzam.his.view.account.TrTypeRadioGroup', {
             layout:'vbox',
             border:0,
             height:50,
-            width:110,
             items:[
                 {
                     xtype:'radio',
