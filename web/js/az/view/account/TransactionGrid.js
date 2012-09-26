@@ -7,7 +7,9 @@ Ext.define('alexzam.his.view.account.TransactionGrid', {
         'alexzam.his.model.account.proxy.Transaction',
         'Ext.grid.column.Date',
         'Ext.grid.column.Number',
-        'Ext.grid.feature.Summary'
+        'Ext.grid.feature.Summary',
+
+        'Ext.form.field.Display'
     ],
 
     multiSelect:true,
@@ -17,11 +19,31 @@ Ext.define('alexzam.his.view.account.TransactionGrid', {
             header:'Когда',
             dataIndex:'timestamp',
             xtype:'datecolumn',
-            format:'d.m.Y'
+            format:'d.m.Y',
+            editor:{
+                xtype:'datefield',
+                maxValue:new Date(),
+                format:'d.m.Y',
+                startDay:1
+            }
         },
         {
             header:'Кто',
-            dataIndex:'actor_name'
+            dataIndex:'actor_id',
+            custEditor:{
+                xclass:'Ext.form.field.ComboBox',
+                displayField:'name',
+                valueField:'id',
+                queryMode: 'local'
+            },
+            cEditorStore:Ext.create('Ext.data.Store', {
+                fields: ['id', 'name'],
+                data : [
+                    {id:"1", name:"AlexZam"},
+                    {id:"2", name:"Anitra"}
+                ]
+            }),
+            editorInit:false
         },
         {
             header:'Сколько',
@@ -62,7 +84,28 @@ Ext.define('alexzam.his.view.account.TransactionGrid', {
         }
     },
 
-    proxyTrans: null,
+    plugins: [
+        {
+            ptype:'rowediting',
+            clicksToEdit: 2,
+            listeners:{
+                beforeedit:function(editor, vals) {
+                    console.dir(vals.record);
+//                    var field = editor.editor.getForm().getFields().items[1];
+                    var col = vals.grid.columns[1];
+                    var oldField = null;
+                    if (col.cfield = ! null) oldField = col.cfield;
+                    col.cfield = Ext.create(col.custEditor);
+//                    console.dir(field);
+                    col.cfield.store = col.cEditorStore;
+                    col.setEditor(col.cfield);
+                    if (oldField != null)Ext.destroy(oldField);
+                }
+            }
+        }
+    ],
+
+    proxyTrans:null,
 
     initComponent:function () {
         var me = this;
@@ -86,9 +129,9 @@ Ext.define('alexzam.his.view.account.TransactionGrid', {
         me.store.load();
     },
 
-    enableSummary:function(enable){
+    enableSummary:function(enable) {
         var feat = this.getView().getFeature(0);
-        if(enable) feat.enable();
+        if (enable) feat.enable();
         else feat.disable();
     }
 });
