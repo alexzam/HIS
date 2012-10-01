@@ -30,20 +30,23 @@ Ext.define('alexzam.his.view.account.TransactionGrid', {
         {
             header:'Кто',
             dataIndex:'actor_id',
-            custEditor:{
-                xclass:'Ext.form.field.ComboBox',
+            editor:{
+//                xclass:'Ext.form.field.ComboBox',
+                xtype:'combo',
                 displayField:'name',
                 valueField:'id',
-                queryMode: 'local'
+                queryMode: 'local',
+                store:Ext.create('Ext.data.Store', {
+                    fields: ['id', 'name'],
+                    data : [
+                        {id:1, name:"AlexZam"},
+                        {id:2, name:"Anitra"}
+                    ]
+                })
             },
-            cEditorStore:Ext.create('Ext.data.Store', {
-                fields: ['id', 'name'],
-                data : [
-                    {id:"1", name:"AlexZam"},
-                    {id:"2", name:"Anitra"}
-                ]
-            }),
-            editorInit:false
+            renderer:function(val, meta, record) {
+                return record.data.actor_name;
+            }
         },
         {
             header:'Сколько',
@@ -53,6 +56,13 @@ Ext.define('alexzam.his.view.account.TransactionGrid', {
             summaryType:'sum',
             summaryRenderer: function(value, summaryData, dataIndex) {
                 return Ext.util.Format.number(value, "0.00");
+            },
+            editor:{
+                xtype:'numberfield',
+                minValue:0.01,
+                hideTrigger:true,
+                keyNavEnabled:false,
+                mouseWheelEnabled:false
             }
         },
         {
@@ -90,16 +100,26 @@ Ext.define('alexzam.his.view.account.TransactionGrid', {
             clicksToEdit: 2,
             listeners:{
                 beforeedit:function(editor, vals) {
-                    console.dir(vals.record);
-//                    var field = editor.editor.getForm().getFields().items[1];
-                    var col = vals.grid.columns[1];
-                    var oldField = null;
-                    if (col.cfield = ! null) oldField = col.cfield;
-                    col.cfield = Ext.create(col.custEditor);
-//                    console.dir(field);
-                    col.cfield.store = col.cEditorStore;
-                    col.setEditor(col.cfield);
-                    if (oldField != null)Ext.destroy(oldField);
+                    // Amount
+                    var col = vals.grid.columns[2];
+                    var field = col.getEditor();
+
+                    if(vals.record.data.type == 'D') {
+                        field.setMinValue(0.01);
+                        field.setMaxValue(null);
+                    } else {
+                        field.setMinValue(null);
+                        field.setMaxValue(-0.01);
+                    }
+
+//                    var oldField = null;
+//                    if (col.cfield = ! null) oldField = col.cfield;
+//
+//                    col.cfield = Ext.create(col.custEditor);
+//                    col.cfield.store = col.cEditorStore;
+//                    col.setEditor(col.cfield);
+//
+//                    if (oldField != null)Ext.destroy(oldField);
                 }
             }
         }
