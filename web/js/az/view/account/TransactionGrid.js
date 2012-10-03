@@ -31,7 +31,6 @@ Ext.define('alexzam.his.view.account.TransactionGrid', {
             header:'Кто',
             dataIndex:'actor_id',
             editor:{
-//                xclass:'Ext.form.field.ComboBox',
                 xtype:'combo',
                 displayField:'name',
                 valueField:'id',
@@ -67,7 +66,21 @@ Ext.define('alexzam.his.view.account.TransactionGrid', {
         },
         {
             header:'Категория',
-            dataIndex:'category_name'
+            dataIndex:'category_id',
+            cEditor:{
+                xclass:'Ext.form.field.ComboBox',
+                queryMode:'local',
+                valueField:'id',
+                displayField:'name',
+                lastQuery:'',
+                store:'cat-add',
+                listeners:{
+                    blur : function() {
+                        var value = this.getValue();
+                        this.setValue((value != null) ? value.trim() : null);
+                    }
+                }
+            }
         },
         {
             header:'Комментарий',
@@ -104,7 +117,7 @@ Ext.define('alexzam.his.view.account.TransactionGrid', {
                     var col = vals.grid.columns[2];
                     var field = col.getEditor();
 
-                    if(vals.record.data.type == 'D') {
+                    if (vals.record.data.type == 'D') {
                         field.setMinValue(0.01);
                         field.setMaxValue(null);
                     } else {
@@ -112,14 +125,14 @@ Ext.define('alexzam.his.view.account.TransactionGrid', {
                         field.setMaxValue(-0.01);
                     }
 
-//                    var oldField = null;
-//                    if (col.cfield = ! null) oldField = col.cfield;
+                    // Category
+                    col = vals.grid.columns[3];
+                    var oldField = null;
+                    if (col.cfield = ! null) oldField = col.cField;
 //
-//                    col.cfield = Ext.create(col.custEditor);
-//                    col.cfield.store = col.cEditorStore;
-//                    col.setEditor(col.cfield);
-//
-//                    if (oldField != null)Ext.destroy(oldField);
+                    col.cField = Ext.create(col.cEditor);
+                    col.setEditor(col.cField);
+                    if (oldField != null)Ext.destroy(oldField);
                 }
             }
         }

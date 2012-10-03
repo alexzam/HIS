@@ -134,7 +134,8 @@ Ext.define('alexzam.his.view.account.AddTransactionForm', {
         me.storeCat = Ext.create('alexzam.his.model.account.store.Category', {
             proxy:Ext.create('alexzam.his.model.account.proxy.CategoryAdd', {
                 rootUrl:me.rootUrl
-            })
+            }),
+            storeId:'cat-add'
         });
 
         Ext.Array.forEach(me.userRadioOptions, function(item) {

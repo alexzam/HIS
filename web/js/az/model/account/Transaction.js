@@ -6,6 +6,7 @@ Ext.define('alexzam.his.model.account.Transaction', {
         {name: 'actor_name', type: 'string'},
         {name: 'amount', type: 'float'},
         {name: 'category_name', type: 'string'},
+        {name: 'category_id', type: 'int'},
         {name: 'comment', type: 'string'},
         {name: 'type', type: 'string'},
         {name: 'timestamp', type: 'date', dateFormat: 'd.m.Y'}

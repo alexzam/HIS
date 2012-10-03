@@ -132,6 +132,7 @@ public class Transaction implements DBListener {
         ret.put("actor_id", getActor().getId());
         ret.put("actor_name", getActor().getName());
         ret.put("category_name", getCategory().getName());
+        ret.put("category_id", getCategory().getId());
         ret.put("comment", getComment());
 
         String type;
