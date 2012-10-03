@@ -80,6 +80,15 @@ Ext.define('alexzam.his.view.account.TransactionGrid', {
                         this.setValue((value != null) ? value.trim() : null);
                     }
                 }
+            },
+            dEditor:{
+                xclass:'Ext.form.field.Display',
+                getModelData: function() {
+                    return null;
+                }
+            },
+            renderer:function(val, meta, record) {
+                return record.data.category_name;
             }
         },
         {
@@ -89,6 +98,11 @@ Ext.define('alexzam.his.view.account.TransactionGrid', {
             autoScroll:true,
             renderer:function(val) {
                 return "<span title='" + val + "'>" + val + "</span>";
+            },
+            editor:{
+                xtype:'textfield',
+                maxLength:255,
+                maxLengthText:"Комментарий не должен быть длиннее 255 символов"
             }
         }
     ],
@@ -127,11 +141,15 @@ Ext.define('alexzam.his.view.account.TransactionGrid', {
 
                     // Category
                     col = vals.grid.columns[3];
-                    var oldField = null;
-                    if (col.cfield = ! null) oldField = col.cField;
-//
-                    col.cField = Ext.create(col.cEditor);
-                    col.setEditor(col.cField);
+                    var oldField = col.getEditor();
+
+                    if (vals.record.data.type == 'E') {
+                        col.cField = Ext.create(col.cEditor);
+                        col.setEditor(col.cField);
+                    } else {
+                        col.dField = Ext.create(col.dEditor);
+                        col.setEditor(col.dField);
+                    }
                     if (oldField != null)Ext.destroy(oldField);
                 }
             }
