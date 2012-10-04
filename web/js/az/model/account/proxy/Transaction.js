@@ -8,6 +8,7 @@ Ext.define('alexzam.his.model.account.proxy.Transaction', {
         type:'json',
         root:'items'
     },
+    writer:'json',
 
     constructor:function(config){
         config.url = config.rootUrl + 'account/data';

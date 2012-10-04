@@ -13,10 +13,7 @@ import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
@@ -238,6 +235,27 @@ public class AccountController {
             }
         }
         return "";
+    }
+
+    @RequestMapping(value = "/data", method = RequestMethod.POST)
+    @Transactional
+    @ResponseBody
+    public String updateTransaction(@RequestBody String body) throws JSONException {
+        JSONObject req = new JSONObject(body);
+
+        DBManager dbman = dbUtil.getDbManager();
+        Transaction trans = dbman.get(Transaction.class, req.getInt("id"));
+
+        trans.setActor(dbman.get(User.class, req.getInt("actor_id")));
+        trans.setAmount(req.getDouble("amount"));
+        trans.setCategory(dbman.get(TransactionCategory.class, req.getInt("category_id")));
+        trans.setComment(req.getString("comment"));
+        trans.setTimestmp(new Date(req.getLong("timestamp")));
+
+        dbman.update(trans);
+        dbman.flush();
+
+        return "{ok:1}";
     }
 
     @RequestMapping(value = "/stats", method = RequestMethod.GET)

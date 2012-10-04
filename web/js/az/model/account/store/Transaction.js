@@ -5,5 +5,6 @@ Ext.define('alexzam.his.model.account.store.Transaction', {
     ],
 
     model:'alexzam.his.model.account.Transaction',
-    autoLoad:true
+    autoLoad:true,
+    autoSync:true
 });
