@@ -11,6 +11,15 @@
     <script type="text/javascript" src="js/ext/ext-dev.js"></script>
     <script type="text/javascript" src="js/ext-conf.js"></script>
     <script type="text/javascript">
+        Ext.conf = {
+            rootUrl: '${pageContext.request.contextPath}/',
+            userArr: [
+                {id:${me.getId()}, name:'${me.getName()}'}
+                <c:forEach items="${users}" var="u">
+                ,{id:${u.getId()}, name:'${u.getName()}'}
+                </c:forEach>
+            ]
+        };
         Ext.require('alexzam.his.AccountScreen');
 
         Ext.onReady(function () {

@@ -37,10 +37,7 @@ Ext.define('alexzam.his.view.account.TransactionGrid', {
                 queryMode: 'local',
                 store:Ext.create('Ext.data.Store', {
                     fields: ['id', 'name'],
-                    data : [
-                        {id:1, name:"AlexZam"},
-                        {id:2, name:"Anitra"}
-                    ]
+                    data : Ext.conf.userArr
                 })
             },
             renderer:function(val, meta, record) {
