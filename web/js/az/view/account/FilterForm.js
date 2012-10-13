@@ -40,7 +40,8 @@ Ext.define('alexzam.his.view.account.FilterForm', {
             displayField:'name',
             lastQuery:'',
             labelWidth:65,
-            itemId:'cmbCat'
+            itemId:'cmbCat',
+            multiSelect:true
         },
         {
             xtype:'button',

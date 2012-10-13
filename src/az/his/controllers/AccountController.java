@@ -71,14 +71,7 @@ public class AccountController {
             ret.put("identifier", "id");
             ret.put("label", "name");
 
-            JSONObject item = new JSONObject();
-
-            if (type.equals("a")) {
-                item.put("id", "0");
-                item.put("name", "(Все)");
-                item.put("type", "null");
-                items.put(item);
-            }
+            JSONObject item;
 
             for (TransactionCategory cat : cats) {
                 item = new JSONObject();
@@ -290,7 +283,7 @@ public class AccountController {
             HttpServletResponse resp,
             @RequestParam(value = "from", required = false) Long rawFrom,
             @RequestParam(value = "to", required = false) Long rawTo,
-            @RequestParam(value = "cat", required = false) Integer cat
+            @RequestParam(value = "cat", required = false) Integer[] cat
     ) throws JSONException, IOException {
         JSONObject ret = new JSONObject();
         DBManager dbman = dbUtil.getDbManager();
@@ -319,7 +312,7 @@ public class AccountController {
         calendar.set(Calendar.SECOND, 0);
         Date toDate = calendar.getTime();
 
-        if (cat == null) cat = 0;
+        if (cat == null) cat = new Integer[]{};
 
         List<Transaction> transactions = Transaction.getFiltered(dbman, fromDate, toDate, cat);
         JSONArray items = new JSONArray();

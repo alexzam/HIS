@@ -1,7 +1,6 @@
 package az.his.persist;
 
 import az.his.DBManager;
-import az.his.DBUtil;
 import org.hibernate.Query;
 import org.hibernate.type.DateType;
 import org.json.JSONException;
@@ -148,14 +147,15 @@ public class Transaction implements DBListener {
 
     @Transient
     @SuppressWarnings("unchecked")
-    public static List<Transaction> getFiltered(DBManager dbman, Date from, Date to, int category) {
+    public static List<Transaction> getFiltered(DBManager dbman, Date from, Date to, Integer[] categories) {
+        boolean catFilter = categories.length > 0;
         String q = "from az.his.persist.Transaction where timestmp >= :from and timestmp <= :to"
-                + ((category > 0) ? " and category = :cat" : "");
+                + (catFilter ? " and category.id in (:cat)" : "");
         Query query = dbman.getSession().createQuery(q)
                 .setParameter("from", from, DateType.INSTANCE)
                 .setParameter("to", to, DateType.INSTANCE);
-        if (category > 0) {
-            query.setParameter("cat", dbman.get(TransactionCategory.class, category));
+        if (catFilter) {
+            query.setParameterList("cat", categories);
         }
         return (List<Transaction>) query.list();
     }
