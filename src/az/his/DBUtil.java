@@ -1,64 +1,32 @@
 package az.his;
 
+import az.his.persist.DBListener;
+import az.his.persist.Transaction;
+import az.his.persist.TransactionCategory;
 import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-import org.springframework.orm.hibernate3.SessionFactoryUtils;
+import org.hibernate.classic.Session;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
+import org.springframework.context.ApplicationContext;
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.ServletRequest;
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.List;
 
 /**
  * Hibernate set up
  */
-public class DBUtil {
-    private static SessionFactory factory;
-
-    private SessionFactory springSessionFactory;
-
-    public DBUtil(SessionFactory springSessionFactory) {
-        this.springSessionFactory = springSessionFactory;
+public class DBUtil extends HibernateDaoSupport {
+    public static DBUtil getInstance() {
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        return ctx.getBean(DBUtil.class);
     }
 
-    public DBManager getDbManager() {
-        return new DBManager(getSpringSession());
-    }
-
-    private Session getSpringSession() {
-        return SessionFactoryUtils.getSession(springSessionFactory, true);
-    }
-
-    public static Session getSession() throws HibernateException {
-        initFactory();
-        return factory.getCurrentSession();
-    }
-
-    private static void initFactory() {
-        if (factory == null) {
-            try {
-                factory = new Configuration().configure().buildSessionFactory();
-            } catch (Throwable ex) {
-                throw new ExceptionInInitializerError(ex);
-            }
-        }
-    }
-
-    public static Session openSession() {
-        initFactory();
-        return factory.openSession();
-    }
-
-    public static DBManager getDBManFromReq(ServletRequest req){
-        return (DBManager) req.getAttribute("DBM");
-    }
-
-    private static java.text.NumberFormat dblFormatter = new DecimalFormat("#,###.##");
-
-    public static String formatCurrency(double sum) {
-        return dblFormatter.format(sum);
+    public static Session getCurrentSession(){
+        return getInstance().getHibernateTemplate().getSessionFactory().getCurrentSession();
     }
 
     private static java.text.NumberFormat intFormatter = new DecimalFormat("0");
@@ -70,11 +38,41 @@ public class DBUtil {
         } else return intFormatter.format((double) sum / 100);
     }
 
-    // Service methods
+    public <E> List<E> findAll(Class<E> clazz) {
+        return getHibernateTemplate().loadAll(clazz);
+    }
 
-    @SuppressWarnings({"unchecked"})
-    public <E> List<E> findAll(Class<E> entityClass) {
-        Criteria query = getSpringSession().createCriteria(entityClass);
-        return query.setCacheable(true).list();
+    public <E> E get(Class<E> clazz, Serializable id) {
+        return getHibernateTemplate().get(clazz, id);
+    }
+
+    @SuppressWarnings("unchecked")
+    public <E> List<E> findByProperty(Class<E> clazz, String name, String val) {
+        Criteria query = getSession().createCriteria(clazz);
+        query.add(Restrictions.eq(name, val));
+        return query.list();
+    }
+
+    public <E> E merge(E obj) {
+        return getHibernateTemplate().merge(obj);
+    }
+
+    public void persist(Object obj) {
+        if (obj instanceof DBListener) {
+            ((DBListener) obj).beforeInsert();
+        }
+        getHibernateTemplate().persist(obj);
+    }
+
+    public <E> void delete(Class<E> clazz, int iid) {
+        E obj = get(clazz, iid);
+        if (obj instanceof DBListener) {
+            ((DBListener) obj).beforeDelete();
+        }
+        getHibernateTemplate().delete(obj);
+    }
+
+    public void update(Object obj) {
+        getHibernateTemplate().update(obj);
     }
 }

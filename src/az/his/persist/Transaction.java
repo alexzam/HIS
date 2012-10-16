@@ -1,7 +1,8 @@
 package az.his.persist;
 
-import az.his.DBManager;
+import az.his.DBUtil;
 import org.hibernate.Query;
+import org.hibernate.classic.Session;
 import org.hibernate.type.DateType;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -147,11 +148,11 @@ public class Transaction implements DBListener {
 
     @Transient
     @SuppressWarnings("unchecked")
-    public static List<Transaction> getFiltered(DBManager dbman, Date from, Date to, Integer[] categories) {
+    public static List<Transaction> getFiltered(Date from, Date to, Integer[] categories) {
         boolean catFilter = categories.length > 0;
         String q = "from az.his.persist.Transaction where timestmp >= :from and timestmp <= :to"
                 + (catFilter ? " and category.id in (:cat)" : "");
-        Query query = dbman.getSession().createQuery(q)
+        Query query = DBUtil.getCurrentSession().createQuery(q)
                 .setParameter("from", from, DateType.INSTANCE)
                 .setParameter("to", to, DateType.INSTANCE);
         if (catFilter) {
@@ -165,22 +166,23 @@ public class Transaction implements DBListener {
     }
 
     @Override
-    public void beforeDelete(DBManager dbman) {
+    public void beforeDelete() {
         // Fix account sum
         if (!common)
             getAccount().setValue(getAccount().getValue() - amount);
 
         // Delete empty category
         if (getCategory().getType() != TransactionCategory.CatType.NONE) {
-            Long res = (Long) dbman.getSession().createQuery("select count(id) from transaction where category = ?")
+            Session session = DBUtil.getCurrentSession();
+            Long res = (Long) session.createQuery("select count(id) from transaction where category = ?")
                     .setEntity(0, getCategory())
                     .uniqueResult();
-            if (res <= 1) dbman.getSession().delete(getCategory());
+            if (res <= 1) session.delete(getCategory());
         }
     }
 
     @Override
-    public void beforeInsert(DBManager dbman) {
+    public void beforeInsert() {
         if (!common)
             getAccount().setValue(getAccount().getValue() + amount);
     }

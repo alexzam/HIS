@@ -29,7 +29,7 @@ public class ReportsController {
     @RequestMapping("/data/spendbycat")
     @Transactional(readOnly = true)
     public void dataSpendByCategory(HttpServletResponse resp) throws JSONException, IOException {
-        List results = dbUtil.getDbManager().getSession().createQuery(
+        List results = DBUtil.getCurrentSession().createQuery(
                 "select tc.name as name, -sum(t.amount) as val " +
                         "from transaction t, transcategory tc " +
                         "where tc = t.category " +

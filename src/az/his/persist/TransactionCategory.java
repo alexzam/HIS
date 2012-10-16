@@ -1,6 +1,6 @@
 package az.his.persist;
 
-import az.his.DBManager;
+import az.his.DBUtil;
 
 import javax.persistence.*;
 import java.util.List;
@@ -49,8 +49,8 @@ public class TransactionCategory {
 
     @Transient
     @SuppressWarnings("unchecked")
-    public static List<TransactionCategory> getByType(DBManager dbman, CatType type) {
-        return dbman.getSession().createQuery("from az.his.persist.TransactionCategory where type = :type")
+    public static List<TransactionCategory> getByType(CatType type) {
+        return DBUtil.getCurrentSession().createQuery("from az.his.persist.TransactionCategory where type = :type")
                 .setParameter("type", type)
                 .list();
     }

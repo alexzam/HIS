@@ -93,7 +93,6 @@ Ext.define('alexzam.his.view.account.FilterForm', {
             callback:function() {
                 var found = me.storeCat.find('id', val);
                 if (found >= 0) cmp.setValue(val);
-                else cmp.setValue(0);
                 cmp.getPicker().setLoading(false);
             }
         });

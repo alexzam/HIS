@@ -1,7 +1,6 @@
 package az.his.controllers;
 
 import az.his.AuthUtil;
-import az.his.DBManager;
 import az.his.DBUtil;
 import az.his.persist.Account;
 import az.his.persist.Transaction;
@@ -31,7 +30,7 @@ public class AccountController {
     @RequestMapping(method = RequestMethod.GET)
     @Transactional(readOnly = true)
     public String accountPage(Model model) throws ServletException {
-        List<User> usersNotMe = User.getAll(dbUtil.getDbManager());
+        List<User> usersNotMe = User.getAll();
 
         User userMe = null;
         for (User user : usersNotMe) {
@@ -52,19 +51,17 @@ public class AccountController {
     @Transactional(readOnly = true)
     public void categoryData(@RequestParam(value = "type", required = false) String type, HttpServletResponse resp)
             throws ServletException, IOException {
-        DBManager dbman = dbUtil.getDbManager();
-
         if (type == null) type = "a";
 
         List<TransactionCategory> cats;
         JSONObject ret = new JSONObject();
         JSONArray items = new JSONArray();
         if (type.equals("e")) {
-            cats = TransactionCategory.getByType(dbman, TransactionCategory.CatType.EXP);
+            cats = TransactionCategory.getByType(TransactionCategory.CatType.EXP);
         } else if (type.equals("i")) {
-            cats = TransactionCategory.getByType(dbman, TransactionCategory.CatType.INC);
+            cats = TransactionCategory.getByType(TransactionCategory.CatType.INC);
         } else {
-            cats = dbman.findAll(TransactionCategory.class);
+            cats = dbUtil.findAll(TransactionCategory.class);
         }
 
         try {
@@ -136,7 +133,6 @@ public class AccountController {
 
         int amount = Math.round(rawAmount * 100);
         boolean common;
-        DBManager dbman = dbUtil.getDbManager();
 
         if (trType.equals("i")) {
             catId = TransactionCategory.CAT_DONATE;
@@ -156,25 +152,25 @@ public class AccountController {
             // New category if needed
             if (catName == null) throw new ServletException("Category name should be filled (param 'catname')");
 
-            List<TransactionCategory> cats = dbman.findByProperty(TransactionCategory.class, "name", catName);
+            List<TransactionCategory> cats = dbUtil.findByProperty(TransactionCategory.class, "name", catName);
             if (cats.size() == 0) {
                 // New category
                 cat = new TransactionCategory();
                 cat.setName(catName);
                 cat.setType(TransactionCategory.CatType.EXP);
-                cat = dbman.merge(cat);
+                cat = dbUtil.merge(cat);
             } else {
                 // Reuse category
                 cat = cats.get(0);
             }
         } else {
-            cat = dbman.get(TransactionCategory.class, catId);
+            cat = dbUtil.get(TransactionCategory.class, catId);
         }
 
         Date time = new Date(rawDate);
-        User actor = dbman.get(User.class, actId);
+        User actor = dbUtil.get(User.class, actId);
 
-        Account account = Account.getCommon(dbman);
+        Account account = Account.getCommon();
 
         Transaction trans = new Transaction();
         trans.setActor(actor);
@@ -184,7 +180,7 @@ public class AccountController {
         trans.setCategory(cat);
         trans.setComment(comment);
         trans.setCommon(common);
-        dbman.persist(trans);
+        dbUtil.persist(trans);
 
         if (trType.equals("a")) {
             // Expense form account itself means we should make immediate refund
@@ -193,11 +189,10 @@ public class AccountController {
             trans.setAccount(account);
             trans.setTimestmp(time);
             trans.setAmount(amount);
-            trans.setCategory(dbman.get(TransactionCategory.class, TransactionCategory.CAT_REFUND));
+            trans.setCategory(dbUtil.get(TransactionCategory.class, TransactionCategory.CAT_REFUND));
             trans.setCommon(false);
-            dbman.persist(trans);
+            dbUtil.persist(trans);
         }
-        dbman.flush();
 
         return "{}";
     }
@@ -216,13 +211,11 @@ public class AccountController {
             @RequestParam("ids") String rawIds
     ) throws ServletException {
         String[] ids = rawIds.split(",");
-        DBManager dbman = dbUtil.getDbManager();
 
         for (String id : ids) {
             try {
                 int iid = Integer.parseInt(id);
-                dbman.delete(Transaction.class, iid);
-                dbman.flush();
+                dbUtil.delete(Transaction.class, iid);
             } catch (Exception e) {
                 throw new ServletException(e);
             }
@@ -236,17 +229,15 @@ public class AccountController {
     public String updateTransaction(@RequestBody String body) throws JSONException {
         JSONObject req = new JSONObject(body);
 
-        DBManager dbman = dbUtil.getDbManager();
-        Transaction trans = dbman.get(Transaction.class, req.getInt("id"));
+        Transaction trans = dbUtil.get(Transaction.class, req.getInt("id"));
 
-        trans.setActor(dbman.get(User.class, req.getInt("actor_id")));
+        trans.setActor(dbUtil.get(User.class, req.getInt("actor_id")));
         trans.setAmount(req.getDouble("amount"));
-        trans.setCategory(dbman.get(TransactionCategory.class, req.getInt("category_id")));
+        trans.setCategory(dbUtil.get(TransactionCategory.class, req.getInt("category_id")));
         trans.setComment(req.getString("comment"));
         trans.setTimestmp(new Date(req.getLong("timestamp")));
 
-        dbman.update(trans);
-        dbman.flush();
+        dbUtil.update(trans);
 
         return "{ok:1}";
     }
@@ -255,14 +246,13 @@ public class AccountController {
     @Transactional(readOnly = true)
     public void getStatistic(HttpServletResponse resp) throws JSONException, IOException {
         JSONObject ret = new JSONObject();
-        DBManager dbman = dbUtil.getDbManager();
 
-        Account acc = Account.getCommon(dbman);
-        long totalExp = acc.getTotalExp(dbman);
+        Account acc = Account.getCommon();
+        long totalExp = acc.getTotalExp();
         long eachExp = totalExp / 2;
-        User user = dbman.get(User.class, AuthUtil.getUid());
-        long persExp = user.getPersonalExpense(dbman, acc);
-        long persDonation = user.getPersonalDonation(dbman, acc);
+        User user = User.getCurrentUser();
+        long persExp = user.getPersonalExpense(acc);
+        long persDonation = user.getPersonalDonation(acc);
 
         ret.put("amount", acc.getAmountPrintable());
         ret.put("totalExp", DBUtil.formatCurrency(totalExp));
@@ -286,7 +276,6 @@ public class AccountController {
             @RequestParam(value = "cat", required = false) Integer[] cat
     ) throws JSONException, IOException {
         JSONObject ret = new JSONObject();
-        DBManager dbman = dbUtil.getDbManager();
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Baku"));
 
         Calendar calendar = new GregorianCalendar();
@@ -314,7 +303,7 @@ public class AccountController {
 
         if (cat == null) cat = new Integer[]{};
 
-        List<Transaction> transactions = Transaction.getFiltered(dbman, fromDate, toDate, cat);
+        List<Transaction> transactions = Transaction.getFiltered(fromDate, toDate, cat);
         JSONArray items = new JSONArray();
 
         ret.put("identifier", "id");

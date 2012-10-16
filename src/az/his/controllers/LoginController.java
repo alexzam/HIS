@@ -31,7 +31,7 @@ public class LoginController {
     @RequestMapping(method = RequestMethod.GET)
     @Transactional(readOnly = true)
     public String loginPage(Model model) {
-        List<User> users = User.getAll(dbUtil.getDbManager());
+        List<User> users = User.getAll();
         model.addAttribute("users", users);
         return "login";
     }

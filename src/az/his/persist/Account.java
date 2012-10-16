@@ -1,7 +1,7 @@
 package az.his.persist;
 
-import az.his.DBManager;
 import az.his.DBUtil;
+import org.hibernate.classic.Session;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -59,14 +59,15 @@ public class Account {
     }
 
     @Transient
-    public static Account getCommon(DBManager dbman) {
-        return dbman.get(Account.class, Account.COMMON_ACC);
+    public static Account getCommon() {
+        DBUtil dbUtil = DBUtil.getInstance();
+        return dbUtil.get(Account.class, Account.COMMON_ACC);
     }
 
     @Transient
-    public long getTotalExp(DBManager dbman) {
-        Long out = (Long) dbman.getSession().createQuery("select sum(amount) from transaction where common = true")
-                .uniqueResult();
+    public long getTotalExp() {
+        Session session = DBUtil.getCurrentSession();
+        Long out = (Long) session.createQuery("select sum(amount) from transaction where common = true").uniqueResult();
         if (out == null) out = 0l;
         else out = -out;
         return out;
