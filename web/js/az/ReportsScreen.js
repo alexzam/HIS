@@ -4,6 +4,7 @@ Ext.define('alexzam.his.ReportsScreen', {
     requires:[
         'alexzam.his.view.toolbar.Toolbar',
         'alexzam.his.view.reports.CatSpendColumnChart',
+        'alexzam.his.view.reports.ExpensesLineChart',
         'Ext.layout.container.Border'
     ],
 
@@ -35,11 +36,10 @@ Ext.define('alexzam.his.ReportsScreen', {
                         {
                             xtype:'panel',
                             region:'center',
+                            layout:'fit',
                             items:[
                                 {
-                                    xtype:'his.chart.catspend',
-                                    height:600,
-                                    width:800
+                                    xtype:'his.chart.expense'
                                 }
                             ]
                         }
