@@ -14,11 +14,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/reports")
@@ -92,6 +95,8 @@ public class ReportsController {
         query.setTimestamp("to", to);
         List results = query.list();
 
+        Set<Long> days = new HashSet<Long>();
+
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
         JSONArray items = new JSONArray();
         for (Object result : results) {
@@ -99,10 +104,23 @@ public class ReportsController {
             double amount = (((Long) arr[1]).doubleValue() / 100);
 
             JSONObject item = new JSONObject();
+            days.add(((Date) arr[0]).getTime());
             item.put("date", df.format(arr[0]));
             item.put("value", amount);
             item.put("cat", 0);
             items.put(item);
+        }
+
+        cal.setTimeInMillis(from.getTime());
+        while (cal.getTimeInMillis() <= to.getTime()) {
+            if(!days.contains(cal.getTimeInMillis())) {
+                JSONObject item = new JSONObject();
+                item.put("date", df.format(new Date(cal.getTimeInMillis())));
+                item.put("value", 0);
+                item.put("cat", 0);
+                items.put(item);
+            }
+            cal.add(Calendar.DATE, 1);
         }
 
         JSONObject ret = new JSONObject();

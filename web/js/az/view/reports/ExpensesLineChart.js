@@ -23,6 +23,7 @@ Ext.define('alexzam.his.view.reports.ExpensesLineChart', {
             position: 'bottom',
             fields: ['date'],
             title: 'Дата',
+            dateFormat: 'M j',
             step: [Ext.Date.DAY, 1]
         },
         {
@@ -62,7 +63,12 @@ Ext.define('alexzam.his.view.reports.ExpensesLineChart', {
                     type:'json',
                     root:'items'
                 }
-            }
+            },
+            sorters:[
+                {
+                    property:'date'
+                }
+            ]
         });
 
         me.callParent();
