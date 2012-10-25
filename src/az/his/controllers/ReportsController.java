@@ -126,6 +126,13 @@ public class ReportsController {
         JSONObject ret = new JSONObject();
         ret.put("items", items);
 
+        JSONArray series = new JSONArray();
+        JSONObject s1 = new JSONObject();
+        s1.put("field", "value");
+        series.put(s1);
+
+        ret.put("series", series);
+
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("application/json");
         resp.getWriter().append(ret.toString());

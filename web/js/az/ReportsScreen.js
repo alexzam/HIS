@@ -24,24 +24,11 @@ Ext.define('alexzam.his.ReportsScreen', {
             items:[
                 {
                     xtype:'panel',
-                    layout:'border',
-                    title:"Расходы по категориям",
+                    region:'center',
+                    layout:'fit',
                     items:[
                         {
-                            // Filter panel
-                            xtype:'panel',
-                            region:'north',
-                            html:'filters here'
-                        },
-                        {
-                            xtype:'panel',
-                            region:'center',
-                            layout:'fit',
-                            items:[
-                                {
-                                    xtype:'his.chart.expense'
-                                }
-                            ]
+                            xtype:'his.chart.expense'
                         }
                     ]
                 }
