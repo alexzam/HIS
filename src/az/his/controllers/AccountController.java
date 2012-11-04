@@ -2,6 +2,7 @@ package az.his.controllers;
 
 import az.his.AuthUtil;
 import az.his.DBUtil;
+import az.his.DateUtil;
 import az.his.persist.Account;
 import az.his.persist.Transaction;
 import az.his.persist.TransactionCategory;
@@ -276,30 +277,18 @@ public class AccountController {
             @RequestParam(value = "cat", required = false) Integer[] cat
     ) throws JSONException, IOException {
         JSONObject ret = new JSONObject();
-        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Baku"));
 
-        Calendar calendar = new GregorianCalendar();
-        if (rawFrom != null && rawFrom != 0) {
-            calendar.setTimeInMillis(rawFrom);
-        } else {
-            calendar.set(Calendar.DAY_OF_MONTH, 1);
-        }
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        Date fromDate = calendar.getTime();
+        Calendar calFrom = DateUtil.convertInDateParam(rawFrom);
+        if(calFrom == null) calFrom = DateUtil.createCalDate1();
+        Date fromDate = calFrom.getTime();
 
-        calendar = new GregorianCalendar();
-        calendar.add(Calendar.MONTH, 1);
-        if (rawTo != null && rawTo != 0) {
-            // Plus day to include "to" date to filter
-            calendar.setTimeInMillis(rawTo);
-            calendar.add(Calendar.DAY_OF_MONTH, 1);
+        Calendar calTo = DateUtil.convertInDateParam(rawTo);
+        if(calTo == null){
+            calTo = DateUtil.createCalDate1();
+            calTo.add(Calendar.MONTH, 1);
         }
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        Date toDate = calendar.getTime();
+        calTo.add(Calendar.DAY_OF_MONTH, 1);
+        Date toDate = calTo.getTime();
 
         if (cat == null) cat = new Integer[]{};
 
@@ -318,4 +307,5 @@ public class AccountController {
         resp.setContentType("application/json");
         resp.getWriter().append(ret.toString());
     }
+
 }

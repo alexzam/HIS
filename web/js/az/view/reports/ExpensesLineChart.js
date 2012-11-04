@@ -11,7 +11,8 @@ Ext.define('alexzam.his.view.reports.ExpensesLineChart', {
         'Ext.chart.series.Line',
         'Ext.data.Request',
         'Ext.data.Store',
-        'Ext.data.reader.Json'
+        'Ext.data.reader.Json',
+        'Ext.form.field.Date'
     ],
 
     layout:'border',
@@ -70,12 +71,12 @@ Ext.define('alexzam.his.view.reports.ExpensesLineChart', {
             items:[
                 {
                     xtype:'datefield',
+                    itemId:'dtFrom',
                     fieldLabel:'С',
                     name:'from',
                     format:'d.m.Y',
-                    validateOnChange:false,
+                    allowBlank:false,
                     labelWidth:65,
-                    itemId:'dtFrom',
                     startDay:1,
                     listeners:{
                         change:function() {
@@ -85,12 +86,12 @@ Ext.define('alexzam.his.view.reports.ExpensesLineChart', {
                 },
                 {
                     xtype:'datefield',
+                    itemId:'dtTo',
                     fieldLabel:'По',
                     name:'to',
                     format:'d.m.Y',
-                    validateOnChange:false,
+                    allowBlank:false,
                     labelWidth:65,
-                    itemId:'dtTo',
                     startDay:1,
                     listeners:{
                         change:function() {
@@ -123,24 +124,50 @@ Ext.define('alexzam.his.view.reports.ExpensesLineChart', {
                 }
             ],
             listeners:{
-                load:function(store) {
-                    var data = store.getProxy().getReader().rawData;
-                    Ext.each(data.series, function(serie) {
-                        chart.series.add({
-                            type: 'line',
-                            axis: 'left',
-                            xField: 'date',
-                            yField: serie.field,
-                            highlight: true,
-                            markerConfig: {
-                                type: 'circle',
-                                size: 4,
-                                radius: 4,
-                                'stroke-width': 1
-                            }
+                load:{
+                    scope:me,
+                    fn:function(store) {
+
+                    }
+                } ,
+                datachanged:{
+                    scope:me,
+                    fn:function(store) {
+                        var data = store.getProxy().getReader().rawData;
+                        var me = this;
+                        var serkeys = Ext.Array.clone(me.chart.series.keys);
+                        Ext.each(serkeys, function(key) {
+//                            Ext.each(ser.items, function(i){i.sprite.destroy()});
+//                            ser.line.destroy();
+//                            ser.destroy();
+                            me.removeSerie(me.chart, key);
                         });
-                    });
-                    chart.refresh();
+//                        me.chart.surface.removeAll(true);
+//                        me.chart.series.clear();
+
+//                        me.chart.axes.each(function(axis){
+//                            axis.displaySprite = null;
+//                        });
+//
+//                        me.chart.surface.destroy();
+//                        me.chart.createSurface();
+                        Ext.each(data.series, function(serie) {
+                            me.chart.series.add({
+                                type: 'line',
+                                axis: 'left',
+                                xField: 'date',
+                                yField: serie.field,
+                                highlight: true,
+                                markerConfig: {
+                                    type: 'circle',
+                                    size: 4,
+                                    radius: 4,
+                                    'stroke-width': 1
+                                }
+                            });
+                        });
+                        me.chart.redraw(true);
+                    }
                 }
             }
         });
@@ -148,13 +175,79 @@ Ext.define('alexzam.his.view.reports.ExpensesLineChart', {
         me.callParent();
 
         me.chart = me.getComponent('pnlChart').getComponent('chart');
+        me.filterForm = me.getComponent('filterForm');
+        me.filterForm.dtTo = me.filterForm.getComponent('dtTo');
+        me.filterForm.dtFrom = me.filterForm.getComponent('dtFrom');
+
+        var d = new Date();
+        d.setDate(1);
+        me.filterForm.dtFrom.setValue(d);
+
+        var d2 = Ext.Date.add(d, Ext.Date.MONTH, 1);
+        d2 = Ext.Date.add(d2, Ext.Date.DAY, -1);
+        me.filterForm.dtTo.setValue(d2);
+
+        me.updateData();
+
+        me.on('filterchange', me.filterchange);
+    },
+
+    updateData: function() {
+        var me = this;
+        var form = me.filterForm.getForm();
+        if (!form.isValid()) return;
+
+        var data = form.getFieldValues();
+
+        data.from = data.from.getTime();
+        data.to = data.to.getTime();
+
+        me.chart.store.proxy.extraParams = data;
         me.chart.store.load();
     },
 
-    listeners:{
-        filterchange:function(){
-            var me = this;
-            me.chart.store.load();
+    filterchange:function() {
+        var me = this;
+
+        var form = me.filterForm;
+
+        form.dtTo.setMinValue(form.dtFrom.getValue());
+        form.dtFrom.setMaxValue(form.dtTo.getValue());
+
+        me.updateData();
+    },
+
+    // removes the serie 'serieId' from the chart 'chart'
+    //  parameters:    chart        the chart object
+    //                seriesId    the ID of the serie
+    removeSerie:function(chart, seriesId) {
+        // get the surface
+        var surface = chart.surface;
+
+        // get the key of the serie
+        for (var serieKey = 0; serieKey < chart.series.keys.length; serieKey++) {
+            // check for the searched serie
+            if (chart.series.keys[serieKey] == seriesId) {
+                // go through all the groups of the surface
+                for (var groupKey = 0; groupKey < surface.groups.keys.length; groupKey++) {
+                    // check if the group name contains the serie name
+                    if (surface.groups.keys[groupKey].search(seriesId) == 0) {
+                        // destroy the group
+                        surface.groups.items[groupKey].destroy();
+                    }
+                }
+
+
+                // get the correct serie
+                var serie = chart.series.items[serieKey];
+
+                // remove the serie from the chart
+                chart.series.remove(serie);
+
+
+                // redraw the chart
+                chart.redraw();
+            }
         }
     }
 });

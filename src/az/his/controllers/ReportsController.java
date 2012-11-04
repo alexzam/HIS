@@ -1,6 +1,7 @@
 package az.his.controllers;
 
 import az.his.DBUtil;
+import az.his.DateUtil;
 import az.his.persist.TransactionCategory;
 import org.hibernate.Query;
 import org.json.JSONArray;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -68,17 +70,21 @@ public class ReportsController {
 
     @RequestMapping("/data/expenses")
     @Transactional(readOnly = true)
-    public void dataExpenses(HttpServletResponse resp) throws JSONException, IOException {
+    public void dataExpenses(HttpServletResponse resp,
+                             @RequestParam(value = "from", required = false) Long rawFrom,
+                             @RequestParam(value = "to", required = false) Long rawTo)
+            throws JSONException, IOException {
 
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.DAY_OF_MONTH, 1);
-        cal.set(Calendar.HOUR, 0);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
+        Calendar cal = DateUtil.convertInDateParam(rawFrom);
+        if(cal == null) cal = DateUtil.createCalDate1();
         Timestamp from = new Timestamp(cal.getTimeInMillis());
 
-        cal.add(Calendar.MONTH, 1);
+        cal = DateUtil.convertInDateParam(rawTo);
+        if(cal == null){
+            cal = DateUtil.createCalDate1();
+            cal.add(Calendar.MONTH, 1);
+        }
+        cal.add(Calendar.DAY_OF_MONTH, 1);
         Timestamp to = new Timestamp(cal.getTimeInMillis());
 
         Query query = DBUtil.getCurrentSession().createQuery(
