@@ -30,6 +30,8 @@ Ext.define('alexzam.his.view.reports.ExpensesLineChart', {
                     xtype:'chart',
                     itemId:'chart',
 
+                    plugins:[Ext.create('alexzam.his.comp.ChartPlugin')],
+
                     store:null,
                     animate: true,
                     autoRender:true,
@@ -135,22 +137,9 @@ Ext.define('alexzam.his.view.reports.ExpensesLineChart', {
                     fn:function(store) {
                         var data = store.getProxy().getReader().rawData;
                         var me = this;
-                        var serkeys = Ext.Array.clone(me.chart.series.keys);
-                        Ext.each(serkeys, function(key) {
-//                            Ext.each(ser.items, function(i){i.sprite.destroy()});
-//                            ser.line.destroy();
-//                            ser.destroy();
-                            me.removeSerie(me.chart, key);
-                        });
-//                        me.chart.surface.removeAll(true);
-//                        me.chart.series.clear();
+//                        me.chart.plugins[0].removeAllSeries();
+                        me.chart.getPlugin('series').removeAllSeries();
 
-//                        me.chart.axes.each(function(axis){
-//                            axis.displaySprite = null;
-//                        });
-//
-//                        me.chart.surface.destroy();
-//                        me.chart.createSurface();
                         Ext.each(data.series, function(serie) {
                             me.chart.series.add({
                                 type: 'line',
@@ -215,39 +204,5 @@ Ext.define('alexzam.his.view.reports.ExpensesLineChart', {
         form.dtFrom.setMaxValue(form.dtTo.getValue());
 
         me.updateData();
-    },
-
-    // removes the serie 'serieId' from the chart 'chart'
-    //  parameters:    chart        the chart object
-    //                seriesId    the ID of the serie
-    removeSerie:function(chart, seriesId) {
-        // get the surface
-        var surface = chart.surface;
-
-        // get the key of the serie
-        for (var serieKey = 0; serieKey < chart.series.keys.length; serieKey++) {
-            // check for the searched serie
-            if (chart.series.keys[serieKey] == seriesId) {
-                // go through all the groups of the surface
-                for (var groupKey = 0; groupKey < surface.groups.keys.length; groupKey++) {
-                    // check if the group name contains the serie name
-                    if (surface.groups.keys[groupKey].search(seriesId) == 0) {
-                        // destroy the group
-                        surface.groups.items[groupKey].destroy();
-                    }
-                }
-
-
-                // get the correct serie
-                var serie = chart.series.items[serieKey];
-
-                // remove the serie from the chart
-                chart.series.remove(serie);
-
-
-                // redraw the chart
-                chart.redraw();
-            }
-        }
     }
 });
