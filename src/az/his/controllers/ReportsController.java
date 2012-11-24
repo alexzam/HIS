@@ -2,6 +2,7 @@ package az.his.controllers;
 
 import az.his.DBUtil;
 import az.his.DateUtil;
+import az.his.clientdto.ReportData;
 import az.his.persist.TransactionCategory;
 import org.hibernate.Query;
 import org.json.JSONArray;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Date;
@@ -72,20 +74,23 @@ public class ReportsController {
     @Transactional(readOnly = true)
     public void dataExpenses(HttpServletResponse resp,
                              @RequestParam(value = "from", required = false) Long rawFrom,
-                             @RequestParam(value = "to", required = false) Long rawTo)
-            throws JSONException, IOException {
+                             @RequestParam(value = "to", required = false) Long rawTo,
+                             @RequestParam(value = "cat", required = false) Integer[] cat)
+            throws JSONException, IOException, ServletException {
 
         Calendar cal = DateUtil.convertInDateParam(rawFrom);
-        if(cal == null) cal = DateUtil.createCalDate1();
+        if (cal == null) cal = DateUtil.createCalDate1();
         Timestamp from = new Timestamp(cal.getTimeInMillis());
 
         cal = DateUtil.convertInDateParam(rawTo);
-        if(cal == null){
+        if (cal == null) {
             cal = DateUtil.createCalDate1();
             cal.add(Calendar.MONTH, 1);
         }
         cal.add(Calendar.DAY_OF_MONTH, 1);
         Timestamp to = new Timestamp(cal.getTimeInMillis());
+
+        if (cat == null) cat = new Integer[]{};
 
         Query query = DBUtil.getCurrentSession().createQuery(
                 "select date(t.timestmp) as date, -sum(t.amount) as val " +
@@ -101,46 +106,44 @@ public class ReportsController {
         query.setTimestamp("to", to);
         List results = query.list();
 
-        Set<Long> days = new HashSet<Long>();
+        ReportData ret = new ReportData(from, to);
+        ret.addSeries("tot", "Total");
 
-        DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
-        JSONArray items = new JSONArray();
         for (Object result : results) {
             Object[] arr = (Object[]) result;
             double amount = (((Long) arr[1]).doubleValue() / 100);
 
-            JSONObject item = new JSONObject();
-            days.add(((Date) arr[0]).getTime());
-            item.put("date", df.format(arr[0]));
-            item.put("value", amount);
-            item.put("cat", 0);
-            items.put(item);
+            ret.addData((Date) arr[0], "tot", amount);
         }
 
-        cal.setTimeInMillis(from.getTime());
-        while (cal.getTimeInMillis() <= to.getTime()) {
-            if(!days.contains(cal.getTimeInMillis())) {
-                JSONObject item = new JSONObject();
-                item.put("date", df.format(new Date(cal.getTimeInMillis())));
-                item.put("value", 0);
-                item.put("cat", 0);
-                items.put(item);
+        for (Integer catId : cat) {
+            query = DBUtil.getCurrentSession().createQuery(
+                    "select date(t.timestmp) as date, -sum(t.amount) as val " +
+                            "from transaction t " +
+                            "where " +
+                            "t.timestmp >= :from " +
+                            "and t.timestmp <= :to " +
+                            "and t.category.id = :cat " +
+                            "group by date(t.timestmp) " +
+                            "order by date(t.timestmp)");
+            query.setTimestamp("from", from);
+            query.setTimestamp("to", to);
+            query.setInteger("cat", catId);
+            results = query.list();
+
+            String catName = DBUtil.getInstance().get(TransactionCategory.class, catId).getName();
+
+            ret.addSeries(catId.toString(), catName);
+            for (Object result : results) {
+                Object[] arr = (Object[]) result;
+                double amount = (((Long) arr[1]).doubleValue() / 100);
+
+                ret.addData((Date) arr[0], catId.toString(), amount);
             }
-            cal.add(Calendar.DATE, 1);
         }
-
-        JSONObject ret = new JSONObject();
-        ret.put("items", items);
-
-        JSONArray series = new JSONArray();
-        JSONObject s1 = new JSONObject();
-        s1.put("field", "value");
-        series.put(s1);
-
-        ret.put("series", series);
 
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("application/json");
-        resp.getWriter().append(ret.toString());
+        resp.getWriter().append(ret.getJson());
     }
 }

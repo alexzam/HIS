@@ -1,4 +1,7 @@
 Ext.define('alexzam.his.comp.ChartPlugin', {
+    // Solution proposed here:
+    // http://www.sencha.com/forum/showthread.php?140791-Dynamically-add-series-to-a-chart&p=641673&viewfull=1#post641673
+
     chart: null,
     pluginId:'series',
 

@@ -9,15 +9,9 @@ Ext.define('alexzam.his.model.account.proxy.Category', {
         root:'items'
     },
 
+    url:Ext.rootUrl + 'account/catdata',
+
     pageParam: null,
     startParam: null,
-    limitParam: null,
-
-    constructor:function(config){
-        var me = this;
-        config.url = config.rootUrl + 'account/catdata';
-
-        var ret = me.callParent(arguments);
-        return ret;
-    }
+    limitParam: null
 });

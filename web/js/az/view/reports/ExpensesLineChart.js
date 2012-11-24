@@ -5,6 +5,8 @@ Ext.define('alexzam.his.view.reports.ExpensesLineChart', {
 
     requires:[
         'alexzam.his.model.reports.DateVal',
+        'alexzam.his.model.account.store.Category',
+        'alexzam.his.model.account.proxy.Category',
         'Ext.chart.theme.Base',
         'Ext.chart.axis.Numeric',
         'Ext.chart.axis.Time',
@@ -100,6 +102,18 @@ Ext.define('alexzam.his.view.reports.ExpensesLineChart', {
                             this.ownerCt.fireEvent('filterchange')
                         }
                     }
+                },
+                {
+                    xtype:'combo',
+                    itemId:'cmbCat',
+                    fieldLabel:'Категория',
+                    name:'cat',
+                    queryMode:'local',
+                    valueField:'id',
+                    displayField:'name',
+                    lastQuery:'',
+                    labelWidth:65,
+                    multiSelect:true
                 }
             ]
         }
@@ -108,6 +122,7 @@ Ext.define('alexzam.his.view.reports.ExpensesLineChart', {
     initComponent:function () {
         var me = this;
         var chart = me.items[0].items[0];
+        var catCombo = me.items[1].items[2];
 
         chart.store = Ext.create('Ext.data.Store',
         {
@@ -125,20 +140,25 @@ Ext.define('alexzam.his.view.reports.ExpensesLineChart', {
                     property:'date'
                 }
             ],
-            listeners:{
-                load:{
-                    scope:me,
-                    fn:function(store) {
 
-                    }
-                } ,
+            inManualRefresh:false,
+
+            listeners:{
                 datachanged:{
                     scope:me,
                     fn:function(store) {
-                        var data = store.getProxy().getReader().rawData;
                         var me = this;
-//                        me.chart.plugins[0].removeAllSeries();
+
+                        if(store.inManualRefresh) return;
+                        store.inManualRefresh = true;
+
+                        var data = store.getProxy().getReader().rawData;
                         me.chart.getPlugin('series').removeAllSeries();
+                        me.chart.store.setValueFields(
+                                Ext.Array.map(data.series, function(ser) {
+                                    return ser.field;
+                                })
+                                );
 
                         Ext.each(data.series, function(serie) {
                             me.chart.series.add({
@@ -156,9 +176,31 @@ Ext.define('alexzam.his.view.reports.ExpensesLineChart', {
                             });
                         });
                         me.chart.redraw(true);
+                        store.inManualRefresh = false;
                     }
                 }
+            },
+            dField:{name: 'date', type: 'date', dateFormat: 'd.m.Y'},
+
+            setValueFields:function(fields) {
+                var me = this;
+
+                var fld = [new Ext.data.Field(me.dField)];
+                Ext.each(fields, function(f) {
+                    fld.push(new Ext.data.Field({
+                        name: f,
+                        type:'float'
+                    }));
+                }, me);
+                me.model.setFields(fld);
+
+                me.loadData(me.proxy.reader.rawData.items);
             }
+        });
+
+        catCombo.store = Ext.create('alexzam.his.model.account.store.Category',
+        {
+            proxy:Ext.create('alexzam.his.model.account.proxy.Category')
         });
 
         me.callParent();
