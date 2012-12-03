@@ -85,11 +85,6 @@
 
     <build>
         <defaultGoal>package</defaultGoal>
-        <directory>${project.basedir}/out</directory>
-        <outputDirectory>${project.basedir}/out/warsrc/WEB-INF/classes</outputDirectory>
-        <sourceDirectory>src</sourceDirectory>
-        <testSourceDirectory>test</testSourceDirectory>
-        <finalName>${project.artifactId}-${project.version}.${buildNumber}-${config}</finalName>
 
         <pluginManagement>
             <plugins>
@@ -97,42 +92,10 @@
                     <groupId>org.apache.tomcat.maven</groupId>
                     <artifactId>tomcat7-maven-plugin</artifactId>
                     <version>2.0</version>
-                    <configuration>
-                        <warFile>${project.build.directory}/${project.build.finalName}.war</warFile>
-                        <staticContextDocbase>${project.build.directory}/out/warsrc</staticContextDocbase>
-                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
 
-        <resources>
-            <resource>
-                <targetPath>.</targetPath>
-                <filtering>true</filtering>
-                <directory>${basedir}/web</directory>
-                <includes>
-                    <include>**/*.xml</include>
-                </includes>
-            </resource>
-            <resource>
-                <targetPath>.</targetPath>
-                <filtering>false</filtering>
-                <directory>${basedir}/web</directory>
-                <excludes>
-                    <exclude>**/*.xml</exclude>
-                </excludes>
-            </resource>
-            <resource>
-                <targetPath>WEB-INF/classes</targetPath>
-                <filtering>true</filtering>
-                <directory>${basedir}/src</directory>
-                <includes>
-                    <include>import.sql</include>
-                    <include>hibernate.cfg.xml</include>
-                    <include>log4j.properties</include>
-                </includes>
-            </resource>
-        </resources>
         <filters>
             <filter>${config}.properties</filter>
             <filter>buildNumber.properties</filter>
@@ -153,21 +116,19 @@
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>2.4.3</version>
-                <configuration>
-                    <outputDirectory>${project.build.directory}/warsrc</outputDirectory>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.1.1</version>
                 <configuration>
-                    <outputDirectory>${project.build.directory}</outputDirectory>
-                    <warSourceDirectory>${project.build.directory}/warsrc</warSourceDirectory>
-                    <packagingExcludes>**/javaee-api-6.0.jar</packagingExcludes>
+                    <filteringDeploymentDescriptors>true</filteringDeploymentDescriptors>
+                    <webResources>
+                        <resource>
+                            <filtering>true</filtering>
+                            <directory>src/main/webres</directory>
+                            <includes>
+                                <include>**/*.xml</include>
+                            </includes>
+                        </resource>
+                    </webResources>
                 </configuration>
             </plugin>
 
@@ -177,7 +138,7 @@
                 <version>1.0</version>
                 <executions>
                     <execution>
-                        <phase>validate</phase>
+                        <phase>generate-resources</phase>
                         <goals>
                             <goal>create</goal>
                         </goals>
@@ -191,29 +152,17 @@
                     </items>
                 </configuration>
             </plugin>
-
-            <plugin>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <version>1.6</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <configuration>
-                            <target>
-                                <copy
-                                        file="${project.build.directory}/${project.build.finalName}.war"
-                                        tofile="${project.build.directory}/${project.artifactId}.war"
-                                        overwrite="true"/>
-                            </target>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
 
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
     </build>
 
     <dependencies>
@@ -221,6 +170,7 @@
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
             <version>6.0</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -232,12 +182,7 @@
             <artifactId>javassist</artifactId>
             <version>3.12.1.GA</version>
         </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.6.1</version>
-            <scope>provided</scope>
-        </dependency>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -302,6 +247,12 @@
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>1.2.16</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.6.1</version>
         </dependency>
 
         <dependency>

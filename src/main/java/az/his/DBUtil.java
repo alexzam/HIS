@@ -1,17 +1,13 @@
 package az.his;
 
 import az.his.persist.DBListener;
-import az.his.persist.Transaction;
-import az.his.persist.TransactionCategory;
 import org.hibernate.Criteria;
 import org.hibernate.classic.Session;
-import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.context.ApplicationContext;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.web.context.ContextLoader;
 
-import javax.servlet.ServletRequest;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.List;
