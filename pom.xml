@@ -86,16 +86,6 @@
     <build>
         <defaultGoal>package</defaultGoal>
 
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.tomcat.maven</groupId>
-                    <artifactId>tomcat7-maven-plugin</artifactId>
-                    <version>2.0</version>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-
         <filters>
             <filter>${config}.properties</filter>
             <filter>buildNumber.properties</filter>
@@ -150,6 +140,16 @@
                     <items>
                         <item>buildNumber1</item>
                     </items>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.0</version>
+                <configuration>
+                    <warFile>${build.outputDirectory}/${build.finalName}.war</warFile>
+                    <mode>both</mode>
                 </configuration>
             </plugin>
         </plugins>
@@ -265,6 +265,12 @@
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjrt</artifactId>
             <version>1.6.12</version>
+        </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.22</version>
         </dependency>
     </dependencies>
 
