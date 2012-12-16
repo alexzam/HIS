@@ -4,6 +4,7 @@ Ext.define('alexzam.his.view.reports.ExpensesLineChart', {
     alias:'widget.his.chart.expense',
 
     requires:[
+        'alexzam.his.comp.ChartPlugin',
         'alexzam.his.model.reports.DateVal',
         'alexzam.his.model.account.store.Category',
         'alexzam.his.model.account.proxy.Category',
@@ -84,7 +85,7 @@ Ext.define('alexzam.his.view.reports.ExpensesLineChart', {
                     startDay:1,
                     listeners:{
                         change:function() {
-                            this.ownerCt.fireEvent('filterchange')
+                            this.ownerCt.fireEvent('filterchange');
                         }
                     }
                 },
@@ -99,7 +100,7 @@ Ext.define('alexzam.his.view.reports.ExpensesLineChart', {
                     startDay:1,
                     listeners:{
                         change:function() {
-                            this.ownerCt.fireEvent('filterchange')
+                            this.ownerCt.fireEvent('filterchange');
                         }
                     }
                 },
@@ -113,7 +114,12 @@ Ext.define('alexzam.his.view.reports.ExpensesLineChart', {
                     displayField:'name',
                     lastQuery:'',
                     labelWidth:65,
-                    multiSelect:true
+                    multiSelect:true,
+                    listeners:{
+                        change:function() {
+                            this.ownerCt.fireEvent('filterchange');
+                        }
+                    }
                 }
             ]
         }
@@ -160,6 +166,7 @@ Ext.define('alexzam.his.view.reports.ExpensesLineChart', {
                                 })
                                 );
 
+                        me.chart.axes.items[1].fields = [];
                         Ext.each(data.series, function(serie) {
                             me.chart.series.add({
                                 type: 'line',
@@ -174,6 +181,7 @@ Ext.define('alexzam.his.view.reports.ExpensesLineChart', {
                                     'stroke-width': 1
                                 }
                             });
+                            me.chart.axes.items[1].fields.push(serie.field);
                         });
                         me.chart.redraw(true);
                         store.inManualRefresh = false;
