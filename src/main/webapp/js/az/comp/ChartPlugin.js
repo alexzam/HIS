@@ -34,9 +34,6 @@ Ext.define('alexzam.his.comp.ChartPlugin', {
 
                 // remove the serie from the chart
                 me.chart.series.remove(serie);
-
-                // redraw the chart
-                me.chart.redraw();
             }
         }
     },
@@ -48,5 +45,8 @@ Ext.define('alexzam.his.comp.ChartPlugin', {
         Ext.each(serkeys, function(key) {
             me.removeSerieById(key);
         });
+
+        // redraw the chart
+        me.chart.redraw();
     }
 });
