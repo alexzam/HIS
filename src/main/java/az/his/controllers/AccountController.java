@@ -118,8 +118,8 @@ public class AccountController {
      *                  That means new category.
      * @param rawDate   Unix date of transaction.
      * @param comment   Comment to transaction.
-     * @throws ServletException Standart
      * @return Empty JSON as nothing needs to be returned
+     * @throws ServletException Standart
      */
     @RequestMapping(value = "/data", method = RequestMethod.POST, params = "act=put")
     @Transactional
@@ -204,8 +204,8 @@ public class AccountController {
      * Delete some transactions. If category becomes empty, delete it too.
      *
      * @param rawIds Transaction ID comma-separated list.
-     * @throws ServletException Standart
      * @return Empty string
+     * @throws ServletException Standart
      */
     @RequestMapping(value = "/data", method = RequestMethod.POST, params = "act=del")
     @ResponseBody
@@ -280,21 +280,7 @@ public class AccountController {
     ) throws JSONException, IOException {
         JSONObject ret = new JSONObject();
 
-        Calendar calFrom = DateUtil.convertInDateParam(rawFrom);
-        if(calFrom == null) calFrom = DateUtil.createCalDate1();
-        Date fromDate = calFrom.getTime();
-
-        Calendar calTo = DateUtil.convertInDateParam(rawTo);
-        if(calTo == null){
-            calTo = DateUtil.createCalDate1();
-            calTo.add(Calendar.MONTH, 1);
-        }
-        calTo.add(Calendar.DAY_OF_MONTH, 1);
-        Date toDate = calTo.getTime();
-
-        if (cat == null) cat = new Integer[]{};
-
-        List<Transaction> transactions = Transaction.getFiltered(fromDate, toDate, cat);
+        List<Transaction> transactions = getFilteredTransactions(rawFrom, rawTo, cat);
         JSONArray items = new JSONArray();
 
         ret.put("identifier", "id");
@@ -310,4 +296,46 @@ public class AccountController {
         resp.getWriter().append(ret.toString());
     }
 
+    private List<Transaction> getFilteredTransactions(Long rawFrom, Long rawTo, Integer[] cat) {
+        Calendar calFrom = DateUtil.convertInDateParam(rawFrom);
+        if (calFrom == null) calFrom = DateUtil.createCalDate1();
+        Date fromDate = calFrom.getTime();
+
+        Calendar calTo = DateUtil.convertInDateParam(rawTo);
+        if (calTo == null) {
+            calTo = DateUtil.createCalDate1();
+            calTo.add(Calendar.MONTH, 1);
+        }
+        calTo.add(Calendar.DAY_OF_MONTH, 1);
+        Date toDate = calTo.getTime();
+
+        if (cat == null) cat = new Integer[]{};
+
+        return Transaction.getFiltered(fromDate, toDate, cat);
+    }
+
+    @RequestMapping(value = "/csv")
+    @Transactional(readOnly = true)
+    public void getTransactionsCSV(
+            HttpServletResponse resp,
+            @RequestParam(value = "from", required = false) Long rawFrom,
+            @RequestParam(value = "to", required = false) Long rawTo,
+            @RequestParam(value = "cat", required = false) Integer[] cat
+    ) throws IOException {
+        List<Transaction> transactions = getFilteredTransactions(rawFrom, rawTo, cat);
+
+        StringBuilder ret = new StringBuilder();
+
+        for (Transaction tr : transactions){
+            ret.append(tr.getActor().getName()).append(",");
+            ret.append(tr.getTimestmp()).append(",");
+            ret.append(tr.getCategory().getName()).append(",");
+            ret.append(tr.getAmount()).append(",");
+            ret.append(tr.getComment()).append("\n");
+        }
+
+        resp.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/csv");
+        resp.getWriter().append(ret.toString());
+    }
 }
