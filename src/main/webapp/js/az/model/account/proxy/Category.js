@@ -9,7 +9,7 @@ Ext.define('alexzam.his.model.account.proxy.Category', {
         root:'items'
     },
 
-    url:Ext.rootUrl + 'account/catdata',
+    url:Ext.conf.rootUrl + 'account/catdata',
 
     pageParam: null,
     startParam: null,

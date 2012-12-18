@@ -13,7 +13,9 @@
     <script type="text/javascript">
         Ext.require('alexzam.his.ReportsScreen');
 
-        Ext.rootUrl = '${pageContext.request.contextPath}/';
+        Ext.conf = {
+            rootUrl: '${pageContext.request.contextPath}/'
+        };
 
         Ext.onReady(function () {
             Ext.create('alexzam.his.ReportsScreen');

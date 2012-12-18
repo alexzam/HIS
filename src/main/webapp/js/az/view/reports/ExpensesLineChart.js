@@ -56,20 +56,7 @@ Ext.define('alexzam.his.view.reports.ExpensesLineChart', {
                         }
                     ],
 
-                    series: [{
-                         type: 'area',
-                         axis: 'left',
-                         xField: 'date',
-                         yField: [],
-                         highlight: true,
-                         title:'Opa!',
-                         markerConfig: {
-                             type: 'circle',
-                             size: 4,
-                             radius: 4,
-                             'stroke-width': 1
-                         }
-                     }],
+                    series: [],
                     legend: {
                         position: 'right'
                     }
@@ -151,7 +138,7 @@ Ext.define('alexzam.his.view.reports.ExpensesLineChart', {
             model:'alexzam.his.model.reports.DateVal',
             proxy:{
                 type:'ajax',
-                url:Ext.rootUrl + 'reports/data/expenses',
+                url:Ext.conf.rootUrl + 'reports/data/expenses',
                 reader:{
                     type:'json',
                     root:'items'
@@ -175,30 +162,29 @@ Ext.define('alexzam.his.view.reports.ExpensesLineChart', {
                         store.inManualRefresh = true;
 
                         var data = store.getProxy().getReader().rawData;
-//                        me.chart.getPlugin('series').removeAllSeries();
+                        me.chart.getPlugin('series').removeAllSeries();
                         me.chart.store.setValueFields(
                                 Ext.Array.map(data.series, function(ser) {
                                     return ser.field;
                                 })
                                 );
 
-                        me.chart.series.items[0].yField = [];
                         me.chart.axes.items[1].fields = [];
                         Ext.each(data.series, function(serie) {
-//                            me.chart.series.add({
-//                                type: 'line',
-//                                axis: 'left',
-//                                xField: 'date',
-//                                yField: serie.field,
-//                                highlight: true,
-//                                markerConfig: {
-//                                    type: 'circle',
-//                                    size: 4,
-//                                    radius: 4,
-//                                    'stroke-width': 1
-//                                }
-//                            });
-                            me.chart.series.items[0].yField.push(serie.field);
+                            me.chart.series.add({
+                                type: 'line',
+                                axis: 'left',
+                                xField: 'date',
+                                yField: serie.field,
+                                title: serie.name,
+                                highlight: true,
+                                markerConfig: {
+                                    type: 'circle',
+                                    size: 4,
+                                    radius: 4,
+                                    'stroke-width': 1
+                                }
+                            });
                             me.chart.axes.items[1].fields.push(serie.field);
                         });
                         me.chart.redraw(true);

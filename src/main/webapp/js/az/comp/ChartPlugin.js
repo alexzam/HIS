@@ -29,10 +29,7 @@ Ext.define('alexzam.his.comp.ChartPlugin', {
                     }
                 }
 
-                // get the correct serie
                 var serie = me.chart.series.items[serieKey];
-
-                // remove the serie from the chart
                 me.chart.series.remove(serie);
             }
         }
@@ -40,13 +37,23 @@ Ext.define('alexzam.his.comp.ChartPlugin', {
 
     removeAllSeries:function() {
         var me = this;
+        var surface = me.chart.surface;
 
         var serkeys = Ext.Array.clone(me.chart.series.keys);
+
         Ext.each(serkeys, function(key) {
-            me.removeSerieById(key);
+            // go through all the groups of the surface
+            for (var groupKey = 0; groupKey < surface.groups.keys.length; groupKey++) {
+                // check if the group name contains the serie name
+                if (surface.groups.keys[groupKey].search(key) == 0) {
+                    // destroy the group
+                    surface.groups.items[groupKey].destroy();
+                }
+            }
         });
 
-        // redraw the chart
+        me.chart.series.clear();
+
         me.chart.redraw();
     }
 });
