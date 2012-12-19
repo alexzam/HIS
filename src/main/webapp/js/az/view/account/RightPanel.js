@@ -25,6 +25,11 @@ Ext.define('alexzam.his.view.account.RightPanel', {
             bubbleEvents:['filterupdate', 'transdelete']
         });
 
+        me.linkCSV = Ext.create('Ext.panel.Panel', {
+            region:'south',
+            html:"<a href='' align='center'>Экспорт в CSV</a>"
+        });
+
         me.grdStats = Ext.create('Ext.grid.Panel', {
             region:'south',
             store:me.storeStats,
@@ -36,6 +41,7 @@ Ext.define('alexzam.his.view.account.RightPanel', {
 
         me.items = [
             me.frmFilter,
+            me.linkCSV,
             me.grdStats
         ];
 
