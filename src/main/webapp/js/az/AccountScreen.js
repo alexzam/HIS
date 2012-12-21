@@ -56,11 +56,6 @@ Ext.define('alexzam.his.AccountScreen', {
                 width:200,
                 itemId: 'panelR',
                 storeStats:me.storeStats,
-                listeners:{
-                    filterupdate:me.onTransReload,
-                    transdelete:me.onBtTransDelete,
-                    scope:me
-                }
             },
             {
                 xtype:'his.account.TransactionGrid',
@@ -77,6 +72,12 @@ Ext.define('alexzam.his.AccountScreen', {
         me.topPanel = pnlOuter.getComponent('panelT');
         me.grdTrans = pnlOuter.getComponent('grdTrans');
 
+        me.on({
+            filterupdate: me.onTransReload,
+            transdelete: me.onBtTransDelete,
+            scope: me
+        });
+
         me.reloadAccStats();
     },
 
@@ -86,12 +87,6 @@ Ext.define('alexzam.his.AccountScreen', {
 
         if (q == null) return;
 
-        if (q.from != null) {
-            q.from = q.from.getTime();
-        }
-        if (q.to != null) {
-            q.to = q.to.getTime();
-        }
         me.grdTrans.reloadTrans(q);
 
         me.grdTrans.enableSummary(q.cat > 0);

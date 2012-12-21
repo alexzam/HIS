@@ -104,5 +104,28 @@ Ext.define('alexzam.his.view.account.FilterForm', {
 
         me.dtTo.setMinValue(me.dtFrom.getValue());
         me.dtFrom.setMaxValue(me.dtTo.getValue());
+    },
+
+    getValues:function(asString){
+        var frm = this.getForm();
+
+        if (!frm.isValid()) return null;
+        // TODO Review. Maybe there is a way to set converter to individual fields?
+        var q = frm.getValues();
+
+        if (q.from != null) {
+            q.from = q.from.getTime();
+        }
+        if (q.to != null) {
+            q.to = q.to.getTime();
+        }
+
+        if(asString != true) return q;
+
+        var ret = [];
+        for (key in q){
+            ret.push(key+"="+q[key])
+        }
+        return ret.join("+");
     }
 });
