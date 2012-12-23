@@ -19,6 +19,7 @@ import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -27,8 +28,10 @@ import java.util.List;
 @RequestMapping("/account")
 public class AccountController {
 
+    public static final String CSV_DIVIDER = ";";
+
     @Resource(name = "dbUtil")
-    private DBUtil dbUtil;
+    public DBUtil dbUtil;
 
     @RequestMapping(method = RequestMethod.GET)
     @Transactional(readOnly = true)
@@ -213,7 +216,7 @@ public class AccountController {
     public String delTransactions(
             @RequestParam("ids") String rawIds
     ) throws ServletException {
-        String[] ids = rawIds.split(",");
+        String[] ids = rawIds.split(CSV_DIVIDER);
 
         for (String id : ids) {
             try {
@@ -326,16 +329,21 @@ public class AccountController {
 
         StringBuilder ret = new StringBuilder();
 
+        ret.append("User;Date;Category;Amount;Comment\n");
+        SimpleDateFormat formatter = (SimpleDateFormat) SimpleDateFormat.getInstance();
+        formatter.applyPattern("dd.MM.yyyy");
+
         for (Transaction tr : transactions){
-            ret.append(tr.getActor().getName()).append(",");
-            ret.append(tr.getTimestmp()).append(",");
-            ret.append(tr.getCategory().getName()).append(",");
-            ret.append(tr.getAmount()).append(",");
+            ret.append(tr.getActor().getName()).append(CSV_DIVIDER);
+            ret.append(formatter.format(tr.getTimestmp())).append(CSV_DIVIDER);
+            ret.append(tr.getCategory().getName()).append(CSV_DIVIDER);
+            ret.append(tr.getAmount()).append(CSV_DIVIDER);
             ret.append(tr.getComment()).append("\n");
         }
 
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("text/csv");
+        resp.addHeader("Content-Disposition", "attachment; filename=\"transactions.csv\"");
         resp.getWriter().append(ret.toString());
     }
 }

@@ -27,7 +27,6 @@ Ext.define('alexzam.his.view.account.RightPanel', {
 
         me.linkCSV = Ext.create('Ext.panel.Panel', {
             region:'south',
-            border:false,
             html:"<a href='' align='center'>Экспорт в CSV</a>"
         });
 
@@ -50,24 +49,28 @@ Ext.define('alexzam.his.view.account.RightPanel', {
     },
 
     getFilterData:function() {
-        var frm = this.frmFilter;
-        if (!frm.isValid()) return null;
-
-        return frm.getValues();
+        return this.frmFilter.getValues();
     },
 
     reloadCategories:function() {
         this.frmFilter.reloadCategories();
     },
 
-    listeners:{
-        filterupdate:function(){
-            var me = this,
-                qu = me.frmFilter.getValues(true),
-                linkEl = Ext.query('a', me.linkCSV.getEl());
+    updateCSVLink:function(){
+        var me = this,
+            qu = me.frmFilter.getValues(true),
+            linkEl = Ext.query('a', me.linkCSV.getEl().dom)[0];
 
-            link = Ext.conf.rootUrl + "account/csv?" + qu;
-            linkEl.set({href:link});
+        link = Ext.conf.rootUrl + "account/csv?" + qu;
+        linkEl.href = link;
+    },
+
+    listeners:{
+        afterrender:function(){
+            this.updateCSVLink();
+        },
+        filterupdate:function(){
+            this.updateCSVLink();
             return true;
         }
     }

@@ -111,7 +111,7 @@ Ext.define('alexzam.his.view.account.FilterForm', {
 
         if (!frm.isValid()) return null;
         // TODO Review. Maybe there is a way to set converter to individual fields?
-        var q = frm.getValues();
+        var q = frm.getFieldValues();
 
         if (q.from != null) {
             q.from = q.from.getTime();
@@ -124,8 +124,9 @@ Ext.define('alexzam.his.view.account.FilterForm', {
 
         var ret = [];
         for (key in q){
-            ret.push(key+"="+q[key])
+            if(q[key] == null) continue;
+            ret.push(key + "=" + q[key])
         }
-        return ret.join("+");
+        return ret.join("&");
     }
 });
