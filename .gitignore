@@ -1,5 +1,6 @@
 .idea/
 .idea/**
 /out
+/target
 /.idea/libraries/Maven__org_hibernate_hibernate_core_3_6_8_Final.xml
 /.idea/libraries/Maven__org_hibernate_javax_persistence_hibernate_jpa_2_0_api_1_0_1
