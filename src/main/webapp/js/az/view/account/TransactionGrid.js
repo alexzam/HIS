@@ -8,6 +8,7 @@ Ext.define('alexzam.his.view.account.TransactionGrid', {
         'Ext.grid.column.Date',
         'Ext.grid.column.Number',
         'Ext.grid.feature.Summary',
+        'Ext.grid.plugin.RowEditing',
 
         'Ext.form.field.Display'
     ],
