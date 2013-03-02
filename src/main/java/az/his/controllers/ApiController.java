@@ -1,9 +1,12 @@
 package az.his.controllers;
 
+import az.his.jaxb.JaxCategoryList;
 import az.his.jaxb.JaxUserList;
+import az.his.persist.TransactionCategory;
 import az.his.persist.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -25,5 +28,18 @@ public class ApiController {
         }
 
         return jaxUserList;
+    }
+
+    @RequestMapping("/cats")
+    @ResponseBody
+    public JaxCategoryList getCategories(@RequestParam("uid") int uid) {
+        List<TransactionCategory> cats = TransactionCategory.getAll();
+        JaxCategoryList catList = new JaxCategoryList();
+
+        for (TransactionCategory cat : cats) {
+            catList.addCategory(cat.getId(), cat.getName());
+        }
+
+        return catList;
     }
 }
