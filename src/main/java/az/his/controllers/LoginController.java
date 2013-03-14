@@ -1,6 +1,5 @@
 package az.his.controllers;
 
-import az.his.DBUtil;
 import az.his.persist.User;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,9 +18,6 @@ import java.util.List;
 @Controller
 @RequestMapping("/login")
 public class LoginController {
-
-    @Resource(name = "dbUtil")
-    private DBUtil dbUtil;
 
     @Resource(name = "authMan")
     private AuthenticationManager authManager;

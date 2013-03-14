@@ -68,4 +68,8 @@ public class User {
     public static User getCurrentUser(){
         return DBUtil.getInstance().get(User.class, AuthUtil.getUid());
     }
+
+    public static User getById(int uid) {
+        return DBUtil.getInstance().get(User.class, uid);
+    }
 }
