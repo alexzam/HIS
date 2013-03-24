@@ -92,6 +92,7 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-test:3.1.0.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.aspectj:aspectjrt:1.6.12" level="project" />
     <orderEntry type="library" name="Maven: mysql:mysql-connector-java:5.1.22" level="project" />
+    <orderEntry type="library" name="Maven: org.mybatis:mybatis:3.2.1" level="project" />
   </component>
 </module>
 
