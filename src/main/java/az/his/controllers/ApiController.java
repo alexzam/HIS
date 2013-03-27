@@ -21,6 +21,7 @@ import java.util.List;
 public class ApiController {
 
     @RequestMapping("/users")
+    @Transactional(readOnly = true)
     @ResponseBody
     public JaxUserList getUsers() {
         List<User> users = User.getAll();
@@ -37,9 +38,10 @@ public class ApiController {
     }
 
     @RequestMapping("/cats")
+    @Transactional(readOnly = true)
     @ResponseBody
     public JaxCategoryList getCategories(@RequestParam("uid") int uid) {
-        List<TransactionCategory> cats = TransactionCategory.getAll();
+        List<TransactionCategory> cats = TransactionCategory.getByType(TransactionCategory.CatType.EXP);
         JaxCategoryList catList = new JaxCategoryList();
 
         for (TransactionCategory cat : cats) {
@@ -51,12 +53,12 @@ public class ApiController {
 
     @RequestMapping(value = "/trans", method = RequestMethod.POST)
     @Transactional
-    public ResponseEntity<String> postTransactions(@RequestBody JaxTransactionList transactionList){
+    public ResponseEntity<String> postTransactions(@RequestBody JaxTransactionList transactionList) {
         int uid = transactionList.uid;
         DBUtil dbUtil = DBUtil.getInstance();
 
         User user = User.getById(uid);
-        if(user == null) {
+        if (user == null) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
