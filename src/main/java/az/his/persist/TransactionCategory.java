@@ -54,4 +54,9 @@ public class TransactionCategory {
                 .setParameter("type", type)
                 .list();
     }
+
+    @Transient
+    public static List<TransactionCategory> getAll() {
+        return DBUtil.getInstance().findAll(TransactionCategory.class);
+    }
 }
