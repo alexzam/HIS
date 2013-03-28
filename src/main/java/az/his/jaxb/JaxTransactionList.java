@@ -15,7 +15,7 @@ public class JaxTransactionList {
     public int uid;
 
     @XmlAnyElement(lax = true)
-    public List<Transaction> transactions = new ArrayList<>();
+    public List<Transaction> transactions = new ArrayList<Transaction>();
 
     @XmlRootElement(name = "tr")
     public static class Transaction {

@@ -59,7 +59,7 @@ public class ApiController {
 
         User user = User.getById(uid);
         if (user == null) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
         }
 
         for (JaxTransactionList.Transaction tr : transactionList.transactions) {
@@ -74,6 +74,6 @@ public class ApiController {
             dbUtil.persist(trans);
         }
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<String>(HttpStatus.CREATED);
     }
 }

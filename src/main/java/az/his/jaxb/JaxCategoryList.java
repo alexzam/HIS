@@ -11,7 +11,7 @@ import java.util.List;
 @XmlSeeAlso({JaxCategoryList.Category.class})
 public class JaxCategoryList {
     @XmlAnyElement
-    public List<Category> cats = new ArrayList<>();
+    public List<Category> cats = new ArrayList<Category>();
 
     public void addCategory(int id, String name){
         Category category = new Category(id, name);

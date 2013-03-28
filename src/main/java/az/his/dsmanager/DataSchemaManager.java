@@ -1,6 +1,7 @@
 package az.his.dsmanager;
 
 import org.apache.ibatis.jdbc.ScriptRunner;
+import org.apache.log4j.Logger;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -18,6 +19,7 @@ public class DataSchemaManager {
 
     private DataSource dataSource;
     private int dBVersionId;
+    private static final Logger log = Logger.getLogger(DataSchemaManager.class);
 
     public DataSchemaManager(String jndiName) throws NamingException {
         InitialContext context = new InitialContext();
@@ -31,7 +33,7 @@ public class DataSchemaManager {
         ResultSet resultSet;
         try {
             resultSet = statement.executeQuery();
-            if(!resultSet.first()) return "0";
+            if (!resultSet.first()) return "0";
             String ret = resultSet.getString(1);
             resultSet.close();
             statement.close();
@@ -39,7 +41,7 @@ public class DataSchemaManager {
             statement = connection.prepareStatement("SELECT val FROM sysParameters WHERE name = 'db.versionid'");
 
             resultSet = statement.executeQuery();
-            if(!resultSet.first()) return "0";
+            if (!resultSet.first()) return "0";
             dBVersionId = Integer.parseInt(resultSet.getString(1));
             resultSet.close();
             statement.close();
@@ -65,6 +67,8 @@ public class DataSchemaManager {
             ScriptRunner runner = new ScriptRunner(connection);
 
             for (Version version : versions) {
+                log.info("Sending script " + version.getFileName() + " for version " + version.getName() + " ("
+                        + version.getId() + ")");
                 InputStream stream = getClass().getClassLoader().getResourceAsStream("db/" + version.getFileName());
                 Reader reader = new InputStreamReader(stream);
                 runner.runScript(reader);
@@ -74,7 +78,7 @@ public class DataSchemaManager {
             connection.close();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Upgrade error", e);
         }
     }
 }

@@ -6,8 +6,8 @@ CREATE TABLE sysParameters (
     PRIMARY KEY (id)
 );
 
-INSERT INTO sysparameters (name,val)
+INSERT INTO sysParameters (name,val)
 VALUES("db.version","0.1.3.0");
 
-INSERT INTO sysparameters (name,val)
+INSERT INTO sysParameters (name,val)
 VALUES("db.versionid","1");
