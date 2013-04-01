@@ -1,6 +1,9 @@
 package az.his.controllers;
 
 import az.his.persist.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -12,20 +15,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 @Controller
 @RequestMapping("/login")
 public class LoginController {
+    @Autowired
+    ApplicationContext appContext;
 
-    @Resource(name = "authMan")
+    @Autowired
+    @Qualifier("authMan")
     private AuthenticationManager authManager;
 
     @RequestMapping(method = RequestMethod.GET)
     @Transactional(readOnly = true)
     public String loginPage(Model model) {
-        List<User> users = User.getAll();
+        List<User> users = User.getAll(appContext);
         model.addAttribute("users", users);
         return "login";
     }

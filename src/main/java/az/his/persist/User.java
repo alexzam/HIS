@@ -3,6 +3,7 @@ package az.his.persist;
 import az.his.AuthUtil;
 import az.his.DBUtil;
 import org.hibernate.Session;
+import org.springframework.context.ApplicationContext;
 
 import javax.persistence.*;
 import java.util.List;
@@ -34,14 +35,14 @@ public class User {
     }
 
     @Transient
-    public static List<User> getAll() {
-        DBUtil dbUtil = DBUtil.getInstance();
+    public static List<User> getAll(ApplicationContext context) {
+        DBUtil dbUtil = DBUtil.getInstance(context);
         return dbUtil.findAll(User.class);
     }
 
     @Transient
-    public long getPersonalExpense(Account acc) {
-        Session session = DBUtil.getCurrentSession();
+    public long getPersonalExpense(ApplicationContext context, Account acc) {
+        Session session = DBUtil.getCurrentSession(context);
         Long out = (Long) session
                 .createQuery("select sum(amount) from transaction where account = ? and common = true and actor = ?")
                 .setEntity(0, acc)
@@ -53,8 +54,8 @@ public class User {
     }
 
     @Transient
-    public long getPersonalDonation(Account acc) {
-        Session session = DBUtil.getCurrentSession();
+    public long getPersonalDonation(ApplicationContext context, Account acc) {
+        Session session = DBUtil.getCurrentSession(context);
         Long out = (Long) session
                 .createQuery("select sum(amount) from transaction where account = ? and common = false and actor = ?")
                 .setEntity(0, acc)
@@ -65,11 +66,11 @@ public class User {
     }
 
     @Transient
-    public static User getCurrentUser(){
-        return DBUtil.getInstance().get(User.class, AuthUtil.getUid());
+    public static User getCurrentUser(ApplicationContext context){
+        return DBUtil.getInstance(context).get(User.class, AuthUtil.getUid());
     }
 
-    public static User getById(int uid) {
-        return DBUtil.getInstance().get(User.class, uid);
+    public static User getById(ApplicationContext context, int uid) {
+        return DBUtil.getInstance(context).get(User.class, uid);
     }
 }

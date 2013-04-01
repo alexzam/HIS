@@ -8,13 +8,14 @@ import org.hibernate.Query;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -26,8 +27,8 @@ import java.util.List;
 @Controller
 @RequestMapping("/reports")
 public class ReportsController {
-    @Resource(name = "dbUtil")
-    private DBUtil dbUtil;
+    @Autowired
+    private ApplicationContext appContext;
 
     @RequestMapping(method = RequestMethod.GET)
     public String reportsPage() {
@@ -37,7 +38,7 @@ public class ReportsController {
     @RequestMapping("/data/spendbycat")
     @Transactional(readOnly = true)
     public void dataSpendByCategory(HttpServletResponse resp) throws JSONException, IOException {
-        List results = DBUtil.getCurrentSession().createQuery(
+        List results = DBUtil.getCurrentSession(appContext).createQuery(
                 "select tc.name as name, -sum(t.amount) as val " +
                         "from transaction t, transcategory tc " +
                         "where tc = t.category " +
@@ -88,7 +89,7 @@ public class ReportsController {
 
         if (cat == null) cat = new Integer[]{};
 
-        Query query = DBUtil.getCurrentSession().createQuery(
+        Query query = DBUtil.getCurrentSession(appContext).createQuery(
                 "select date(t.timestmp) as date, -sum(t.amount) as val " +
                         "from transaction t " +
                         "where " +
@@ -113,7 +114,7 @@ public class ReportsController {
         }
 
         for (Integer catId : cat) {
-            query = DBUtil.getCurrentSession().createQuery(
+            query = DBUtil.getCurrentSession(appContext).createQuery(
                     "select date(t.timestmp) as date, -sum(t.amount) as val " +
                             "from transaction t " +
                             "where " +
@@ -127,7 +128,7 @@ public class ReportsController {
             query.setInteger("cat", catId);
             results = query.list();
 
-            String catName = DBUtil.getInstance().get(TransactionCategory.class, catId).getName();
+            String catName = DBUtil.getInstance(appContext).get(TransactionCategory.class, catId).getName();
 
             ret.addSeries(catId.toString(), catName);
             for (Object result : results) {

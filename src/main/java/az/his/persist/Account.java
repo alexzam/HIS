@@ -2,6 +2,7 @@ package az.his.persist;
 
 import az.his.DBUtil;
 import org.hibernate.classic.Session;
+import org.springframework.context.ApplicationContext;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -59,14 +60,14 @@ public class Account {
     }
 
     @Transient
-    public static Account getCommon() {
-        DBUtil dbUtil = DBUtil.getInstance();
+    public static Account getCommon(ApplicationContext context) {
+        DBUtil dbUtil = DBUtil.getInstance(context);
         return dbUtil.get(Account.class, Account.COMMON_ACC);
     }
 
     @Transient
-    public long getTotalExp() {
-        Session session = DBUtil.getCurrentSession();
+    public long getTotalExp(ApplicationContext context) {
+        Session session = DBUtil.getCurrentSession(context);
         Long out = (Long) session.createQuery("select sum(amount) from transaction where common = true").uniqueResult();
         if (out == null) out = 0l;
         else out = -out;

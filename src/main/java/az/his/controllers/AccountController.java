@@ -10,12 +10,13 @@ import az.his.persist.User;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -30,13 +31,16 @@ public class AccountController {
 
     public static final String CSV_DIVIDER = ";";
 
-    @Resource(name = "dbUtil")
+    @Autowired
+    ApplicationContext appContext;
+
+    @Autowired
     public DBUtil dbUtil;
 
     @RequestMapping(method = RequestMethod.GET)
     @Transactional(readOnly = true)
     public String accountPage(Model model) throws ServletException {
-        List<User> usersNotMe = User.getAll();
+        List<User> usersNotMe = User.getAll(appContext);
 
         User userMe = null;
         for (User user : usersNotMe) {
@@ -63,9 +67,9 @@ public class AccountController {
         JSONObject ret = new JSONObject();
         JSONArray items = new JSONArray();
         if (type.equals("e")) {
-            cats = TransactionCategory.getByType(TransactionCategory.CatType.EXP);
+            cats = TransactionCategory.getByType(appContext, TransactionCategory.CatType.EXP);
         } else if (type.equals("i")) {
-            cats = TransactionCategory.getByType(TransactionCategory.CatType.INC);
+            cats = TransactionCategory.getByType(appContext, TransactionCategory.CatType.INC);
         } else {
             cats = dbUtil.findAll(TransactionCategory.class);
         }
@@ -176,7 +180,7 @@ public class AccountController {
         Date time = new Date(rawDate);
         User actor = dbUtil.get(User.class, actId);
 
-        Account account = Account.getCommon();
+        Account account = Account.getCommon(appContext);
 
         Transaction trans = new Transaction();
         trans.setActor(actor);
@@ -253,12 +257,12 @@ public class AccountController {
     public void getStatistic(HttpServletResponse resp) throws JSONException, IOException {
         JSONObject ret = new JSONObject();
 
-        Account acc = Account.getCommon();
-        long totalExp = acc.getTotalExp();
+        Account acc = Account.getCommon(appContext);
+        long totalExp = acc.getTotalExp(appContext);
         long eachExp = totalExp / 2;
-        User user = User.getCurrentUser();
-        long persExp = user.getPersonalExpense(acc);
-        long persDonation = user.getPersonalDonation(acc);
+        User user = User.getCurrentUser(appContext);
+        long persExp = user.getPersonalExpense(appContext, acc);
+        long persDonation = user.getPersonalDonation(appContext, acc);
 
         ret.put("amount", acc.getAmountPrintable());
         ret.put("totalExp", DBUtil.formatCurrency(totalExp));
@@ -314,7 +318,7 @@ public class AccountController {
 
         if (cat == null) cat = new Integer[]{};
 
-        return Transaction.getFiltered(fromDate, toDate, cat);
+        return Transaction.getFiltered(appContext, fromDate, toDate, cat);
     }
 
     @RequestMapping(value = "/csv")
