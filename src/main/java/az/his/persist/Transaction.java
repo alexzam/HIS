@@ -183,7 +183,8 @@ public class Transaction implements DBListener {
 
     @Override
     public void beforeInsert() {
-        if (!common)
-            getAccount().setValue(getAccount().getValue() + amount);
+        if (!common){
+            account.setValue(account.getValue() + amount);
+        }
     }
 }

@@ -5,6 +5,7 @@ import org.hibernate.Criteria;
 import org.hibernate.classic.Session;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.context.ApplicationContext;
+import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.web.context.ContextLoader;
 
@@ -54,10 +55,12 @@ public class DBUtil extends HibernateDaoSupport {
     }
 
     public void persist(Object obj) {
+        HibernateTemplate template = getHibernateTemplate();
         if (obj instanceof DBListener) {
             ((DBListener) obj).beforeInsert();
+            getSession().flush();
         }
-        getHibernateTemplate().persist(obj);
+        template.persist(obj);
     }
 
     public <E> void delete(Class<E> clazz, int iid) {
