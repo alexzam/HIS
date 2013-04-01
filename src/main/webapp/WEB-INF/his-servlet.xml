@@ -16,7 +16,7 @@
             http://www.springframework.org/schema/oxm
             http://www.springframework.org/schema/oxm/spring-oxm.xsd">
 
-    <import resource="security.xml"/>
+    <!--<import resource="security.xml"/>-->
 
     <mvc:annotation-driven/>
     <mvc:resources mapping="/css/**" location="/css/"/>

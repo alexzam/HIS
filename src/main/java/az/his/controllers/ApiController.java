@@ -8,6 +8,8 @@ import az.his.persist.Account;
 import az.his.persist.Transaction;
 import az.his.persist.TransactionCategory;
 import az.his.persist.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -19,12 +21,14 @@ import java.util.List;
 @Controller
 @RequestMapping("/api")
 public class ApiController {
+    @Autowired
+    ApplicationContext context;
 
     @RequestMapping("/users")
     @Transactional(readOnly = true)
     @ResponseBody
     public JaxUserList getUsers() {
-        List<User> users = User.getAll();
+        List<User> users = User.getAll(context);
 
         JaxUserList jaxUserList = new JaxUserList();
         for (User dbUser : users) {
@@ -41,7 +45,7 @@ public class ApiController {
     @Transactional(readOnly = true)
     @ResponseBody
     public JaxCategoryList getCategories(@RequestParam("uid") int uid) {
-        List<TransactionCategory> cats = TransactionCategory.getByType(TransactionCategory.CatType.EXP);
+        List<TransactionCategory> cats = TransactionCategory.getByType(context, TransactionCategory.CatType.EXP);
         JaxCategoryList catList = new JaxCategoryList();
 
         for (TransactionCategory cat : cats) {
@@ -55,9 +59,9 @@ public class ApiController {
     @Transactional
     public ResponseEntity<String> postTransactions(@RequestBody JaxTransactionList transactionList) {
         int uid = transactionList.uid;
-        DBUtil dbUtil = DBUtil.getInstance();
+        DBUtil dbUtil = DBUtil.getInstance(context);
 
-        User user = User.getById(uid);
+        User user = User.getById(context, uid);
         if (user == null) {
             return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
         }
@@ -65,7 +69,7 @@ public class ApiController {
         for (JaxTransactionList.Transaction tr : transactionList.transactions) {
             Transaction trans = new Transaction();
             trans.setActor(user);
-            trans.setAccount(Account.getCommon());
+            trans.setAccount(Account.getCommon(context));
             trans.setTimestmp(tr.date);
             trans.setAmount(tr.amount * 100);
             trans.setCategory(dbUtil.get(TransactionCategory.class, tr.cat));

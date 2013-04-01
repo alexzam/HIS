@@ -6,6 +6,8 @@ import org.hibernate.classic.Session;
 import org.hibernate.type.DateType;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.context.ApplicationContext;
+import org.springframework.orm.hibernate3.HibernateTemplate;
 
 import javax.persistence.*;
 import java.text.DateFormat;
@@ -148,11 +150,11 @@ public class Transaction implements DBListener {
 
     @Transient
     @SuppressWarnings("unchecked")
-    public static List<Transaction> getFiltered(Date from, Date to, Integer[] categories) {
+    public static List<Transaction> getFiltered(ApplicationContext context, Date from, Date to, Integer[] categories) {
         boolean catFilter = categories.length > 0;
         String q = "from az.his.persist.Transaction where timestmp >= :from and timestmp <= :to"
                 + (catFilter ? " and category.id in (:cat)" : "");
-        Query query = DBUtil.getCurrentSession().createQuery(q)
+        Query query = DBUtil.getCurrentSession(context).createQuery(q)
                 .setParameter("from", from, DateType.INSTANCE)
                 .setParameter("to", to, DateType.INSTANCE);
         if (catFilter) {
@@ -166,14 +168,15 @@ public class Transaction implements DBListener {
     }
 
     @Override
-    public void beforeDelete() {
+    public void beforeDelete(HibernateTemplate template) {
         // Fix account sum
         if (!common)
             getAccount().setValue(getAccount().getValue() - amount);
 
         // Delete empty category
         if (getCategory().getType() != TransactionCategory.CatType.NONE) {
-            Session session = DBUtil.getCurrentSession();
+            Session session = template.getSessionFactory().getCurrentSession();
+
             Long res = (Long) session.createQuery("select count(id) from transaction where category = ?")
                     .setEntity(0, getCategory())
                     .uniqueResult();
@@ -182,8 +185,9 @@ public class Transaction implements DBListener {
     }
 
     @Override
-    public void beforeInsert() {
-        if (!common)
-            getAccount().setValue(getAccount().getValue() + amount);
+    public void beforeInsert(HibernateTemplate template) {
+        if (!common){
+            account.setValue(account.getValue() + amount);
+        }
     }
 }
