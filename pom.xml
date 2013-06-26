@@ -153,7 +153,7 @@
                 <artifactId>tomcat7-maven-plugin</artifactId>
                 <version>2.0</version>
                 <configuration>
-                    <warFile>${build.outputDirectory}/${build.finalName}.war</warFile>
+                    <warFile>${project.build.outputDirectory}/${project.build.finalName}.war</warFile>
                     <mode>both</mode>
                 </configuration>
             </plugin>
