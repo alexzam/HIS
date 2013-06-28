@@ -22,7 +22,7 @@ GRANT ALL ON his.* TO his@localhost;
 ```
     
 - Ok, that's enough, close the window.
-- Download project package. Version 0.1.5 in [ZIP](https://docs.google.com/file/d/0B1jW-d2yqWkVcU84bkNIWVFHT3c/edit?usp=sharing) or [tar.gz](https://docs.google.com/file/d/0B1jW-d2yqWkVeURva2M1SEF0V1E/edit?usp=sharing)
+- Download project package. Version 0.1.5 in [ZIP](https://docs.google.com/file/d/0B1jW-d2yqWkVOEdQYWVSVXVhU2c/edit?usp=sharing) or [tar.gz](https://docs.google.com/file/d/0B1jW-d2yqWkVYklITmlCOTc3b0k/edit?usp=sharing)
 - Unpack it to where you want it to be unpacked. Do I really need to write this?..
 - Don't run it yet! If you for some reason created DB name or user other than "his", then go and tell application about that. Use file `webapp/META-INF/context.xml`
 - Final step! Open `webapp/WEB-INF/classes/import.sql` and in first 2 lines change usernames to whatever you want. also you may add more lines like this.
