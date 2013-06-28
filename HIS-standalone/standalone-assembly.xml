@@ -23,6 +23,7 @@
                 <include>org.apache.tomcat:tomcat-jsp-api</include>
                 <include>org.apache.tomcat:tomcat-jasper</include>
                 <include>org.apache.tomcat:tomcat-dbcp</include>
+                <include>org.slf4j:slf4j-api</include>
             </includes>
             <outputDirectory>lib</outputDirectory>
             <unpack>false</unpack>

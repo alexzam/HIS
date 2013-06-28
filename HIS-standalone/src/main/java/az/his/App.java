@@ -28,7 +28,7 @@ public class App
         tomcat.setBaseDir("tomcat");
 
         Context context = tomcat.addWebapp("/his", new File(webappDirLocation).getAbsolutePath());
-        File configFile = new File("webapp/META-INF/context.xml");
+        File configFile = new File(webappDirLocation + "META-INF/context.xml");
         context.setConfigFile(configFile.toURI().toURL());
         System.out.println("configuring app with basedir: " + new File("./" + webappDirLocation).getAbsolutePath());
 
