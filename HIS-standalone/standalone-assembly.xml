@@ -34,7 +34,7 @@
             <outputDirectory>classes</outputDirectory>
         </fileSet>
         <fileSet>
-            <directory>src/main/resources</directory>
+            <directory>src/main/packres</directory>
             <outputDirectory>.</outputDirectory>
         </fileSet>
     </fileSets>
