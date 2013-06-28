@@ -15,11 +15,27 @@
             <outputDirectory>webapp</outputDirectory>
             <unpack>true</unpack>
         </dependencySet>
+        <dependencySet>
+            <includes>
+                <include>org.apache.tomcat.embed:tomcat-embed-core</include>
+                <include>org.apache.tomcat.embed:tomcat-embed-logging-juli</include>
+                <include>org.apache.tomcat.embed:tomcat-embed-jasper</include>
+                <include>org.apache.tomcat:tomcat-jsp-api</include>
+                <include>org.apache.tomcat:tomcat-jasper</include>
+                <include>org.apache.tomcat:tomcat-dbcp</include>
+            </includes>
+            <outputDirectory>lib</outputDirectory>
+            <unpack>false</unpack>
+        </dependencySet>
     </dependencySets>
     <fileSets>
         <fileSet>
             <directory>target/classes</directory>
             <outputDirectory>classes</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>src/main/resources</directory>
+            <outputDirectory>.</outputDirectory>
         </fileSet>
     </fileSets>
 </assembly>
