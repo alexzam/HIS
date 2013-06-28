@@ -8,7 +8,7 @@ So. How to install this piece of soft.
 ## Installation
 If you know what it means: clone then "mvn package" then install to your Tomcat and setup DB connection with context.xml in META-INF.
 
-If you doesn`t... Hmm...
+If you don't... Hmm...
 Ok, well, you have to do this:
 - Download and install [MySQL Community Server](http://dev.mysql.com/downloads/mysql/).
 - Find in your Programs menu "MySQL Command Line Client" and start it.
