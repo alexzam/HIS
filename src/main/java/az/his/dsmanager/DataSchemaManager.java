@@ -64,6 +64,7 @@ public class DataSchemaManager {
         Connection connection;
         try {
             connection = dataSource.getConnection();
+            connection.setAutoCommit(false);
             ScriptRunner runner = new ScriptRunner(connection);
 
             for (Version version : versions) {
@@ -72,11 +73,23 @@ public class DataSchemaManager {
                 InputStream stream = getClass().getClassLoader().getResourceAsStream("db/" + version.getFileName());
                 Reader reader = new InputStreamReader(stream);
                 runner.runScript(reader);
+
                 stream.close();
+
+                PreparedStatement stmt = connection
+                        .prepareStatement("UPDATE sysParameters SET val = ? WHERE name= 'db.versionid'");
+                stmt.setString(1, Integer.toString(version.getId()));
+                stmt.execute();
+
+                stmt = connection
+                        .prepareStatement("UPDATE sysParameters SET val = ? WHERE name= 'db.version'");
+                stmt.setString(1, version.getName());
+                stmt.execute();
+
+                connection.commit();
             }
 
             connection.close();
-
         } catch (Exception e) {
             log.error("Upgrade error", e);
         }

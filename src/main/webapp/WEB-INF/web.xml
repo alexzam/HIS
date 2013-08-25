@@ -16,7 +16,7 @@
         <filter-class>az.his.dsmanager.DataSchemaManagerFilter</filter-class>
         <init-param>
             <param-name>target-version</param-name>
-            <param-value>1</param-value>
+            <param-value>2</param-value>
         </init-param>
         <init-param>
             <param-name>datasource</param-name>
