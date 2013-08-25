@@ -220,7 +220,7 @@ public class AccountController {
     public String delTransactions(
             @RequestParam("ids") String rawIds
     ) throws ServletException {
-        String[] ids = rawIds.split(CSV_DIVIDER);
+        String[] ids = rawIds.split(",");
 
         for (String id : ids) {
             try {
