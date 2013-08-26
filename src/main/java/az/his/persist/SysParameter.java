@@ -1,7 +1,7 @@
 package az.his.persist;
 
 import az.his.DBUtil;
-import org.hibernate.classic.Session;
+import org.hibernate.Session;
 
 import javax.persistence.*;
 import java.util.Collections;

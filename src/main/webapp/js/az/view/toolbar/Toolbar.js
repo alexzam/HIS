@@ -18,6 +18,7 @@ Ext.define('alexzam.his.view.toolbar.Toolbar', {
             me.genBt('Казна', 'account', 'acc'),
             me.genBt('Отчёты', 'reports', 'rep'),
             '->',
+            me.genBt('Настройки', 'settings', 'set'),
             me.genBt('Выйти', 'login?mode=out')
         ];
 

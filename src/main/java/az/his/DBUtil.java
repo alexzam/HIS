@@ -2,7 +2,7 @@ package az.his;
 
 import az.his.persist.DBListener;
 import org.hibernate.Criteria;
-import org.hibernate.classic.Session;
+import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -30,13 +30,13 @@ public class DBUtil extends HibernateDaoSupport implements ApplicationContextAwa
     }
 
     public static Session getCurrentSession(ApplicationContext context){
-        return getInstance(context).getHibernateTemplate().getSessionFactory().getCurrentSession();
+        return getInstance(context).getSession();
     }
 
     public static Session getCurrentSession() {
         DBUtil instance = getInstance();
         if(instance == null) return null;
-        return getInstance().getHibernateTemplate().getSessionFactory().getCurrentSession();
+        return getInstance().getSession();
     }
 
     private static java.text.NumberFormat intFormatter = new DecimalFormat("0");
