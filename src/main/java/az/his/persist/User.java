@@ -6,6 +6,7 @@ import org.hibernate.Session;
 import org.springframework.context.ApplicationContext;
 
 import javax.persistence.*;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,12 +17,17 @@ import java.util.Map;
 public class User {
     private int id;
     private String Name;
-    private Map<String, SysParameters> sysParameters;
+    private Map<String, SysParameter> sysParameters;
 
-    private Map<String,SysParameters> generalSysParameters;
+    private Map<String, SysParameter> generalSysParameters;
 
     public User() {
-        SysParameters.getAllGeneral();
+        List<SysParameter> parameters = SysParameter.getAllGeneral();
+        generalSysParameters = new HashMap<String, SysParameter>(parameters.size());
+
+        for (SysParameter parameter : parameters) {
+            generalSysParameters.put(parameter.getName(), parameter);
+        }
     }
 
     @Id
@@ -44,11 +50,11 @@ public class User {
 
     @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
     @MapKey(name = "name")
-    public Map<String, SysParameters> getSysParameters(){
+    public Map<String, SysParameter> getSysParameters() {
         return sysParameters;
     }
 
-    public void setSysParameters(Map<String, SysParameters> sysParameters) {
+    public void setSysParameters(Map<String, SysParameter> sysParameters) {
         this.sysParameters = sysParameters;
     }
 
@@ -95,17 +101,9 @@ public class User {
 
     @Transient
     @SuppressWarnings("unchecked")
-    public SysParameters getSysParameter(String name) {
-        Session session = DBUtil.getCurrentSession();
-        List<SysParameters> res = session.createQuery("from sysParameters where (owner = ? or owner is null) and name = ?")
-                .setInteger(0, id)
-                .setString(1, name)
-                .list();
-        SysParameters temp = null;
-        for (SysParameters sysParameter : res) {
-            if (sysParameter.getOwner() == null && temp == null || sysParameter.getOwner() != null)
-                temp = sysParameter;
-        }
-        return temp;
+    public SysParameter getSysParameter(String name) {
+        SysParameter temp = sysParameters.get(name);
+        if (temp != null) return temp;
+        return generalSysParameters.get(name);
     }
 }

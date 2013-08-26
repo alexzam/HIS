@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * Hibernate set up
  */
-public class DBUtil extends HibernateDaoSupport implements ApplicationContextAware{
+public class DBUtil extends HibernateDaoSupport implements ApplicationContextAware {
     private static ApplicationContext appContext;
 
     public static DBUtil getInstance(ApplicationContext context) {
@@ -25,6 +25,7 @@ public class DBUtil extends HibernateDaoSupport implements ApplicationContextAwa
     }
 
     public static DBUtil getInstance() {
+        if (appContext == null) return null;
         return appContext.getBean(DBUtil.class);
     }
 
@@ -32,7 +33,9 @@ public class DBUtil extends HibernateDaoSupport implements ApplicationContextAwa
         return getInstance(context).getHibernateTemplate().getSessionFactory().getCurrentSession();
     }
 
-    public static Session getCurrentSession(){
+    public static Session getCurrentSession() {
+        DBUtil instance = getInstance();
+        if(instance == null) return null;
         return getInstance().getHibernateTemplate().getSessionFactory().getCurrentSession();
     }
 

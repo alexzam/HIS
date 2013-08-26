@@ -1,9 +1,15 @@
 package az.his.persist;
 
-import javax.persistence.*;
+import az.his.DBUtil;
+import org.hibernate.classic.Session;
 
-@Entity(name = "sysParameters")
-public class SysParameters {
+import javax.persistence.*;
+import java.util.Collections;
+import java.util.List;
+
+@Entity
+@Table(name = "sysParameters")
+public class SysParameter {
     private int id;
     private String name;
     private String val;
@@ -46,7 +52,10 @@ public class SysParameters {
     }
 
     @Transient
-    public static void getAllGeneral() {
-        // TODO Continue here...
+    @SuppressWarnings("unchecked")
+    public static List<SysParameter> getAllGeneral() {
+        Session currentSession = DBUtil.getCurrentSession();
+        if (currentSession == null) return Collections.emptyList();
+        return currentSession.createQuery("from SysParameter where owner is null").list();
     }
 }
