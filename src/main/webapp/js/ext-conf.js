@@ -22,9 +22,9 @@ Ext.Date.monthNumbers = {
 };
 
 Ext.Loader.setConfig({
-    enabled:true,
-    paths:{
-        'alexzam.his':'js/az',
-        'Ext':'js/ext/ext'
+    enabled: true,
+    paths: {
+        'alexzam.his': rootUrl + 'js/az',
+        'Ext': rootUrl + 'js/ext/ext'
     }
 });

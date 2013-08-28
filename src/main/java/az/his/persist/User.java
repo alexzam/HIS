@@ -106,4 +106,21 @@ public class User {
         if (temp != null) return temp;
         return generalSysParameters.get(name);
     }
+
+    public void setSysParameter(String name, String val) {
+        Session session = DBUtil.getCurrentSession();
+        SysParameter temp = sysParameters.get(name);
+        if (temp != null) {
+            temp.setVal(val);
+        } else {
+            temp = new SysParameter();
+            temp.setName(name);
+            temp.setVal(val);
+            temp.setOwner(this);
+            sysParameters.put(name, temp);
+            session.save(temp);
+        }
+
+        session.merge(this);
+    }
 }

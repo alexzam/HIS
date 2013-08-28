@@ -3,7 +3,9 @@ Ext.define('alexzam.his.SettingsScreen', {
 
     requires:[
         'alexzam.his.view.toolbar.Toolbar',
-        'Ext.layout.container.Border'
+        'Ext.layout.container.Border',
+        'Ext.form.RadioGroup',
+        'Ext.form.field.Radio'
     ],
 
     layout:'fit',
@@ -23,7 +25,6 @@ Ext.define('alexzam.his.SettingsScreen', {
                 {
                     xtype:'panel',
                     region:'center',
-                    width:200,
                     bodyPadding: 5,
                     items:[
                         {
@@ -32,25 +33,31 @@ Ext.define('alexzam.his.SettingsScreen', {
                             html: "<p>Ну, настроек пока негусто. Одна!</p>"
                         },
                         {
-                            xtype: 'fieldcontainer',
+                            xtype:'radiogroup',
+                            itemId: "rdColors",
                             fieldLabel: 'Цветовая схема',
-                            defaultType: 'radiofield',
-                            layout: 'hbox',
+                            vertical:false,
+                            defaults:{
+                                width:100
+                            },
                             items: [
                                 {
                                     boxLabel: 'Классическая',
                                     name: 'colorScheme',
-                                    inputValue: 'C'
+                                    inputValue: 'C',
+                                    itemId: "colorC",
                                 },
                                 {
                                     boxLabel: 'Серая',
                                     name: 'colorScheme',
-                                    inputValue: 'G'
+                                    inputValue: 'G',
+                                    itemId: "colorG"
                                 },
                                 {
                                     boxLabel: 'Контрастная',
                                     name: 'colorScheme',
-                                    inputValue: 'A'
+                                    inputValue: 'A',
+                                    itemId: "colorA"
                                 }
                             ]
                         }
@@ -58,5 +65,17 @@ Ext.define('alexzam.his.SettingsScreen', {
                 }
             ]
         }
-    ]
+    ],
+
+    initComponent:function(){
+        var me = this;
+        me.callParent();
+
+        var rdColors = me.getComponent(0).getComponent(0).getComponent('rdColors');
+        rdColors.setValue({colorScheme:Ext.conf.params.colorScheme});
+
+        rdColors.on('change', function(fld, newVal){
+            document.location = Ext.conf.rootUrl + "settings/setColor?new=" + newVal.colorScheme;
+        });
+    }
 });

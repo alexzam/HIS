@@ -7,7 +7,7 @@ Ext.define('alexzam.his.view.toolbar.Toolbar', {
             text:name,
             itemId:id,
             handler:function() {
-                document.location = url;
+                document.location = Ext.conf.rootUrl + url;
             }
         }
     },
