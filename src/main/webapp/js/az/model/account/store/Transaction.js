@@ -11,5 +11,5 @@ Ext.define('alexzam.his.model.account.store.Transaction', {
     sorters: [{
          property: 'timestamp',
          direction: 'ASC'
-     }]
+    }]
 });
