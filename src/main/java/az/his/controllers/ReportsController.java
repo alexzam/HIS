@@ -4,7 +4,6 @@ import az.his.DBUtil;
 import az.his.DateUtil;
 import az.his.clientdto.ReportData;
 import az.his.persist.TransactionCategory;
-import org.hibernate.Query;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
@@ -69,10 +69,12 @@ public class ReportsController {
 
     @RequestMapping("/data/expenses")
     @Transactional(readOnly = true)
-    public void dataExpenses(HttpServletResponse resp,
-                             @RequestParam(value = "from", required = false) Long rawFrom,
-                             @RequestParam(value = "to", required = false) Long rawTo,
-                             @RequestParam(value = "cat", required = false) Integer[] cat)
+    @ResponseBody
+    public String dataExpenses(HttpServletResponse resp,
+                               @RequestParam(value = "from", required = false) Long rawFrom,
+                               @RequestParam(value = "to", required = false) Long rawTo,
+                               @RequestParam(value = "cat", required = false) Integer[] cat,
+                               @RequestParam("group") String groupMode)
             throws JSONException, IOException, ServletException {
 
         Calendar cal = DateUtil.convertInDateParam(rawFrom);
@@ -89,7 +91,8 @@ public class ReportsController {
 
         if (cat == null) cat = new Integer[]{};
 
-        Query query = DBUtil.getCurrentSession(appContext).createQuery(
+        // "Total" series
+        List results = DBUtil.getCurrentSession().createQuery(
                 "select date(t.timestmp) as date, -sum(t.amount) as val " +
                         "from transaction t " +
                         "where " +
@@ -98,23 +101,22 @@ public class ReportsController {
                         "and t.category.id != " + TransactionCategory.CAT_DONATE +
                         "and t.category.id != " + TransactionCategory.CAT_REFUND +
                         "group by date(t.timestmp) " +
-                        "order by date(t.timestmp)");
-        query.setTimestamp("from", from);
-        query.setTimestamp("to", to);
-        List results = query.list();
+                        "order by date(t.timestmp)")
+                .setTimestamp("from", from)
+                .setTimestamp("to", to)
+                .list();
 
-        ReportData ret = new ReportData(from, to);
-        ret.addSeries("tot", "Total");
+        ReportData.Mode mode;
+        if (groupMode.equals("D")) mode = ReportData.Mode.DAY;
+        else if (groupMode.equals("M")) mode = ReportData.Mode.MONTH;
+        else mode = ReportData.Mode.WEEK;
 
-        for (Object result : results) {
-            Object[] arr = (Object[]) result;
-            double amount = (((Long) arr[1]).doubleValue() / 100);
+        ReportData ret = new ReportData(from, to, mode);
+        addSeries(results, ret, "tot", "Total");
 
-            ret.addData((Date) arr[0], "tot", amount);
-        }
-
+        // Series by category
         for (Integer catId : cat) {
-            query = DBUtil.getCurrentSession(appContext).createQuery(
+            results = DBUtil.getCurrentSession().createQuery(
                     "select date(t.timestmp) as date, -sum(t.amount) as val " +
                             "from transaction t " +
                             "where " +
@@ -122,25 +124,37 @@ public class ReportsController {
                             "and t.timestmp <= :to " +
                             "and t.category.id = :cat " +
                             "group by date(t.timestmp) " +
-                            "order by date(t.timestmp)");
-            query.setTimestamp("from", from);
-            query.setTimestamp("to", to);
-            query.setInteger("cat", catId);
-            results = query.list();
+                            "order by date(t.timestmp)")
+                    .setTimestamp("from", from)
+                    .setTimestamp("to", to)
+                    .setInteger("cat", catId)
+                    .list();
 
             String catName = DBUtil.getInstance(appContext).get(TransactionCategory.class, catId).getName();
 
-            ret.addSeries(catId.toString(), catName);
-            for (Object result : results) {
-                Object[] arr = (Object[]) result;
-                double amount = (((Long) arr[1]).doubleValue() / 100);
-
-                ret.addData((Date) arr[0], catId.toString(), amount);
-            }
+            addSeries(results, ret, catId.toString(), catName);
         }
 
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("application/json");
-        resp.getWriter().append(ret.getJson());
+        return ret.getJson();
+    }
+
+    /**
+     * Add series with data.
+     *
+     * @param results    Data
+     * @param ret        Returned object
+     * @param seriesId   Series ID
+     * @param seriesName Series name
+     */
+    private void addSeries(List results, ReportData ret, String seriesId, String seriesName) {
+        ret.addSeries(seriesId, seriesName);
+        for (Object result : results) {
+            Object[] arr = (Object[]) result;
+            double amount = (((Long) arr[1]).doubleValue() / 100);
+
+            ret.addData((Date) arr[0], seriesId, amount);
+        }
     }
 }

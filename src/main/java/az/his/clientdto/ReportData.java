@@ -1,5 +1,6 @@
 package az.his.clientdto;
 
+import az.his.DateUtil;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,22 +14,44 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ReportData {
+    public enum Mode {
+        DAY, WEEK, MONTH
+    }
+
     private Map<String, String> seriesNames;
+
     private Map<String, String> seriesFields;
     private Map<Date, Map<String, Double>> data;
-
     private int fieldCount = 0;
+    private Mode mode;
 
-    public ReportData(Date from, Date to) {
+    public ReportData(Date from, Date to, Mode mode) {
+        this.mode = mode;
         seriesNames = new HashMap<String, String>();
         seriesFields = new HashMap<String, String>();
         data = new HashMap<Date, Map<String, Double>>();
 
         Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(from.getTime());
-        while (cal.getTimeInMillis() <= to.getTime()) {
+        cal.setTime(from);
+        moveDateToPerStart(cal);
+
+        Calendar calTo = Calendar.getInstance();
+        calTo.setTime(to);
+        moveDateToPerStart(calTo);
+
+        while (!cal.after(calTo)) {
             data.put(new Date(cal.getTimeInMillis()), new HashMap<String, Double>());
-            cal.add(Calendar.DATE, 1);
+            switch (mode) {
+                case DAY:
+                    cal.add(Calendar.DATE, 1);
+                    break;
+                case WEEK:
+                    cal.add(Calendar.DATE, 7);
+                    break;
+                case MONTH:
+                    cal.add(Calendar.MONTH, 1);
+                    break;
+            }
         }
     }
 
@@ -41,7 +64,11 @@ public class ReportData {
     }
 
     public void addData(Date date, String seriesId, Double value) {
-        Map<String, Double> day = data.get(date);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        moveDateToPerStart(cal);
+
+        Map<String, Double> day = data.get(new Date(cal.getTimeInMillis()));
         if (day == null) return;
 
         day.put(seriesId, value);
@@ -59,7 +86,7 @@ public class ReportData {
                 jDay.put("date", df.format(date));
                 for (String seriesId : seriesFields.keySet()) {
                     Double val = data.get(date).get(seriesId);
-                    if(val == null) val = 0d;
+                    if (val == null) val = 0d;
                     jDay.put(seriesFields.get(seriesId), val);
                 }
 
@@ -84,6 +111,20 @@ public class ReportData {
             return ret.toString();
         } catch (JSONException e) {
             throw new ServletException(e);
+        }
+    }
+
+    private void moveDateToPerStart(Calendar cal){
+        switch (mode) {
+            case DAY:
+                DateUtil.moveToMidnight(cal);
+                break;
+            case WEEK:
+                DateUtil.moveToMonday(cal);
+                break;
+            case MONTH:
+                DateUtil.moveToFirstOfMonth(cal);
+                break;
         }
     }
 }

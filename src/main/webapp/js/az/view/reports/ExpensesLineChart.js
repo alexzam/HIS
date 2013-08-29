@@ -15,7 +15,11 @@ Ext.define('alexzam.his.view.reports.ExpensesLineChart', {
         'Ext.data.Request',
         'Ext.data.Store',
         'Ext.data.reader.Json',
-        'Ext.form.field.Date'
+        'Ext.form.field.Date',
+        'Ext.form.field.ComboBox',
+        'Ext.form.RadioGroup',
+        'Ext.form.field.Radio',
+        'Ext.form.Panel'
     ],
 
     layout:'border',
@@ -46,7 +50,7 @@ Ext.define('alexzam.his.view.reports.ExpensesLineChart', {
                             fields: ['date'],
                             title: 'Дата',
                             dateFormat: 'M j',
-                            step: [Ext.Date.DAY, 1]
+                            step: [Ext.Date.DAY, 7]
                         },
                         {
                             type: 'Numeric',
@@ -123,6 +127,35 @@ Ext.define('alexzam.his.view.reports.ExpensesLineChart', {
                             this.ownerCt.fireEvent('filterchange');
                         }
                     }
+                },
+                {
+                    xtype: 'radiogroup',
+                    fieldLabel: 'Группировка',
+                    vertical:true,
+                    columns:1,
+                    items:[
+                        {
+                            boxLabel: 'Дни',
+                            name: 'group',
+                            inputValue: 'D'
+                        },
+                        {
+                            boxLabel: 'Недели',
+                            name: 'group',
+                            inputValue: 'W',
+                            checked: true
+                        },
+                        {
+                            boxLabel: 'Месяцы',
+                            name: 'group',
+                            inputValue: 'M'
+                        }
+                    ],
+                    listeners:{
+                        change:function() {
+                            this.ownerCt.fireEvent('filterchange');
+                        }
+                    }
                 }
             ]
         }
@@ -132,6 +165,8 @@ Ext.define('alexzam.his.view.reports.ExpensesLineChart', {
         var me = this;
         var chart = me.items[0].items[0];
         var catCombo = me.items[1].items[2];
+
+        az.fixDraw();
 
         chart.store = Ext.create('Ext.data.Store',
         {
@@ -187,6 +222,13 @@ Ext.define('alexzam.his.view.reports.ExpensesLineChart', {
                             });
                             me.chart.axes.items[1].fields.push(serie.field);
                         });
+
+                        me.chart.axes.get(0).step = {
+                            "D": [Ext.Date.DAY, 1],
+                            "W": [Ext.Date.DAY, 7],
+                            "M": [Ext.Date.MONTH, 1]
+                        }[me.filterForm.getForm().getFieldValues().group];
+
                         me.chart.redraw(true);
                         store.inManualRefresh = false;
                     }
