@@ -89,8 +89,6 @@
     <build>
         <defaultGoal>package</defaultGoal>
 
-
-
         <filters>
             <filter>${config}.properties</filter>
             <filter>buildNumber.properties</filter>
@@ -151,11 +149,20 @@
             <plugin>
                 <groupId>org.apache.tomcat.maven</groupId>
                 <artifactId>tomcat7-maven-plugin</artifactId>
-                <version>2.0</version>
+                <version>2.1</version>
                 <configuration>
                     <warFile>${project.build.outputDirectory}/${project.build.finalName}.war</warFile>
                     <mode>both</mode>
+                    <enableNaming>true</enableNaming>
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>exec-war-only</goal>
+                        </goals>
+                        <phase>package</phase>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
 
