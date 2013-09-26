@@ -4,7 +4,7 @@
 
     <groupId>az.his</groupId>
     <artifactId>HIS-standalone</artifactId>
-    <version>0.1.5</version>
+    <version>0.1.6</version>
     <packaging>jar</packaging>
 
     <name>HIS-standalone</name>
@@ -12,40 +12,85 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <tomcat.version>7.0.41</tomcat.version>
+        <tomcat.version>7.0.42</tomcat.version>
     </properties>
 
     <build>
         <plugins>
             <plugin>
+                <!-- Make JAR of standalone classes before package phase -->
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>default-jar</id>
+                        <phase>prepare-package</phase>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <!-- Create repo and start scripts -->
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>appassembler-maven-plugin</artifactId>
+                <version>1.5</version>
                 <configuration>
-                    <descriptors>
-                        <descriptor>standalone-assembly.xml</descriptor>
-                    </descriptors>
+                    <programs>
+                        <program>
+                            <mainClass>az.his.App</mainClass>
+                            <name>his</name>
+                        </program>
+                    </programs>
+                    <assembleDirectory>${project.build.directory}/app</assembleDirectory>
                 </configuration>
                 <executions>
                     <execution>
-                        <id>assembly-standalone</id>
-                        <phase>process-classes</phase>
                         <goals>
-                            <goal>single</goal>
+                            <goal>assemble</goal>
                         </goals>
+                        <phase>package</phase>
                     </execution>
                 </executions>
             </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
+                <artifactId>maven-assembly-plugin</artifactId>
+
                 <executions>
                     <execution>
-                        <id>default-jar</id>
-                        <phase>none</phase>
+                        <!-- Make webapp directory with exploded application -->
+                        <id>assembly-webapp</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>assembly-webapp.xml</descriptor>
+                            </descriptors>
+                            <finalName>app</finalName>
+                            <appendAssemblyId>false</appendAssemblyId>
+                            <attach>false</attach>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>assembly-archive</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>assembly-archive.xml</descriptor>
+                            </descriptors>
+                            <appendAssemblyId>false</appendAssemblyId>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
+
         </plugins>
     </build>
     <dependencies>
@@ -53,7 +98,7 @@
             <groupId>az.his</groupId>
             <artifactId>his</artifactId>
             <type>war</type>
-            <version>0.1.5</version>
+            <version>${version}</version>
         </dependency>
 
         <dependency>
@@ -78,11 +123,6 @@
         </dependency>
         <dependency>
             <groupId>org.apache.tomcat</groupId>
-            <artifactId>tomcat-jasper</artifactId>
-            <version>${tomcat.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.tomcat</groupId>
             <artifactId>tomcat-dbcp</artifactId>
             <version>${tomcat.version}</version>
         </dependency>
@@ -90,6 +130,11 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>1.7.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jdt.core.compiler</groupId>
+            <artifactId>ecj</artifactId>
+            <version>4.2.2</version>
         </dependency>
     </dependencies>
 </project>

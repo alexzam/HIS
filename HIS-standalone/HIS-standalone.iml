@@ -10,20 +10,25 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/target/webapp/WEB-INF/lib" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+        <jarDirectory url="file://$MODULE_DIR$/target/webapp/WEB-INF/lib" recursive="false" />
+      </library>
+    </orderEntry>
     <orderEntry type="module" module-name="HIS" />
-    <orderEntry type="library" name="Maven: org.apache.tomcat.embed:tomcat-embed-core:7.0.41" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.tomcat.embed:tomcat-embed-logging-juli:7.0.41" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.tomcat:tomcat-jsp-api:7.0.41" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.tomcat:tomcat-el-api:7.0.41" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.tomcat:tomcat-servlet-api:7.0.41" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.tomcat.embed:tomcat-embed-jasper:7.0.41" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.tomcat.embed:tomcat-embed-core:7.0.42" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.tomcat.embed:tomcat-embed-logging-juli:7.0.42" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.tomcat:tomcat-jsp-api:7.0.42" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.tomcat:tomcat-el-api:7.0.42" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.tomcat:tomcat-servlet-api:7.0.42" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.tomcat.embed:tomcat-embed-jasper:7.0.42" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.jdt.core.compiler:ecj:4.2.2" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.tomcat:tomcat-jasper:7.0.41" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.tomcat:tomcat-juli:7.0.41" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.tomcat:tomcat-jasper-el:7.0.41" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.tomcat:tomcat-api:7.0.41" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.tomcat:tomcat-util:7.0.41" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.tomcat:tomcat-dbcp:7.0.41" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.tomcat:tomcat-dbcp:7.0.42" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.0" level="project" />
   </component>
 </module>
