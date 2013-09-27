@@ -1,5 +1,7 @@
 package az.his.controllers;
 
+import az.his.AuthUtil;
+import az.his.DBUtil;
 import az.his.persist.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -36,13 +39,17 @@ public class LoginController {
     }
 
     @RequestMapping(params = "mode=in")
-    public String loginHandler(@RequestParam("uid") int uid) {
+    public String loginHandler(@RequestParam("uid") int uid, HttpSession session) {
         String name = String.valueOf(uid);
         String pass = "u" + name;
         UsernamePasswordAuthenticationToken userpass = new UsernamePasswordAuthenticationToken(name, pass);
         Authentication auth = authManager.authenticate(userpass);
 
         SecurityContextHolder.getContext().setAuthentication(auth);
+
+        User user = DBUtil.getInstance().get(User.class, AuthUtil.getUid());
+        session.setAttribute("user", user);
+
         return "redirect:account";
     }
 }

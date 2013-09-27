@@ -1,7 +1,7 @@
 package az.his.persist;
 
 import az.his.DBUtil;
-import org.hibernate.classic.Session;
+import org.hibernate.Session;
 import org.springframework.context.ApplicationContext;
 
 import javax.persistence.*;

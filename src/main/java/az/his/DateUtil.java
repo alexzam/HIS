@@ -8,7 +8,7 @@ public class DateUtil {
     public static Calendar createCalDate1() {
         Calendar calendar = new GregorianCalendar();
         calendar.set(Calendar.DATE, 1);
-        calToMidnight(calendar);
+        moveToMidnight(calendar);
         return calendar;
     }
 
@@ -20,13 +20,25 @@ public class DateUtil {
             return null;
         }
         calendar.setTimeInMillis(rawFrom);
-        calToMidnight(calendar);
+        moveToMidnight(calendar);
         return calendar;
     }
 
-    public static void calToMidnight(Calendar calendar) {
+    public static void moveToMidnight(Calendar calendar) {
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+    }
+
+    public static void moveToMonday(Calendar cal){
+        int offset = cal.get(Calendar.DAY_OF_WEEK) - Calendar.MONDAY;
+        if (offset < 0) offset += 7;
+        cal.add(Calendar.DATE, -offset);
+    }
+
+    public static void moveToFirstOfMonth(Calendar cal){
+        moveToMidnight(cal);
+        cal.set(Calendar.DAY_OF_MONTH, 1);
     }
 }

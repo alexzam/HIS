@@ -2,9 +2,11 @@ package az.his;
 
 import az.his.persist.DBListener;
 import org.hibernate.Criteria;
-import org.hibernate.classic.Session;
+import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -15,13 +17,26 @@ import java.util.List;
 /**
  * Hibernate set up
  */
-public class DBUtil extends HibernateDaoSupport {
+public class DBUtil extends HibernateDaoSupport implements ApplicationContextAware {
+    private static ApplicationContext appContext;
+
     public static DBUtil getInstance(ApplicationContext context) {
         return context.getBean(DBUtil.class);
     }
 
+    public static DBUtil getInstance() {
+        if (appContext == null) return null;
+        return appContext.getBean(DBUtil.class);
+    }
+
     public static Session getCurrentSession(ApplicationContext context){
-        return getInstance(context).getHibernateTemplate().getSessionFactory().getCurrentSession();
+        return getInstance(context).getSession();
+    }
+
+    public static Session getCurrentSession() {
+        DBUtil instance = getInstance();
+        if(instance == null) return null;
+        return getInstance().getSession();
     }
 
     private static java.text.NumberFormat intFormatter = new DecimalFormat("0");
@@ -72,5 +87,10 @@ public class DBUtil extends HibernateDaoSupport {
 
     public void update(Object obj) {
         getHibernateTemplate().update(obj);
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        appContext = applicationContext;
     }
 }

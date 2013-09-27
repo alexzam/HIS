@@ -4,19 +4,22 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>Отчёты</title>
+    <title>Настройки</title>
 
     <jsp:include page="include/headIncludes.jsp" />
 
     <script type="text/javascript">
-        Ext.require('alexzam.his.ReportsScreen');
+        Ext.require('alexzam.his.SettingsScreen');
 
         Ext.conf = {
-            rootUrl: '${pageContext.request.contextPath}/'
+            rootUrl: '${pageContext.request.contextPath}/',
+            params: {
+                colorScheme: '${colorScheme}'
+            }
         };
 
         Ext.onReady(function () {
-            Ext.create('alexzam.his.ReportsScreen');
+            Ext.create('alexzam.his.SettingsScreen');
         });
     </script>
 </head>

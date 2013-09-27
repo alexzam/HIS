@@ -6,5 +6,10 @@ Ext.define('alexzam.his.model.account.store.Transaction', {
 
     model:'alexzam.his.model.account.Transaction',
     autoLoad:true,
-    autoSync:true
+    autoSync:true,
+
+    sorters: [{
+         property: 'timestamp',
+         direction: 'ASC'
+    }]
 });

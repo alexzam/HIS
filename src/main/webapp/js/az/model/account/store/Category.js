@@ -5,5 +5,10 @@ Ext.define('alexzam.his.model.account.store.Category', {
     ],
 
     model:'alexzam.his.model.account.Category',
-    autoLoad:true
+    autoLoad:true,
+
+    sorters: [{
+        property: 'name',
+        direction: 'ASC'
+    }]
 });

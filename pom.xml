@@ -6,7 +6,7 @@
     <groupId>az.his</groupId>
     <artifactId>his</artifactId>
     <packaging>war</packaging>
-    <version>0.1.5</version>
+    <version>0.1.6</version>
     <name>HIS</name>
 
     <properties>
@@ -89,8 +89,6 @@
     <build>
         <defaultGoal>package</defaultGoal>
 
-
-
         <filters>
             <filter>${config}.properties</filter>
             <filter>buildNumber.properties</filter>
@@ -124,6 +122,7 @@
                             </includes>
                         </resource>
                     </webResources>
+                    <attachClasses>true</attachClasses>
                 </configuration>
             </plugin>
 
@@ -151,10 +150,12 @@
             <plugin>
                 <groupId>org.apache.tomcat.maven</groupId>
                 <artifactId>tomcat7-maven-plugin</artifactId>
-                <version>2.0</version>
+                <version>2.1</version>
                 <configuration>
-                    <warFile>${build.outputDirectory}/${build.finalName}.war</warFile>
+                    <warFile>${project.build.outputDirectory}/${project.build.finalName}.war</warFile>
                     <mode>both</mode>
+                    <enableNaming>true</enableNaming>
+                    <path>his</path>
                 </configuration>
             </plugin>
         </plugins>
@@ -187,7 +188,7 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>3.6.8.Final</version>
+            <version>3.6.10.Final</version>
         </dependency>
         <dependency>
             <groupId>javassist</groupId>
@@ -270,8 +271,13 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.0</version>
-            <scope>provided</scope>
+            <version>1.7.5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.5</version>
         </dependency>
 
         <dependency>

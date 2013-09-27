@@ -7,7 +7,7 @@ Ext.define('alexzam.his.view.toolbar.Toolbar', {
             text:name,
             itemId:id,
             handler:function() {
-                document.location = url;
+                document.location = Ext.conf.rootUrl + url;
             }
         }
     },
@@ -18,6 +18,7 @@ Ext.define('alexzam.his.view.toolbar.Toolbar', {
             me.genBt('Казна', 'account', 'acc'),
             me.genBt('Отчёты', 'reports', 'rep'),
             '->',
+            me.genBt('Настройки', 'settings', 'set'),
             me.genBt('Выйти', 'login?mode=out')
         ];
 

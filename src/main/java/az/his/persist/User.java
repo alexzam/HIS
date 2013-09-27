@@ -6,7 +6,9 @@ import org.hibernate.Session;
 import org.springframework.context.ApplicationContext;
 
 import javax.persistence.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * User of the system. We know two of them.
@@ -15,6 +17,18 @@ import java.util.List;
 public class User {
     private int id;
     private String Name;
+    private Map<String, SysParameter> sysParameters;
+
+    private Map<String, SysParameter> generalSysParameters;
+
+    public User() {
+        List<SysParameter> parameters = SysParameter.getAllGeneral();
+        generalSysParameters = new HashMap<String, SysParameter>(parameters.size());
+
+        for (SysParameter parameter : parameters) {
+            generalSysParameters.put(parameter.getName(), parameter);
+        }
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,6 +46,16 @@ public class User {
 
     public void setName(String name) {
         Name = name;
+    }
+
+    @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
+    @MapKey(name = "name")
+    public Map<String, SysParameter> getSysParameters() {
+        return sysParameters;
+    }
+
+    public void setSysParameters(Map<String, SysParameter> sysParameters) {
+        this.sysParameters = sysParameters;
     }
 
     @Transient
@@ -66,11 +90,37 @@ public class User {
     }
 
     @Transient
-    public static User getCurrentUser(ApplicationContext context){
+    public static User getCurrentUser(ApplicationContext context) {
         return DBUtil.getInstance(context).get(User.class, AuthUtil.getUid());
     }
 
+    @Transient
     public static User getById(ApplicationContext context, int uid) {
         return DBUtil.getInstance(context).get(User.class, uid);
+    }
+
+    @Transient
+    @SuppressWarnings("unchecked")
+    public SysParameter getSysParameter(String name) {
+        SysParameter temp = sysParameters.get(name);
+        if (temp != null) return temp;
+        return generalSysParameters.get(name);
+    }
+
+    public void setSysParameter(String name, String val) {
+        Session session = DBUtil.getCurrentSession();
+        SysParameter temp = sysParameters.get(name);
+        if (temp != null) {
+            temp.setVal(val);
+        } else {
+            temp = new SysParameter();
+            temp.setName(name);
+            temp.setVal(val);
+            temp.setOwner(this);
+            sysParameters.put(name, temp);
+            session.save(temp);
+        }
+
+        session.merge(this);
     }
 }

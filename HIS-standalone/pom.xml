@@ -1,0 +1,140 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>az.his</groupId>
+    <artifactId>HIS-standalone</artifactId>
+    <version>0.1.6</version>
+    <packaging>jar</packaging>
+
+    <name>HIS-standalone</name>
+    <url>http://maven.apache.org</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <tomcat.version>7.0.42</tomcat.version>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <!-- Make JAR of standalone classes before package phase -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>default-jar</id>
+                        <phase>prepare-package</phase>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <!-- Create repo and start scripts -->
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>appassembler-maven-plugin</artifactId>
+                <version>1.5</version>
+                <configuration>
+                    <programs>
+                        <program>
+                            <mainClass>az.his.App</mainClass>
+                            <name>his</name>
+                        </program>
+                    </programs>
+                    <assembleDirectory>${project.build.directory}/app</assembleDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>assemble</goal>
+                        </goals>
+                        <phase>package</phase>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+
+                <executions>
+                    <execution>
+                        <!-- Make webapp directory with exploded application -->
+                        <id>assembly-webapp</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>assembly-webapp.xml</descriptor>
+                            </descriptors>
+                            <finalName>app</finalName>
+                            <appendAssemblyId>false</appendAssemblyId>
+                            <attach>false</attach>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>assembly-archive</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>assembly-archive.xml</descriptor>
+                            </descriptors>
+                            <appendAssemblyId>false</appendAssemblyId>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+    <dependencies>
+        <dependency>
+            <groupId>az.his</groupId>
+            <artifactId>his</artifactId>
+            <type>war</type>
+            <version>${version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-core</artifactId>
+            <version>${tomcat.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-logging-juli</artifactId>
+            <version>${tomcat.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-jsp-api</artifactId>
+            <version>${tomcat.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-jasper</artifactId>
+            <version>${tomcat.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-dbcp</artifactId>
+            <version>${tomcat.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jdt.core.compiler</groupId>
+            <artifactId>ecj</artifactId>
+            <version>4.2.2</version>
+        </dependency>
+    </dependencies>
+</project>
