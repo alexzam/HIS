@@ -22,11 +22,10 @@ GRANT ALL ON his.* TO his@localhost;
 ```
     
 - Ok, that's enough, close the window.
-- Download project package. Version 0.1.5 in [ZIP](https://docs.google.com/file/d/0B1jW-d2yqWkVOEdQYWVSVXVhU2c/edit?usp=sharing) or [tar.gz](https://docs.google.com/file/d/0B1jW-d2yqWkVYklITmlCOTc3b0k/edit?usp=sharing)
+- Download project package. Latest version is in [Release section](https://github.com/alexzam/HIS/releases). Choose standalone ZIP or tar.gz.
 - Unpack it to where you want it to be unpacked. Do I really need to write this?..
 - Don't run it yet! If you for some reason created DB name or user other than "his", then go and tell application about that. Use file `webapp/META-INF/context.xml`
 - Final step! Open `webapp/WEB-INF/classes/import.sql` and in first 2 lines change usernames to whatever you want. also you may add more lines like this.
-- Ok, now you are allowed to run it. Just run his.cmd and behold huge messy output. If the 3rd line from bottom is "`Servlet 'his' configured successfully`" then you're ok.
+- Ok, now you are allowed to run it. Just run bin/his.bat and behold huge messy output. If the 3rd line from bottom is "`Servlet 'his' configured successfully`" then you're ok.
 - Open in browser this: [http://localhost:8080/his](http://localhost:8080/his). Enjoy it if you can.
 - Each time you find some bug please report it [here](https://github.com/alexzam/HIS/issues).
-

@@ -4,7 +4,7 @@
 
     <groupId>az.his</groupId>
     <artifactId>HIS-standalone</artifactId>
-    <version>0.1.6.1</version>
+    <version>0.1.6</version>
     <packaging>jar</packaging>
 
     <name>HIS-standalone</name>
