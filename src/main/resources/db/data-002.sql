@@ -1,4 +1,4 @@
-ALTER TABLE sysparameters
+ALTER TABLE sysParameters
   ADD CONSTRAINT fk_sysparam_user
   FOREIGN KEY (owner)
   REFERENCES `user` (id)
@@ -6,4 +6,4 @@ ALTER TABLE sysparameters
   ON UPDATE CASCADE
 , ADD INDEX fk_sysparam_user (owner);
 
-INSERT INTO sysparameters (`name`, val) VALUES ('ui.colorScheme', 'C');
+INSERT INTO sysParameters (`name`, val) VALUES ('ui.colorScheme', 'C');
