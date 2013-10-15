@@ -3,12 +3,12 @@ package az.his;
 import az.his.persist.DBListener;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.orm.hibernate3.HibernateTemplate;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
@@ -17,8 +17,16 @@ import java.util.List;
 /**
  * Hibernate set up
  */
-public class DBUtil extends HibernateDaoSupport implements ApplicationContextAware {
+public class DBUtil implements ApplicationContextAware {
     private static ApplicationContext appContext;
+
+    @Autowired
+    private SessionFactory sessionFactory;
+
+    @SuppressWarnings("UnusedDeclaration")
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     public static DBUtil getInstance(ApplicationContext context) {
         return context.getBean(DBUtil.class);
@@ -27,6 +35,10 @@ public class DBUtil extends HibernateDaoSupport implements ApplicationContextAwa
     public static DBUtil getInstance() {
         if (appContext == null) return null;
         return appContext.getBean(DBUtil.class);
+    }
+
+    public Session getSession(){
+        return sessionFactory.getCurrentSession();
     }
 
     public static Session getCurrentSession(ApplicationContext context){
@@ -48,12 +60,14 @@ public class DBUtil extends HibernateDaoSupport implements ApplicationContextAwa
         } else return intFormatter.format((double) sum / 100);
     }
 
+    @SuppressWarnings("unchecked")
     public <E> List<E> findAll(Class<E> clazz) {
-        return getHibernateTemplate().loadAll(clazz);
+        return getSession().createQuery("from "+clazz.getName()).list();
     }
 
+    @SuppressWarnings("unchecked")
     public <E> E get(Class<E> clazz, Serializable id) {
-        return getHibernateTemplate().get(clazz, id);
+        return (E) getSession().load(clazz, id);
     }
 
     @SuppressWarnings("unchecked")
@@ -63,30 +77,30 @@ public class DBUtil extends HibernateDaoSupport implements ApplicationContextAwa
         return query.list();
     }
 
+    @SuppressWarnings("unchecked")
     public <E> E merge(E obj) {
-        return getHibernateTemplate().merge(obj);
+        return (E) getSession().merge(obj);
     }
 
     public void persist(Object obj) {
-        HibernateTemplate template = getHibernateTemplate();
+        Session session = getSession();
         if (obj instanceof DBListener) {
-            ((DBListener) obj).beforeInsert(template);
-            getSession().flush();
+            ((DBListener) obj).beforeInsert(session);
         }
-        template.persist(obj);
+        session.persist(obj);
     }
 
     public <E> void delete(Class<E> clazz, int iid) {
         E obj = get(clazz, iid);
-        HibernateTemplate template = getHibernateTemplate();
+        Session session = getSession();
         if (obj instanceof DBListener) {
-            ((DBListener) obj).beforeDelete(template);
+            ((DBListener) obj).beforeDelete(session);
         }
-        template.delete(obj);
+        session.delete(obj);
     }
 
     public void update(Object obj) {
-        getHibernateTemplate().update(obj);
+        getSession().update(obj);
     }
 
     @Override

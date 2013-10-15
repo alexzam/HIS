@@ -1,8 +1,8 @@
 package az.his.persist;
 
-import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.hibernate.Session;
 
 public interface DBListener {
-    public void beforeDelete(HibernateTemplate template);
-    public void beforeInsert(HibernateTemplate template);
+    public void beforeDelete(Session session);
+    public void beforeInsert(Session session);
 }

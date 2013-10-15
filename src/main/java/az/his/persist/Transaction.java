@@ -7,7 +7,6 @@ import org.hibernate.type.DateType;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
-import org.springframework.orm.hibernate3.HibernateTemplate;
 
 import javax.persistence.*;
 import java.text.DateFormat;
@@ -168,15 +167,13 @@ public class Transaction implements DBListener {
     }
 
     @Override
-    public void beforeDelete(HibernateTemplate template) {
+    public void beforeDelete(Session session) {
         // Fix account sum
         if (!common)
             getAccount().setValue(getAccount().getValue() - amount);
 
         // Delete empty category
         if (getCategory().getType() != TransactionCategory.CatType.NONE) {
-            Session session = template.getSessionFactory().getCurrentSession();
-
             Long res = (Long) session.createQuery("select count(id) from transaction where category = ?")
                     .setEntity(0, getCategory())
                     .uniqueResult();
@@ -185,7 +182,7 @@ public class Transaction implements DBListener {
     }
 
     @Override
-    public void beforeInsert(HibernateTemplate template) {
+    public void beforeInsert(Session session) {
         if (!common){
             account.setValue(account.getValue() + amount);
         }

@@ -1,8 +1,8 @@
 package az.his.controllers;
 
-import az.his.AuthUtil;
 import az.his.DBUtil;
 import az.his.persist.User;
+import org.hibernate.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
@@ -39,6 +39,7 @@ public class LoginController {
     }
 
     @RequestMapping(params = "mode=in")
+    @Transactional(readOnly = true)
     public String loginHandler(@RequestParam("uid") int uid, HttpSession session) {
         String name = String.valueOf(uid);
         String pass = "u" + name;
@@ -47,7 +48,9 @@ public class LoginController {
 
         SecurityContextHolder.getContext().setAuthentication(auth);
 
-        User user = DBUtil.getInstance().get(User.class, AuthUtil.getUid());
+        Query query = DBUtil.getInstance().getSession().createQuery("from az.his.persist.User where id = ?");
+        query.setInteger(0, uid);
+        User user = (User) query.uniqueResult();
         session.setAttribute("user", user);
 
         return "redirect:account";
