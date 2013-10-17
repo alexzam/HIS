@@ -58,6 +58,12 @@ Ext.define('alexzam.his.SettingsScreen', {
                                     name: 'colorScheme',
                                     inputValue: 'A',
                                     itemId: "colorA"
+                                },
+                                {
+                                    boxLabel: 'Нептун',
+                                    name: 'colorScheme',
+                                    inputValue: 'N',
+                                    itemId: "colorN"
                                 }
                             ]
                         }

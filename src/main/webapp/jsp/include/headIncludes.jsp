@@ -12,6 +12,9 @@
 <c:if test="${colorScheme == 'A'}">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/js/ext/resources/css/ext-all-access.css"/>
 </c:if>
+<c:if test="${colorScheme == 'N'}">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/js/ext/resources/css/ext-all-neptune.css"/>
+</c:if>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/main.css">
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/ext/ext-dev.js"></script>
 
