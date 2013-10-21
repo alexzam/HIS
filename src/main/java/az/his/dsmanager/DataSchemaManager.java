@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -61,35 +62,56 @@ public class DataSchemaManager {
 
 
     public void upgrade(List<Version> versions) {
-        Connection connection;
-        try {
-            connection = dataSource.getConnection();
+        try (Connection connection = dataSource.getConnection()){
             connection.setAutoCommit(false);
             ScriptRunner runner = new ScriptRunner(connection);
 
             for (Version version : versions) {
                 log.info("Sending script " + version.getFileName() + " for version " + version.getName() + " ("
                         + version.getId() + ")");
-                InputStream stream = getClass().getClassLoader().getResourceAsStream("db/" + version.getFileName());
-                Reader reader = new InputStreamReader(stream);
-                runner.runScript(reader);
 
-                stream.close();
-
-                PreparedStatement stmt = connection
-                        .prepareStatement("UPDATE sysParameters SET val = ? WHERE name= 'db.versionid'");
-                stmt.setString(1, Integer.toString(version.getId()));
-                stmt.execute();
-
-                stmt = connection
-                        .prepareStatement("UPDATE sysParameters SET val = ? WHERE name= 'db.version'");
-                stmt.setString(1, version.getName());
-                stmt.execute();
+                sendScript(runner, version.getFileName());
+                updateVersionId(connection, version);
 
                 connection.commit();
             }
+        } catch (Exception e) {
+            log.error("Upgrade error", e);
+        }
+    }
 
-            connection.close();
+    private void sendScript(ScriptRunner runner, String fileName) throws IOException {
+        InputStream stream = getClass().getClassLoader().getResourceAsStream("db/" + fileName);
+        Reader reader = new InputStreamReader(stream);
+        runner.runScript(reader);
+
+        stream.close();
+    }
+
+    private void updateVersionId(Connection connection, Version version) throws SQLException {
+        PreparedStatement stmt = connection
+                .prepareStatement("UPDATE sysParameters SET val = ? WHERE name= 'db.versionid'");
+        stmt.setString(1, Integer.toString(version.getId()));
+        stmt.execute();
+
+        stmt = connection
+                .prepareStatement("UPDATE sysParameters SET val = ? WHERE name= 'db.version'");
+        stmt.setString(1, version.getName());
+        stmt.execute();
+    }
+
+    public void installDump(Version version) {
+        try (Connection connection = dataSource.getConnection()){
+            connection.setAutoCommit(false);
+            ScriptRunner runner = new ScriptRunner(connection);
+
+            log.info("Sending dump " + version.getDumpName() + " for version " + version.getName() + " ("
+                    + version.getId() + ")");
+
+            sendScript(runner, version.getDumpName());
+            updateVersionId(connection, version);
+
+            connection.commit();
         } catch (Exception e) {
             log.error("Upgrade error", e);
         }

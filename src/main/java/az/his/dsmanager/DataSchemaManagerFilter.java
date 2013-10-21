@@ -79,15 +79,44 @@ public class DataSchemaManagerFilter implements Filter {
                     }
                     log.debug("Version " + verId + " is needed.");
 
+                    Node dumpEl = attributes.getNamedItem("dump");
+                    String dumpName = (dumpEl != null) ? dumpEl.getNodeValue() : null;
+
                     versions.add(new Version(attributes.getNamedItem("name").getNodeValue(),
                             verId,
-                            attributes.getNamedItem("upscript").getNodeValue()));
+                            attributes.getNamedItem("upscript").getNodeValue(),
+                            dumpName));
                 }
 
+                log.info("Found " + versions.size() + " versions to apply.");
                 Collections.sort(versions);
 
                 if (autoUpgradeMode) {
-                    log.info("Starting auto-upgrade");
+                    if (dbVersion == 0) {
+                        Collections.reverse(versions);
+                        Version dumpVer = null;
+
+                        for (Version version : versions) {
+                            if (version.getDumpName() != null) {
+                                log.info("Found dump for version " + version.getName());
+                                dumpVer = version;
+                                break;
+                            }
+                        }
+
+                        if (dumpVer != null) {
+                            log.info("Cutting version list on dump");
+                            versions = versions.subList(0, versions.indexOf(dumpVer));
+
+                            log.info("Installing dump...");
+                            dataSchemaManager.installDump(dumpVer);
+                        }
+
+                        Collections.reverse(versions);
+                        log.info("Versions to apply after cut: " + versions.size());
+                    }
+
+                    log.info("Starting auto-upgrade...");
                     dataSchemaManager.upgrade(versions);
                     dbVersionStr = dataSchemaManager.getDBVersion();
                     dbVersion = dataSchemaManager.getDBVersionId();
