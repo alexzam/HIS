@@ -13,6 +13,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Transaction to track.
@@ -29,6 +30,9 @@ public class Transaction implements DBListener {
     private boolean common;
     private boolean commonReady = false;
     private boolean amountReady = false;
+    private Transaction pair;
+    private Set<Transaction> pairs;
+    private boolean transfer;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -78,6 +82,7 @@ public class Transaction implements DBListener {
     }
 
     public void setCommon(boolean common) {
+        // TODO WHAT?
         if (commonReady && isPersistent()) {
             if (!this.common && common) {
                 // Do not include in acc sum
@@ -120,6 +125,33 @@ public class Transaction implements DBListener {
 
     public void setCategory(TransactionCategory category) {
         this.category = category;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "pair_id")
+    public Transaction getPair() {
+        return pair;
+    }
+
+    public void setPair(Transaction pair) {
+        this.pair = pair;
+    }
+
+    @OneToMany(mappedBy = "pair")
+    public Set<Transaction> getPairs(){
+        return pairs;
+    }
+
+    public void setPairs(Set<Transaction> pairs) {
+        this.pairs = pairs;
+    }
+
+    public boolean isTransfer() {
+        return transfer;
+    }
+
+    public void setTransfer(boolean transfer) {
+        this.transfer = transfer;
     }
 
     @Transient

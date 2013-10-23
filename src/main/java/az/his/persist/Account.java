@@ -17,6 +17,9 @@ public class Account {
     private long value;
     private String name;
     private Set<Transaction> transactions;
+    private User owner;
+    private boolean isPublic;
+
     public static final Serializable COMMON_ACC = 1;
 
     @Id
@@ -52,6 +55,24 @@ public class Account {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
+    public boolean isPublic() {
+        return isPublic;
+    }
+
+    public void setPublic(boolean aPublic) {
+        isPublic = aPublic;
     }
 
     @Transient

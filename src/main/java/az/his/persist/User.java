@@ -18,8 +18,8 @@ public class User {
     private int id;
     private String Name;
     private Map<String, SysParameter> sysParameters;
-
     private Map<String, SysParameter> generalSysParameters;
+    private List<Account> ownedAccounts;
 
     public User() {
         List<SysParameter> parameters = SysParameter.getAllGeneral();
@@ -56,6 +56,15 @@ public class User {
 
     public void setSysParameters(Map<String, SysParameter> sysParameters) {
         this.sysParameters = sysParameters;
+    }
+
+    @OneToMany(mappedBy = "owner")
+    public List<Account> getOwnedAccounts() {
+        return ownedAccounts;
+    }
+
+    public void setOwnedAccounts(List<Account> ownedAccounts) {
+        this.ownedAccounts = ownedAccounts;
     }
 
     @Transient
