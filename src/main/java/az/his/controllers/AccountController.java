@@ -66,12 +66,16 @@ public class AccountController {
         List<TransactionCategory> cats;
         JSONObject ret = new JSONObject();
         JSONArray items = new JSONArray();
-        if (type.equals("e")) {
-            cats = TransactionCategory.getByType(appContext, TransactionCategory.CatType.EXP);
-        } else if (type.equals("i")) {
-            cats = TransactionCategory.getByType(appContext, TransactionCategory.CatType.INC);
-        } else {
-            cats = dbUtil.findAll(TransactionCategory.class);
+        switch (type) {
+            case "e":
+                cats = TransactionCategory.getByType(appContext, TransactionCategory.CatType.EXP);
+                break;
+            case "i":
+                cats = TransactionCategory.getByType(appContext, TransactionCategory.CatType.INC);
+                break;
+            default:
+                cats = dbUtil.findAll(TransactionCategory.class);
+                break;
         }
 
         try {

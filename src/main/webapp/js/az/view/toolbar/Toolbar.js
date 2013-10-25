@@ -15,7 +15,8 @@ Ext.define('alexzam.his.view.toolbar.Toolbar', {
     initComponent:function () {
         var me = this;
         me.items = [
-            me.genBt('Казна', 'account', 'acc'),
+            me.genBt('Данные', 'account', 'acc'),
+            me.genBt('Управление', 'manage', 'man'),
             me.genBt('Отчёты', 'reports', 'rep'),
             '->',
             me.genBt('Настройки', 'settings', 'set'),
