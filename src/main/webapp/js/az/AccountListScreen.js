@@ -6,11 +6,12 @@ Ext.define('alexzam.his.AccountListScreen', {
 
         'Ext.grid.Panel'
     ],
+    layout:'fit',
 
     items:[
         {
             xtype:'panel',
-            layout:'border',
+            layout:'anchor',
             itemId:'pnlOuter',
             dockedItems:[{
                 xtype:'his.Toolbar',
@@ -22,12 +23,19 @@ Ext.define('alexzam.his.AccountListScreen', {
                 {
                     xtype:'grid',
                     title: 'Счета',
+                    anchor: '50% -10',
+                    margin: '5',
+
                     columns: [
                         {
                             text     : 'Название',
-                            flex     : 1,
-                            sortable : false,
+                            width     : 200,
                             dataIndex: 'name'
+                        },
+                        {
+                            text     : 'Сумма',
+                            width    : 100,
+                            dataIndex: 'sum'
                         }
                     ]
                 }
