@@ -1,16 +1,9 @@
-Ext.define('accModel',{
-    extend:'Ext.data.Model',
-    fields: [
-        {name: 'name', type: 'string'},
-        {name: 'sum', type: 'string'}
-    ]
-});
-
 Ext.define('alexzam.his.AccountListScreen', {
     extend:'Ext.container.Viewport',
 
     requires:[
         'alexzam.his.view.toolbar.Toolbar',
+        'alexzam.his.model.manage.Accounts',
 
         'Ext.grid.Panel',
         'Ext.grid.column.Action',
@@ -52,7 +45,7 @@ Ext.define('alexzam.his.AccountListScreen', {
                             width:100,
                             items: [
                                 {
-                                    icon: 'img/edit_button.png',
+                                    icon: 'img/book_edit.png',
                                     tooltip: 'Редактировать',
                                     handler: function(grid,rowI, colI){
                                         alert('edit-edit ' + rowI);
@@ -66,15 +59,9 @@ Ext.define('alexzam.his.AccountListScreen', {
         }
     ],
 
-    store: Ext.create('Ext.data.Store', {
-       model: 'accModel',
-       data : [
-               {name: 'Test',    sum: '5000'}
-           ]
-       }),
-
     initComponent:function () {
         var me = this;
+        me.items[0].items[0].store = Ext.create('alexzam.his.model.manage.Accounts');
 
         me.callParent();
     }

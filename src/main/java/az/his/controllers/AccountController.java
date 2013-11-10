@@ -184,7 +184,7 @@ public class AccountController {
         Date time = new Date(rawDate);
         User actor = dbUtil.get(User.class, actId);
 
-        Account account = Account.getCommon(appContext);
+        Account account = Account.getCommon();
 
         Transaction trans = new Transaction();
         trans.setActor(actor);
@@ -261,8 +261,8 @@ public class AccountController {
     public void getStatistic(HttpServletResponse resp) throws JSONException, IOException {
         JSONObject ret = new JSONObject();
 
-        Account acc = Account.getCommon(appContext);
-        long totalExp = acc.getTotalExp(appContext);
+        Account acc = Account.getCommon();
+        long totalExp = acc.getTotalExp();
         long eachExp = totalExp / 2;
         User user = User.getCurrentUser(appContext);
         long persExp = user.getPersonalExpense(appContext, acc);

@@ -69,7 +69,7 @@ public class ApiController {
         for (JaxTransactionList.Transaction tr : transactionList.transactions) {
             Transaction trans = new Transaction();
             trans.setActor(user);
-            trans.setAccount(Account.getCommon(context));
+            trans.setAccount(Account.getCommon());
             trans.setTimestmp(tr.date);
             trans.setAmount(tr.amount * 100);
             trans.setCategory(dbUtil.get(TransactionCategory.class, tr.cat));

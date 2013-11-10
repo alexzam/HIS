@@ -1,11 +1,13 @@
 package az.his.persist;
 
+import az.his.AuthUtil;
 import az.his.DBUtil;
+import org.hibernate.Query;
 import org.hibernate.Session;
-import org.springframework.context.ApplicationContext;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -81,17 +83,26 @@ public class Account {
     }
 
     @Transient
-    public static Account getCommon(ApplicationContext context) {
-        DBUtil dbUtil = DBUtil.getInstance(context);
+    public static Account getCommon() {
+        DBUtil dbUtil = DBUtil.getInstance();
         return dbUtil.get(Account.class, Account.COMMON_ACC);
     }
 
     @Transient
-    public long getTotalExp(ApplicationContext context) {
-        Session session = DBUtil.getCurrentSession(context);
+    public long getTotalExp() {
+        Session session = DBUtil.getCurrentSession();
         Long out = (Long) session.createQuery("select sum(amount) from transaction where common = true").uniqueResult();
         if (out == null) out = 0l;
         else out = -out;
         return out;
+    }
+
+    @Transient
+    public static List<Account> getForUser() {
+        Session session = DBUtil.getCurrentSession();
+        Query query = session.createQuery("from account where owner_id = :user or public = 1");
+        query.setParameter("user", AuthUtil.getUid());
+
+        return query.list();
     }
 }
