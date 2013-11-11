@@ -33,12 +33,18 @@ Ext.define('alexzam.his.AccountListScreen', {
                         {
                             text     : 'Название',
                             width     : 200,
-                            dataIndex: 'name'
+                            dataIndex: 'name',
+                            renderer:function(val, meta, record){
+                                var icon = "";
+                                if (!record.get('public'))
+                                    icon = ' <span class="icon-private"></span>';
+                                return val + icon;
+                            }
                         },
                         {
                             text     : 'Сумма',
                             width    : 100,
-                            dataIndex: 'sum'
+                            dataIndex: 'val'
                         },
                         {
                             xtype:'actioncolumn',

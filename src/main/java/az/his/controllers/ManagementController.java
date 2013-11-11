@@ -43,6 +43,7 @@ public class ManagementController {
             jAcc.put("id", account.getId());
             jAcc.put("name", account.getName());
             jAcc.put("val", account.getValue());
+            jAcc.put("public", account.isPublic());
 
             items.put(jAcc);
         }

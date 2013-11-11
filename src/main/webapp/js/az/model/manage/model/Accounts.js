@@ -3,6 +3,7 @@ Ext.define('alexzam.his.model.manage.model.Accounts', {
     fields: [
         {name: 'id', type: 'string'},
         {name: 'name', type: 'string'},
-        {name: 'val', type: 'int'}
+        {name: 'val', type: 'int'},
+        {name: 'public', type: 'int'}
     ]
 });

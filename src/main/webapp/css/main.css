@@ -59,3 +59,10 @@ body.login .download_app h1{
 .acc-transrow-R {
     color: #0000FF;
 }
+
+.icon-private {
+    background: url('../img/lock.png');
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+}
