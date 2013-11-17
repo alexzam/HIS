@@ -7,7 +7,8 @@ Ext.define('alexzam.his.AccountListScreen', {
 
         'Ext.grid.Panel',
         'Ext.grid.column.Action',
-        'Ext.layout.container.Anchor'
+        'Ext.layout.container.Anchor',
+        'Ext.layout.container.Fit'
     ],
     layout:'fit',
 
@@ -22,12 +23,28 @@ Ext.define('alexzam.his.AccountListScreen', {
                 disableId:'man'
             }],
 
+            bubbleEvents: ['accEdit'],
+
             items:[
                 {
                     xtype:'grid',
                     title: 'Счета',
-                    anchor: '50% -10',
+                    anchor: '50% 0',
                     margin: '5',
+
+                    bubbleEvents: ['accEdit'],
+
+                    tbar: [
+                        {
+                            xtype: 'button',
+                            text: 'Новый счёт',
+                            handler: function(){
+                                this.fireEvent('accEdit', {caller:this, data: null});
+                            },
+                            icon: 'img/book_add.png',
+                            bubbleEvents: ['accEdit']
+                        }
+                    ],
 
                     columns: [
                         {
@@ -44,17 +61,21 @@ Ext.define('alexzam.his.AccountListScreen', {
                         {
                             text     : 'Сумма',
                             width    : 100,
-                            dataIndex: 'val'
+                            dataIndex: 'val',
+                            renderer: function(val) {
+                                return Ext.util.Format.number(val / 100.0, "0.00");
+                            }
                         },
                         {
                             xtype:'actioncolumn',
                             width:100,
+                            bubbleEvents: ['accEdit'],
                             items: [
                                 {
                                     icon: 'img/book_edit.png',
                                     tooltip: 'Редактировать',
-                                    handler: function(grid,rowI, colI){
-                                        alert('edit-edit ' + rowI);
+                                    handler: function(grid, rowI, colI, el, ev, record){
+                                        this.fireEvent('accEdit', {caller: this, data: record.data});
                                     }
                                 }
                             ]
@@ -64,6 +85,49 @@ Ext.define('alexzam.his.AccountListScreen', {
             ]
         }
     ],
+
+    editaccDialog: Ext.create('Ext.window.Window',
+        {
+            title: 'Счёт',
+            closeAction: 'hide',
+            layout: 'fit',
+
+            items:[
+                {
+                    xtype: 'form',
+
+                    items:[
+                        {
+                            xtype:'textfield',
+                            fieldLabel: 'Название',
+                            name: 'name',
+                            allowBlank: false
+                        },
+                        {
+                            xtype:'checkbox',
+                            fieldLabel: 'Общий',
+                            name: 'public'
+                        }
+                    ],
+
+                    buttons:[
+                        {text:"ОК"}
+                    ]
+                }
+            ],
+
+            setData: function(data){
+                this.getComponent(0).getForm().setValues(data);
+            }
+        }
+    ),
+
+    listeners: {
+        accEdit: function(param){
+            this.editaccDialog.setData(param.data);
+            this.editaccDialog.show(param.caller);
+        }
+    },
 
     initComponent:function () {
         var me = this;
