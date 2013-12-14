@@ -104,9 +104,28 @@ Ext.define('alexzam.his.AccountListScreen', {
                             allowBlank: false
                         },
                         {
-                            xtype:'checkbox',
-                            fieldLabel: 'Общий',
-                            name: 'public'
+                            xtype:'radiogroup',
+                            itemId: "rbPrivacy",
+                            fieldLabel: 'Приватность',
+                            vertical: true,
+                            columns: 1,
+                            defaults:{
+                                name:'privacy'
+                            },
+                            items: [
+                                {
+                                    boxLabel: 'Общий',
+                                    inputValue: 'C'
+                                },
+                                {
+                                    boxLabel: 'Личный',
+                                    inputValue: 'P'
+                                },
+                                {
+                                    boxLabel: 'Скрытый',
+                                    inputValue: 'H'
+                                }
+                            ]
                         }
                     ],
 

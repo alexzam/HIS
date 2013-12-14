@@ -1,10 +1,10 @@
 package az.his.controllers;
 
 import az.his.DBUtil;
+import az.his.clientdto.AccountDto;
+import az.his.clientdto.GridResponse;
 import az.his.persist.Account;
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,33 +23,23 @@ public class ManagementController {
 
     @RequestMapping(method = RequestMethod.GET)
     @Transactional(readOnly = true)
-    public ModelAndView managePage(){
+    public ModelAndView managePage() {
         return new ModelAndView("manage");
     }
 
     @RequestMapping(value = "/accounts", produces = "application/json; charset=UTF-8")
     @Transactional(readOnly = true)
     @ResponseBody
-    public String getAccounts() throws JSONException {
+    public GridResponse<AccountDto> getAccounts() throws JSONException {
         List<Account> accounts = Account.getForUser();
 
-        JSONObject ret = new JSONObject();
-        ret.put("identifier", "id");
-
-        JSONArray items = new JSONArray();
+        GridResponse<AccountDto> response = new GridResponse<>();
 
         for (Account account : accounts) {
-            JSONObject jAcc = new JSONObject();
-            jAcc.put("id", account.getId());
-            jAcc.put("name", account.getName());
-            jAcc.put("val", account.getValue());
-            jAcc.put("public", account.isPublic());
-
-            items.put(jAcc);
+            response.addItem(new AccountDto(account));
         }
 
-        ret.put("items", items);
-
-        return ret.toString();
+        return response;
     }
+
 }

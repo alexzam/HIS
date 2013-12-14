@@ -21,6 +21,7 @@ public class Account {
     private Set<Transaction> transactions;
     private User owner;
     private boolean isPublic;
+    private boolean isHidden;
 
     public static final Serializable COMMON_ACC = 1;
 
@@ -75,6 +76,14 @@ public class Account {
 
     public void setPublic(boolean aPublic) {
         isPublic = aPublic;
+    }
+
+    public boolean isHidden() {
+        return isHidden;
+    }
+
+    public void setHidden(boolean isHidden) {
+        this.isHidden = isHidden;
     }
 
     @Transient
