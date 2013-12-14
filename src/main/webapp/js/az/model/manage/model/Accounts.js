@@ -4,6 +4,6 @@ Ext.define('alexzam.his.model.manage.model.Accounts', {
         {name: 'id', type: 'string'},
         {name: 'name', type: 'string'},
         {name: 'val', type: 'int'},
-        {name: 'privacy', type: 'string'}
+        {name: 'privacy', type: 'string', defaultValue: 'C'}
     ]
 });

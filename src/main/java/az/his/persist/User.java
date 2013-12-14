@@ -99,8 +99,8 @@ public class User {
     }
 
     @Transient
-    public static User getCurrentUser(ApplicationContext context) {
-        return DBUtil.getInstance(context).get(User.class, AuthUtil.getUid());
+    public static User getCurrentUser() {
+        return DBUtil.getInstance().get(User.class, AuthUtil.getUid());
     }
 
     @Transient

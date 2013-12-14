@@ -103,6 +103,10 @@ public class DBUtil implements ApplicationContextAware {
         getSession().update(obj);
     }
 
+    public void saveOrUpdate(Object obj) {
+        getSession().saveOrUpdate(obj);
+    }
+
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         appContext = applicationContext;

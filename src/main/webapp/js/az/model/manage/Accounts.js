@@ -25,6 +25,7 @@ Ext.define('alexzam.his.model.manage.Accounts', {
     },
 
     autoLoad:true,
+    autoSync:true,
 
     sorters: [{
         property: 'name',

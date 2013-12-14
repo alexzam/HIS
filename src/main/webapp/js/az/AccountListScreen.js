@@ -5,10 +5,13 @@ Ext.define('alexzam.his.AccountListScreen', {
         'alexzam.his.view.toolbar.Toolbar',
         'alexzam.his.model.manage.Accounts',
 
+        'Ext.form.Panel',
+        'Ext.form.RadioGroup',
         'Ext.grid.Panel',
         'Ext.grid.column.Action',
         'Ext.layout.container.Anchor',
-        'Ext.layout.container.Fit'
+        'Ext.layout.container.Fit',
+        'Ext.window.Window'
     ],
     layout:'fit',
 
@@ -39,7 +42,10 @@ Ext.define('alexzam.his.AccountListScreen', {
                             xtype: 'button',
                             text: 'Новый счёт',
                             handler: function(){
-                                this.fireEvent('accEdit', {caller:this, data: null});
+                                this.fireEvent('accEdit', {
+                                    caller:this,
+                                    record: null
+                                });
                             },
                             icon: 'img/book_add.png',
                             bubbleEvents: ['accEdit']
@@ -53,8 +59,11 @@ Ext.define('alexzam.his.AccountListScreen', {
                             dataIndex: 'name',
                             renderer:function(val, meta, record){
                                 var icon = "";
-                                if (!record.get('public'))
+                                var privacy = record.get('privacy');
+                                if (privacy == 'P')
                                     icon = ' <span class="icon-private"></span>';
+                                if (privacy == 'H')
+                                    icon = ' <span class="icon-hidden"></span>';
                                 return val + icon;
                             }
                         },
@@ -75,7 +84,7 @@ Ext.define('alexzam.his.AccountListScreen', {
                                     icon: 'img/book_edit.png',
                                     tooltip: 'Редактировать',
                                     handler: function(grid, rowI, colI, el, ev, record){
-                                        this.fireEvent('accEdit', {caller: this, data: record.data});
+                                        this.fireEvent('accEdit', {caller: this, record: record});
                                     }
                                 }
                             ]
@@ -91,6 +100,7 @@ Ext.define('alexzam.his.AccountListScreen', {
             title: 'Счёт',
             closeAction: 'hide',
             layout: 'fit',
+            resizable: false,
 
             items:[
                 {
@@ -115,14 +125,15 @@ Ext.define('alexzam.his.AccountListScreen', {
                             items: [
                                 {
                                     boxLabel: 'Общий',
-                                    inputValue: 'C'
+                                    inputValue: 'C',
+                                    checked: true
                                 },
                                 {
-                                    boxLabel: 'Личный',
+                                    boxLabel: 'Личный <span class="icon-private"></span>',
                                     inputValue: 'P'
                                 },
                                 {
-                                    boxLabel: 'Скрытый',
+                                    boxLabel: 'Скрытый <span class="icon-hidden"></span>',
                                     inputValue: 'H'
                                 }
                             ]
@@ -130,27 +141,70 @@ Ext.define('alexzam.his.AccountListScreen', {
                     ],
 
                     buttons:[
-                        {text:"ОК"}
-                    ]
+                        {
+                            text:"ОК",
+                            bubbleEvents: ['ok'],
+                            handler:function(){
+                                this.fireEvent('ok');
+                            }
+                        }
+                    ],
+
+                    bubbleEvents: ['ok']
                 }
             ],
 
+            record: null,
+            screen: null,
+
+            listeners: {
+                ok: function(){
+                    var formp = this.getComponent(0);
+                    if (!formp.getForm().isValid()) return;
+
+                    var data = formp.getValues();
+                    if(this.record == null) {
+                        this.record = Ext.create('alexzam.his.model.manage.model.Accounts');
+                        formp.updateRecord(this.record);
+                        this.screen.fireEvent('accAdd', {rec:this.record});
+                    } else {
+                        formp.updateRecord(this.record);
+                    }
+
+                    this.hide();
+                }
+            },
+
             setData: function(data){
-                this.getComponent(0).getForm().setValues(data);
+                var form = this.getComponent(0).getForm();
+                if(data == null) {
+                    form.reset();
+                    this.record = null;
+                }
+                else {
+                    form.loadRecord(data);
+                    this.record = data;
+                }
             }
         }
     ),
 
     listeners: {
         accEdit: function(param){
-            this.editaccDialog.setData(param.data);
+            this.editaccDialog.setData(param.record);
             this.editaccDialog.show(param.caller);
+        },
+
+        accAdd:function(param){
+            var grid = this.getComponent(0).getComponent(0);
+            grid.getStore().add(param.rec);
         }
     },
 
     initComponent:function () {
         var me = this;
         me.items[0].items[0].store = Ext.create('alexzam.his.model.manage.Accounts');
+        me.editaccDialog.screen = me;
 
         me.callParent();
     }

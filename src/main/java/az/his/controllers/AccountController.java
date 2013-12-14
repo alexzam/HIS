@@ -264,7 +264,7 @@ public class AccountController {
         Account acc = Account.getCommon();
         long totalExp = acc.getTotalExp();
         long eachExp = totalExp / 2;
-        User user = User.getCurrentUser(appContext);
+        User user = User.getCurrentUser();
         long persExp = user.getPersonalExpense(appContext, acc);
         long persDonation = user.getPersonalDonation(appContext, acc);
 
