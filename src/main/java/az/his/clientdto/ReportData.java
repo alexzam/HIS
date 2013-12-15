@@ -1,17 +1,10 @@
 package az.his.clientdto;
 
 import az.his.DateUtil;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import javax.servlet.ServletException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class ReportData {
     public enum Mode {
@@ -74,44 +67,32 @@ public class ReportData {
         day.put(seriesId, value);
     }
 
-    public String getJson() throws ServletException {
+    public List<SeriesDto> getSeries(){
+        ArrayList<SeriesDto> series = new ArrayList<>(seriesFields.size());
+        for (String seriesId : seriesFields.keySet()) {
+            series.add(new SeriesDto(seriesFields.get(seriesId), seriesNames.get(seriesId)));
+        }
+        return series;
+    }
+
+    public List<Map<String, Object>> getItems(){
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+        ArrayList<Map<String, Object>> items = new ArrayList<>(data.keySet().size());
 
-        try {
-            JSONArray jData = new JSONArray();
-
-            for (Date date : data.keySet()) {
-                JSONObject jDay = new JSONObject();
-
-                jDay.put("date", df.format(date));
-                for (String seriesId : seriesFields.keySet()) {
-                    Double val = data.get(date).get(seriesId);
-                    if (val == null) val = 0d;
-                    jDay.put(seriesFields.get(seriesId), val);
-                }
-
-                jData.put(jDay);
-            }
-
-
-            JSONObject ret = new JSONObject();
-            ret.put("items", jData);
-
-            JSONArray jSeries = new JSONArray();
+        for (Date date : data.keySet()) {
+            Map<String, Object> day = new HashMap<>();
+            day.put("date", df.format(date));
 
             for (String seriesId : seriesFields.keySet()) {
-                JSONObject jSerie = new JSONObject();
-                jSerie.put("field", seriesFields.get(seriesId));
-                jSerie.put("name", seriesNames.get(seriesId));
-                jSeries.put(jSerie);
+                Double val = data.get(date).get(seriesId);
+                if (val == null) val = 0d;
+                day.put(seriesFields.get(seriesId), val);
             }
 
-            ret.put("series", jSeries);
-
-            return ret.toString();
-        } catch (JSONException e) {
-            throw new ServletException(e);
+            items.add(day);
         }
+
+        return items;
     }
 
     private void moveDateToPerStart(Calendar cal){
@@ -125,6 +106,24 @@ public class ReportData {
             case MONTH:
                 DateUtil.moveToFirstOfMonth(cal);
                 break;
+        }
+    }
+
+    private class SeriesDto {
+        private String field;
+        private String name;
+
+        public SeriesDto(String field, String name) {
+            this.field = field;
+            this.name = name;
+        }
+
+        public String getField() {
+            return field;
+        }
+
+        public String getName() {
+            return name;
         }
     }
 }

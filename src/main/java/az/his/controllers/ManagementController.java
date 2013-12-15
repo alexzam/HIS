@@ -2,7 +2,7 @@ package az.his.controllers;
 
 import az.his.DBUtil;
 import az.his.clientdto.AccountDto;
-import az.his.clientdto.GridResponse;
+import az.his.clientdto.StoreResponse;
 import az.his.persist.Account;
 import az.his.persist.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +30,10 @@ public class ManagementController {
     @RequestMapping(value = "/accounts", produces = "application/json; charset=UTF-8", method = RequestMethod.GET)
     @Transactional(readOnly = true)
     @ResponseBody
-    public GridResponse<AccountDto> getAccounts() {
+    public StoreResponse<AccountDto> getAccounts() {
         List<Account> accounts = Account.getForUser();
 
-        GridResponse<AccountDto> response = new GridResponse<>();
+        StoreResponse<AccountDto> response = new StoreResponse<>();
 
         for (Account account : accounts) {
             response.addItem(new AccountDto(account));

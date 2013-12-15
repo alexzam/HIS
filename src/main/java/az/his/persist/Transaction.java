@@ -4,13 +4,9 @@ import az.his.DBUtil;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.type.DateType;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 
 import javax.persistence.*;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -152,31 +148,6 @@ public class Transaction implements DBListener {
 
     public void setTransfer(boolean transfer) {
         this.transfer = transfer;
-    }
-
-    @Transient
-    public JSONObject getJson() throws JSONException {
-        JSONObject ret = new JSONObject();
-        DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
-
-        ret.put("id", getId());
-        ret.put("amount", ((double)getAmount())/100);
-        ret.put("timestamp", df.format(getTimestmp()));
-        ret.put("actor_id", getActor().getId());
-        ret.put("actor_name", getActor().getName());
-        ret.put("category_name", getCategory().getName());
-        ret.put("category_id", getCategory().getId());
-        ret.put("comment", getComment());
-
-        String type;
-        int catId = getCategory().getId();
-        if (catId == TransactionCategory.CAT_DONATE) type = "D";
-        else if (catId == TransactionCategory.CAT_REFUND) type = "R";
-        else type = "E";
-
-        ret.put("type", type);
-
-        return ret;
     }
 
     @Transient

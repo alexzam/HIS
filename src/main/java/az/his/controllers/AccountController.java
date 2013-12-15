@@ -3,13 +3,13 @@ package az.his.controllers;
 import az.his.AuthUtil;
 import az.his.DBUtil;
 import az.his.DateUtil;
+import az.his.clientdto.CategoryDto;
+import az.his.clientdto.StoreResponse;
+import az.his.clientdto.TransactionDto;
 import az.his.persist.Account;
 import az.his.persist.Transaction;
 import az.his.persist.TransactionCategory;
 import az.his.persist.User;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
@@ -21,9 +21,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Controller
 @RequestMapping("/account")
@@ -59,13 +57,14 @@ public class AccountController {
 
     @RequestMapping(value = "/catdata")
     @Transactional(readOnly = true)
-    public void categoryData(@RequestParam(value = "type", required = false) String type, HttpServletResponse resp)
+    @ResponseBody
+    public StoreResponse<CategoryDto> categoryData(@RequestParam(value = "type", required = false) String type,
+                                                  HttpServletResponse resp)
             throws ServletException, IOException {
+
         if (type == null) type = "a";
 
         List<TransactionCategory> cats;
-        JSONObject ret = new JSONObject();
-        JSONArray items = new JSONArray();
         switch (type) {
             case "e":
                 cats = TransactionCategory.getByType(appContext, TransactionCategory.CatType.EXP);
@@ -78,43 +77,12 @@ public class AccountController {
                 break;
         }
 
-        try {
-            ret.put("identifier", "id");
-            ret.put("label", "name");
+        StoreResponse<CategoryDto> response = new StoreResponse<>();
 
-            JSONObject item;
-
-            for (TransactionCategory cat : cats) {
-                item = new JSONObject();
-
-                item.put("id", cat.getId());
-                item.put("name", cat.getName());
-                String oType;
-                switch (cat.getType()) {
-                    case EXP:
-                        oType = "e";
-                        break;
-                    case INC:
-                        oType = "i";
-                        break;
-                    case NONE:
-                        oType = "n";
-                        break;
-                    default:
-                        oType = "null";
-                }
-                item.put("type", oType);
-
-                items.put(item);
-            }
-            ret.put("items", items);
-        } catch (JSONException e) {
-            throw new ServletException(e);
+        for (TransactionCategory cat : cats) {
+            response.addItem(new CategoryDto(cat));
         }
-
-        resp.setCharacterEncoding("UTF-8");
-        resp.setContentType("application/json");
-        resp.getWriter().append(ret.toString());
+        return response;
     }
 
     /**
@@ -148,17 +116,21 @@ public class AccountController {
         int amount = Math.round(rawAmount * 100);
         boolean common;
 
-        if (trType.equals("i")) {
-            catId = TransactionCategory.CAT_DONATE;
-            common = false;
-        } else if (trType.equals("r")) {
-            catId = TransactionCategory.CAT_REFUND;
-            amount = -amount;
-            common = false;
-        } else {
-            if (catId == null) throw new ServletException("Category ID should be filled (param 'cat')");
-            amount = -amount;
-            common = true;
+        switch (trType) {
+            case "i":
+                catId = TransactionCategory.CAT_DONATE;
+                common = false;
+                break;
+            case "r":
+                catId = TransactionCategory.CAT_REFUND;
+                amount = -amount;
+                common = false;
+                break;
+            default:
+                if (catId == null) throw new ServletException("Category ID should be filled (param 'cat')");
+                amount = -amount;
+                common = true;
+                break;
         }
 
         TransactionCategory cat;
@@ -240,16 +212,14 @@ public class AccountController {
     @RequestMapping(value = "/data", method = RequestMethod.POST)
     @Transactional
     @ResponseBody
-    public String updateTransaction(@RequestBody String body) throws JSONException {
-        JSONObject req = new JSONObject(body);
+    public String updateTransaction(@RequestBody TransactionDto transactionDto) {
+        Transaction trans = dbUtil.get(Transaction.class, transactionDto.getId());
 
-        Transaction trans = dbUtil.get(Transaction.class, req.getInt("id"));
-
-        trans.setActor(dbUtil.get(User.class, req.getInt("actor_id")));
-        trans.setAmount(req.getDouble("amount"));
-        trans.setCategory(dbUtil.get(TransactionCategory.class, req.getInt("category_id")));
-        trans.setComment(req.getString("comment"));
-        trans.setTimestmp(new Date(req.getLong("timestamp")));
+        trans.setActor(dbUtil.get(User.class, transactionDto.getActor_id()));
+        trans.setAmount(transactionDto.getAmount());
+        trans.setCategory(dbUtil.get(TransactionCategory.class, transactionDto.getCategory_id()));
+        trans.setComment(transactionDto.getComment());
+        trans.setTimestmp(new Date(transactionDto.getTimestamp()));
 
         dbUtil.update(trans);
 
@@ -258,9 +228,8 @@ public class AccountController {
 
     @RequestMapping(value = "/stats", method = RequestMethod.GET)
     @Transactional(readOnly = true)
-    public void getStatistic(HttpServletResponse resp) throws JSONException, IOException {
-        JSONObject ret = new JSONObject();
-
+    @ResponseBody
+    public Map<String, String> getStatistic(HttpServletResponse resp) throws IOException {
         Account acc = Account.getCommon();
         long totalExp = acc.getTotalExp();
         long eachExp = totalExp / 2;
@@ -268,6 +237,7 @@ public class AccountController {
         long persExp = user.getPersonalExpense(appContext, acc);
         long persDonation = user.getPersonalDonation(appContext, acc);
 
+        HashMap<String, String> ret = new HashMap<>(7);
         ret.put("amount", acc.getAmountPrintable());
         ret.put("totalExp", DBUtil.formatCurrency(totalExp));
         ret.put("eachExp", DBUtil.formatCurrency(eachExp));
@@ -276,35 +246,28 @@ public class AccountController {
         ret.put("persSpent", DBUtil.formatCurrency(persDonation + persExp));
         ret.put("persBalance", DBUtil.formatCurrency(persDonation + persExp - eachExp));
 
-        resp.setCharacterEncoding("UTF-8");
-        resp.setContentType("application/json");
-        resp.getWriter().append(ret.toString());
+        return ret;
     }
 
     @RequestMapping(value = "/data", method = RequestMethod.GET)
     @Transactional(readOnly = true)
-    public void getTransactions(
+    @ResponseBody
+    public StoreResponse<TransactionDto> getTransactions(
             HttpServletResponse resp,
             @RequestParam(value = "from", required = false) Long rawFrom,
             @RequestParam(value = "to", required = false) Long rawTo,
             @RequestParam(value = "cat", required = false) Integer[] cat
-    ) throws JSONException, IOException {
-        JSONObject ret = new JSONObject();
+    ) throws IOException {
 
         List<Transaction> transactions = getFilteredTransactions(rawFrom, rawTo, cat);
-        JSONArray items = new JSONArray();
 
-        ret.put("identifier", "id");
+        StoreResponse<TransactionDto> ret = new StoreResponse<>();
 
         for (Transaction transaction : transactions) {
-            items.put(transaction.getJson());
+            ret.addItem(new TransactionDto(transaction));
         }
 
-        ret.put("items", items);
-
-        resp.setCharacterEncoding("UTF-8");
-        resp.setContentType("application/json");
-        resp.getWriter().append(ret.toString());
+        return ret;
     }
 
     private List<Transaction> getFilteredTransactions(Long rawFrom, Long rawTo, Integer[] cat) {

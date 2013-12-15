@@ -3,10 +3,8 @@ package az.his.controllers;
 import az.his.DBUtil;
 import az.his.DateUtil;
 import az.his.clientdto.ReportData;
+import az.his.clientdto.StoreResponse;
 import az.his.persist.TransactionCategory;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
@@ -22,7 +20,9 @@ import java.io.IOException;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/reports")
@@ -37,8 +37,9 @@ public class ReportsController {
 
     @RequestMapping("/data/spendbycat")
     @Transactional(readOnly = true)
-    public void dataSpendByCategory(HttpServletResponse resp) throws JSONException, IOException {
-        List results = DBUtil.getCurrentSession(appContext).createQuery(
+    @ResponseBody
+    public StoreResponse<Map<String,String>> dataSpendByCategory(HttpServletResponse resp) throws IOException {
+        List results = DBUtil.getCurrentSession().createQuery(
                 "select tc.name as name, -sum(t.amount) as val " +
                         "from transaction t, transcategory tc " +
                         "where tc = t.category " +
@@ -47,35 +48,30 @@ public class ReportsController {
                         "group by tc.name " +
                         "order by sum(t.amount) desc").list();
 
-        JSONArray items = new JSONArray();
+        StoreResponse<Map<String,String>> ret = new StoreResponse<>();
         for (Object result : results) {
             Object[] arr = (Object[]) result;
             String name = (String) arr[0];
             double amount = (((Long) arr[1]).doubleValue() / 100);
 
-            JSONObject item = new JSONObject();
+            Map<String, String> item = new HashMap<>(2);
             item.put("name", name);
-            item.put("value", amount);
-            items.put(item);
+            item.put("value", Double.toString(amount));
+            ret.addItem(item);
         }
 
-        JSONObject ret = new JSONObject();
-        ret.put("items", items);
-
-        resp.setCharacterEncoding("UTF-8");
-        resp.setContentType("application/json");
-        resp.getWriter().append(ret.toString());
+        return ret;
     }
 
     @RequestMapping("/data/expenses")
     @Transactional(readOnly = true)
     @ResponseBody
-    public String dataExpenses(HttpServletResponse resp,
+    public ReportData dataExpenses(HttpServletResponse resp,
                                @RequestParam(value = "from", required = false) Long rawFrom,
                                @RequestParam(value = "to", required = false) Long rawTo,
                                @RequestParam(value = "cat", required = false) Integer[] cat,
                                @RequestParam("group") String groupMode)
-            throws JSONException, IOException, ServletException {
+            throws IOException, ServletException {
 
         Calendar cal = DateUtil.convertInDateParam(rawFrom);
         if (cal == null) cal = DateUtil.createCalDate1();
@@ -107,9 +103,17 @@ public class ReportsController {
                 .list();
 
         ReportData.Mode mode;
-        if (groupMode.equals("D")) mode = ReportData.Mode.DAY;
-        else if (groupMode.equals("M")) mode = ReportData.Mode.MONTH;
-        else mode = ReportData.Mode.WEEK;
+        switch (groupMode) {
+            case "D":
+                mode = ReportData.Mode.DAY;
+                break;
+            case "M":
+                mode = ReportData.Mode.MONTH;
+                break;
+            default:
+                mode = ReportData.Mode.WEEK;
+                break;
+        }
 
         ReportData ret = new ReportData(from, to, mode);
         addSeries(results, ret, "tot", "Total");
@@ -135,9 +139,7 @@ public class ReportsController {
             addSeries(results, ret, catId.toString(), catName);
         }
 
-        resp.setCharacterEncoding("UTF-8");
-        resp.setContentType("application/json");
-        return ret.getJson();
+        return ret;
     }
 
     /**
