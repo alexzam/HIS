@@ -14,7 +14,7 @@ Ext.define('alexzam.his.view.account.AddTransactionForm', {
         'alexzam.his.view.account.TrTypeRadioGroup'
     ],
 
-    title:'Добавить транзакцию',
+    title:'Новая транзакция',
     layout:'hbox',
     bodyPadding:5,
     autoScroll:true,

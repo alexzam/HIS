@@ -4,12 +4,19 @@ Ext.define('alexzam.his.view.account.TopPanel', {
 
     requires:[
         'Ext.layout.container.Border',
+
+        'alexzam.his.view.account.AccountChooser',
         'alexzam.his.view.account.AddTransactionForm'
     ],
 
     layout:'border',
 
     items:[
+        {
+            xtype:'az-accChooser',
+            region:'north',
+            layout:'fit'
+        },
         {
             xtype:'panel',
             region:'east',
