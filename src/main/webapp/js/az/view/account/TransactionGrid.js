@@ -35,11 +35,7 @@ Ext.define('alexzam.his.view.account.TransactionGrid', {
                 xtype:'combo',
                 displayField:'name',
                 valueField:'id',
-                queryMode: 'local',
-                store:Ext.create('Ext.data.Store', {
-                    fields: ['id', 'name'],
-                    data : Ext.conf.userArr
-                })
+                queryMode: 'local'
             },
             renderer:function(val, meta, record) {
                 return record.data.actor_name;
@@ -165,6 +161,11 @@ Ext.define('alexzam.his.view.account.TransactionGrid', {
 
         me.store = Ext.create('alexzam.his.model.account.store.Transaction', {
             proxy:me.proxyTrans
+        });
+
+        me.columns[1].editor.store = Ext.create('Ext.data.Store', {
+            fields: ['id', 'name'],
+            data : Ext.conf.userArr
         });
 
         me.callParent();

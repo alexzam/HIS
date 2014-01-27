@@ -35,6 +35,9 @@ public class AccountController {
     @Autowired
     public DBUtil dbUtil;
 
+    /**
+     * Page
+     */
     @RequestMapping(method = RequestMethod.GET)
     @Transactional(readOnly = true)
     public String accountPage(Model model) throws ServletException {
@@ -52,8 +55,13 @@ public class AccountController {
         model.addAttribute("users", usersNotMe);
         model.addAttribute("me", userMe);
 
+        model.addAttribute("accounts", Account.getForUser());
+
         return "account";
     }
+
+    //////////////
+    // Data
 
     @RequestMapping(value = "/catdata")
     @Transactional(readOnly = true)
@@ -84,6 +92,70 @@ public class AccountController {
         }
         return response;
     }
+
+    @RequestMapping(value = "/stats", method = RequestMethod.GET)
+    @Transactional(readOnly = true)
+    @ResponseBody
+    public Map<String, String> getStatistic(HttpServletResponse resp) throws IOException {
+        Account acc = Account.getCommon();
+        long totalExp = acc.getTotalExp();
+        long eachExp = totalExp / 2;
+        User user = User.getCurrentUser();
+        long persExp = user.getPersonalExpense(appContext, acc);
+        long persDonation = user.getPersonalDonation(appContext, acc);
+
+        HashMap<String, String> ret = new HashMap<>(7);
+        ret.put("amount", acc.getAmountPrintable());
+        ret.put("totalExp", DBUtil.formatCurrency(totalExp));
+        ret.put("eachExp", DBUtil.formatCurrency(eachExp));
+        ret.put("persExp", DBUtil.formatCurrency(persExp));
+        ret.put("persDonation", DBUtil.formatCurrency(persDonation));
+        ret.put("persSpent", DBUtil.formatCurrency(persDonation + persExp));
+        ret.put("persBalance", DBUtil.formatCurrency(persDonation + persExp - eachExp));
+
+        return ret;
+    }
+
+    @RequestMapping(value = "/data", method = RequestMethod.GET)
+    @Transactional(readOnly = true)
+    @ResponseBody
+    public StoreResponse<TransactionDto> getTransactions(
+            @RequestParam(value = "from", required = false) Long rawFrom,
+            @RequestParam(value = "to", required = false) Long rawTo,
+            @RequestParam(value = "cat", required = false) Integer[] cat
+    ) {
+
+        List<Transaction> transactions = getFilteredTransactions(rawFrom, rawTo, cat);
+
+        StoreResponse<TransactionDto> ret = new StoreResponse<>();
+
+        for (Transaction transaction : transactions) {
+            ret.addItem(new TransactionDto(transaction));
+        }
+
+        return ret;
+    }
+
+    private List<Transaction> getFilteredTransactions(Long rawFrom, Long rawTo, Integer[] cat) {
+        Calendar calFrom = DateUtil.convertInDateParam(rawFrom);
+        if (calFrom == null) calFrom = DateUtil.createCalDate1();
+        Date fromDate = calFrom.getTime();
+
+        Calendar calTo = DateUtil.convertInDateParam(rawTo);
+        if (calTo == null) {
+            calTo = DateUtil.createCalDate1();
+            calTo.add(Calendar.MONTH, 1);
+        }
+        calTo.add(Calendar.DAY_OF_MONTH, 1);
+        Date toDate = calTo.getTime();
+
+        if (cat == null) cat = new Integer[]{};
+
+        return Transaction.getFiltered(appContext, fromDate, toDate, cat);
+    }
+
+    //////////////
+    // Actions
 
     /**
      * Adds a transaction or two (see parameters description).
@@ -226,67 +298,8 @@ public class AccountController {
         return "{ok:1}";
     }
 
-    @RequestMapping(value = "/stats", method = RequestMethod.GET)
-    @Transactional(readOnly = true)
-    @ResponseBody
-    public Map<String, String> getStatistic(HttpServletResponse resp) throws IOException {
-        Account acc = Account.getCommon();
-        long totalExp = acc.getTotalExp();
-        long eachExp = totalExp / 2;
-        User user = User.getCurrentUser();
-        long persExp = user.getPersonalExpense(appContext, acc);
-        long persDonation = user.getPersonalDonation(appContext, acc);
-
-        HashMap<String, String> ret = new HashMap<>(7);
-        ret.put("amount", acc.getAmountPrintable());
-        ret.put("totalExp", DBUtil.formatCurrency(totalExp));
-        ret.put("eachExp", DBUtil.formatCurrency(eachExp));
-        ret.put("persExp", DBUtil.formatCurrency(persExp));
-        ret.put("persDonation", DBUtil.formatCurrency(persDonation));
-        ret.put("persSpent", DBUtil.formatCurrency(persDonation + persExp));
-        ret.put("persBalance", DBUtil.formatCurrency(persDonation + persExp - eachExp));
-
-        return ret;
-    }
-
-    @RequestMapping(value = "/data", method = RequestMethod.GET)
-    @Transactional(readOnly = true)
-    @ResponseBody
-    public StoreResponse<TransactionDto> getTransactions(
-            HttpServletResponse resp,
-            @RequestParam(value = "from", required = false) Long rawFrom,
-            @RequestParam(value = "to", required = false) Long rawTo,
-            @RequestParam(value = "cat", required = false) Integer[] cat
-    ) throws IOException {
-
-        List<Transaction> transactions = getFilteredTransactions(rawFrom, rawTo, cat);
-
-        StoreResponse<TransactionDto> ret = new StoreResponse<>();
-
-        for (Transaction transaction : transactions) {
-            ret.addItem(new TransactionDto(transaction));
-        }
-
-        return ret;
-    }
-
-    private List<Transaction> getFilteredTransactions(Long rawFrom, Long rawTo, Integer[] cat) {
-        Calendar calFrom = DateUtil.convertInDateParam(rawFrom);
-        if (calFrom == null) calFrom = DateUtil.createCalDate1();
-        Date fromDate = calFrom.getTime();
-
-        Calendar calTo = DateUtil.convertInDateParam(rawTo);
-        if (calTo == null) {
-            calTo = DateUtil.createCalDate1();
-            calTo.add(Calendar.MONTH, 1);
-        }
-        calTo.add(Calendar.DAY_OF_MONTH, 1);
-        Date toDate = calTo.getTime();
-
-        if (cat == null) cat = new Integer[]{};
-
-        return Transaction.getFiltered(appContext, fromDate, toDate, cat);
-    }
+    ////////////
+    // Special
 
     @RequestMapping(value = "/csv")
     @Transactional(readOnly = true)

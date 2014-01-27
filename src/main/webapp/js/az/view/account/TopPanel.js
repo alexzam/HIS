@@ -14,8 +14,7 @@ Ext.define('alexzam.his.view.account.TopPanel', {
     items:[
         {
             xtype:'az-accChooser',
-            region:'north',
-            layout:'fit'
+            region:'north'
         },
         {
             xtype:'panel',

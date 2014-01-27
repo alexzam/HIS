@@ -18,9 +18,22 @@
                 </c:forEach>
             ]
         };
+
+        Ext.require('alexzam.his.model.manage.model.Accounts');
         Ext.require('alexzam.his.AccountScreen');
+        Ext.require('Ext.data.Store');
 
         Ext.onReady(function () {
+            Ext.create('Ext.data.Store', {
+                     model: 'alexzam.his.model.manage.model.Accounts',
+                     storeId:'accounts',
+                     data: [
+                        <c:forEach items="${accounts}" var="acc">
+                            {id:'${acc.getId()}', name:'${acc.getName()}',val:0},
+                        </c:forEach>
+                     ]
+                 });
+
             Ext.create('alexzam.his.AccountScreen', {
                 rootUrl:'${pageContext.request.contextPath}/',
                 uid: ${me.getId()},
