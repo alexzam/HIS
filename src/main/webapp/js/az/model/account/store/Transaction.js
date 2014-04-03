@@ -11,5 +11,10 @@ Ext.define('alexzam.his.model.account.store.Transaction', {
     sorters: [{
          property: 'timestamp',
          direction: 'ASC'
-    }]
+    }],
+
+    loadAccount: function(id){
+        this.getProxy().setExtraParam('aid', id);
+        this.load();
+    }
 });

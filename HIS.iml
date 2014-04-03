@@ -5,15 +5,17 @@
       <configuration>
         <descriptors>
           <deploymentDescriptor name="context.xml" url="file://$MODULE_DIR$/web/META-INF/context.xml" />
-          <deploymentDescriptor name="sun-web.xml" url="file://$MODULE_DIR$/web/WEB-INF/sun-web.xml" />
-          <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/out/warsrc/WEB-INF/web.xml" />
+          <deploymentDescriptor name="sun-web.xml" url="file://$MODULE_DIR$/src/main/webapp/WEB-INF/sun-web.xml" />
+          <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/src/main/webapp/WEB-INF/web.xml" />
         </descriptors>
         <webroots>
-          <root url="file://$MODULE_DIR$/out/warsrc" relative="/" />
+          <root url="file://$MODULE_DIR$/src/main/webapp" relative="/" />
+          <root url="file://$MODULE_DIR$/src/main/webres" relative="/" />
         </webroots>
         <sourceRoots>
           <root url="file://$MODULE_DIR$/web" />
-          <root url="file://$MODULE_DIR$/src" />
+          <root url="file://$MODULE_DIR$/src/main/java" />
+          <root url="file://$MODULE_DIR$/src/main/resources" />
         </sourceRoots>
       </configuration>
     </facet>
@@ -43,8 +45,8 @@
       <sourceFolder url="file://$MODULE_DIR$/web" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/test" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
       <excludeFolder url="file://$MODULE_DIR$/.git" />
       <excludeFolder url="file://$MODULE_DIR$/.idea" />
       <excludeFolder url="file://$MODULE_DIR$/out" />
