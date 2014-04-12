@@ -1,6 +1,18 @@
 Ext.define('alexzam.his.AccountScreen', {
     extend:'Ext.container.Viewport',
 
+    /*
+    * AccountScreen (Viewport)
+    *   panel "pnlOuter"
+    *       Toolbar
+    *       TopPanel (Panel)
+    *           az-accChooser
+    *           panel "pnlAmount"
+    *           AddTransactionForm "frmTrans"
+    *       RightPanel
+    *       TransactionGrid
+    */
+
     requires:[
         'alexzam.his.view.account.TopPanel',
         'alexzam.his.view.account.RightPanel',
@@ -25,7 +37,8 @@ Ext.define('alexzam.his.AccountScreen', {
                 xtype:'his.Toolbar',
                 dock:'top',
                 disableId:'acc'
-            }]
+            }],
+            bubbleEvents:['filterupdate']
         }
     ],
 
@@ -46,6 +59,7 @@ Ext.define('alexzam.his.AccountScreen', {
                 itemId:'panelT',
                 listeners:{
                     transchanged:me.onTransactionsChanged,
+//                    filterupdate:me.onTransReload(),
                     scope:me
                 }
             },
@@ -55,7 +69,7 @@ Ext.define('alexzam.his.AccountScreen', {
                 region:'east',
                 width:200,
                 itemId: 'panelR',
-                storeStats:me.storeStats,
+                storeStats:me.storeStats
             },
             {
                 xtype:'his.account.TransactionGrid',
@@ -83,9 +97,10 @@ Ext.define('alexzam.his.AccountScreen', {
 
     onTransReload:function() {
         var me = this;
-        var q = me.rightPanel.getFilterData();
+        var q = {};
 
-        if (q == null) return;
+        Ext.apply(q, me.topPanel.getFilterData());
+        Ext.apply(q, me.rightPanel.getFilterData());
 
         me.grdTrans.reloadTrans(q);
 

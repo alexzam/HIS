@@ -47,7 +47,7 @@ Ext.define('alexzam.his.view.account.TransactionGrid', {
             xtype:'numbercolumn',
             format:'0.00',
             summaryType:'sum',
-            summaryRenderer: function(value, summaryData, dataIndex) {
+            summaryRenderer: function(value) {
                 return Ext.util.Format.number(value, "0.00");
             },
             editor:{

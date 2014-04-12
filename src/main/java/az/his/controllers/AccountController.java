@@ -120,12 +120,16 @@ public class AccountController {
     @Transactional(readOnly = true)
     @ResponseBody
     public StoreResponse<TransactionDto> getTransactions(
+            @RequestParam(value = "aid", required = false) Integer accountId,
             @RequestParam(value = "from", required = false) Long rawFrom,
             @RequestParam(value = "to", required = false) Long rawTo,
-            @RequestParam(value = "cat", required = false) Integer[] cat
-    ) {
+            @RequestParam(value = "cat", required = false) Integer[] cat) {
 
-        List<Transaction> transactions = getFilteredTransactions(rawFrom, rawTo, cat);
+        if(accountId == null){
+            accountId = Account.getFirstForUser();
+        }
+
+        List<Transaction> transactions = getFilteredTransactions(accountId, rawFrom, rawTo, cat);
 
         StoreResponse<TransactionDto> ret = new StoreResponse<>();
 
@@ -136,7 +140,7 @@ public class AccountController {
         return ret;
     }
 
-    private List<Transaction> getFilteredTransactions(Long rawFrom, Long rawTo, Integer[] cat) {
+    private List<Transaction> getFilteredTransactions(int accountId, Long rawFrom, Long rawTo, Integer[] cat) {
         Calendar calFrom = DateUtil.convertInDateParam(rawFrom);
         if (calFrom == null) calFrom = DateUtil.createCalDate1();
         Date fromDate = calFrom.getTime();
@@ -151,7 +155,7 @@ public class AccountController {
 
         if (cat == null) cat = new Integer[]{};
 
-        return Transaction.getFiltered(appContext, fromDate, toDate, cat);
+        return Transaction.getFiltered(accountId, fromDate, toDate, cat);
     }
 
     //////////////
@@ -309,7 +313,8 @@ public class AccountController {
             @RequestParam(value = "to", required = false) Long rawTo,
             @RequestParam(value = "cat", required = false) Integer[] cat
     ) throws IOException {
-        List<Transaction> transactions = getFilteredTransactions(rawFrom, rawTo, cat);
+        // TODO Filter CSV too
+        List<Transaction> transactions = getFilteredTransactions(1, rawFrom, rawTo, cat);
 
         StringBuilder ret = new StringBuilder();
 

@@ -4,7 +4,6 @@ import az.his.DBUtil;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.type.DateType;
-import org.springframework.context.ApplicationContext;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -152,13 +151,14 @@ public class Transaction implements DBListener {
 
     @Transient
     @SuppressWarnings("unchecked")
-    public static List<Transaction> getFiltered(ApplicationContext context, Date from, Date to, Integer[] categories) {
+    public static List<Transaction> getFiltered(int accountId, Date from, Date to, Integer[] categories) {
         boolean catFilter = categories.length > 0;
-        String q = "from az.his.persist.Transaction where timestmp >= :from and timestmp <= :to"
+        String q = "from az.his.persist.Transaction where account.id = :accId and timestmp >= :from and timestmp <= :to"
                 + (catFilter ? " and category.id in (:cat)" : "");
-        Query query = DBUtil.getCurrentSession(context).createQuery(q)
+        Query query = DBUtil.getCurrentSession().createQuery(q)
                 .setParameter("from", from, DateType.INSTANCE)
-                .setParameter("to", to, DateType.INSTANCE);
+                .setParameter("to", to, DateType.INSTANCE)
+                .setParameter("accId", accountId);
         if (catFilter) {
             query.setParameterList("cat", categories);
         }

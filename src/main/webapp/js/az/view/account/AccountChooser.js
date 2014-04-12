@@ -9,6 +9,8 @@ Ext.define('alexzam.his.view.account.AccountChooser', {
     layout:'hbox',
     bodyPadding:5,
 
+    combo: null,
+
     items:[
         {
             xtype:'label',
@@ -35,8 +37,19 @@ Ext.define('alexzam.his.view.account.AccountChooser', {
         var me = this;
         me.callParent();
 
-        var combo = me.getComponent('cbAccount');
+        me.combo = me.getComponent('cbAccount');
 
-        combo.select(combo.getStore().first());
+        me.combo.select(me.combo.getStore().first());
+        me.combo.on('change', me.onChange, me);
+
+        me.addEvents(['filterupdate']);
+    },
+
+    getValue:function(){
+        return this.combo.getValue();
+    },
+
+    onChange:function(){
+        this.fireEvent('filterupdate');
     }
 });

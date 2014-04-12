@@ -1,47 +1,58 @@
 Ext.define('alexzam.his.view.account.TopPanel', {
-    extend:'Ext.panel.Panel',
-    alias:'widget.his.account.TopPanel',
+    extend: 'Ext.panel.Panel',
+    alias: 'widget.his.account.TopPanel',
 
-    requires:[
+    /*
+     * TopPanel (Panel)
+     *   az-accChooser "accChooser" (Panel)
+     *      label
+     *      combo "cbAccount"
+     *   panel "pnlAmount"
+     *   AddTransactionForm "frmTrans"
+     */
+
+    requires: [
         'Ext.layout.container.Border',
 
         'alexzam.his.view.account.AccountChooser',
         'alexzam.his.view.account.AddTransactionForm'
     ],
 
-    layout:'border',
+    layout: 'border',
 
-    items:[
+    items: [
         {
-            xtype:'az-accChooser',
-            region:'north'
+            xtype: 'az-accChooser',
+            itemId: 'accChooser',
+            region: 'north',
+            bubbleEvents:['filterupdate']
         },
         {
-            xtype:'panel',
-            region:'east',
-            width:230,
-            layout:'fit',
-            itemId:'pnlAmount',
-            html:'<span id="account_amount"></span>'
+            xtype: 'panel',
+            region: 'east',
+            width: 230,
+            layout: 'fit',
+            itemId: 'pnlAmount',
+            html: '<span id="account_amount"></span>'
         }
     ],
 
-    spanAmount:null,
-    frmTrans:null,
+    spanAmount: null,
+    frmTrans: null,
 
-    initComponent:function () {
+    initComponent: function () {
         var me = this;
 
         me.items.push(Ext.create('Ext.panel.Panel', {
-            region:'center',
-            layout:'fit',
-            items:[
+            region: 'center',
+            layout: 'fit',
+            items: [
                 Ext.create('alexzam.his.view.account.AddTransactionForm', {
-                    userRadioOptions:me.userRadioOptions,
-                    rootUrl:me.rootUrl,
-                    uid:me.uid,
-                    itemId:'frmTrans',
-                    bubbleEvents:['transchanged']
+                    userRadioOptions: me.userRadioOptions,
+                    rootUrl: me.rootUrl,
+                    uid: me.uid,
+                    itemId: 'frmTrans',
+                    bubbleEvents: ['transchanged']
                 })
             ]
         }));
@@ -50,18 +61,22 @@ Ext.define('alexzam.his.view.account.TopPanel', {
         me.frmTrans = me.getComponent(1).getComponent('frmTrans');
     },
 
-    setAccAmount:function(val) {
+    setAccAmount: function (val) {
         this.spanAmount.innerHTML = val + '&nbsp;р.';
     },
 
-    afterRender:function() {
+    afterRender: function () {
         var me = this;
         me.callParent(arguments);
 
         me.spanAmount = me.getComponent('pnlAmount').getEl().getById('account_amount').dom;
     },
 
-    reloadCats:function() {
+    reloadCats: function () {
         this.frmTrans.reloadCats();
+    },
+
+    getFilterData: function () {
+        return {aid: this.getComponent("accChooser").getValue()};
     }
 });

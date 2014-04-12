@@ -109,9 +109,20 @@ public class Account {
     @Transient
     public static List<Account> getForUser() {
         Session session = DBUtil.getCurrentSession();
-        Query query = session.createQuery("from account where owner_id = :user or public = 1");
+        Query query = session.createQuery("from account where owner.id = :user or public = true");
         query.setParameter("user", AuthUtil.getUid());
 
+        //noinspection unchecked
         return query.list();
+    }
+
+    @Transient
+    public static Integer getFirstForUser() {
+        Session session = DBUtil.getCurrentSession();
+        Query query = session.createQuery("select id from account where owner.id = :user or public = true");
+        query.setParameter("user", AuthUtil.getUid());
+        query.setMaxResults(1);
+
+        return (Integer) query.uniqueResult();
     }
 }
