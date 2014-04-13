@@ -17,7 +17,7 @@ public class CategoryDto {
             case INC:
                 type = "i";
                 break;
-            case NONE:
+            case TRANSFER:
                 type = "n";
                 break;
             default:

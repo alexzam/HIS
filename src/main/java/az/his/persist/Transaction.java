@@ -176,7 +176,7 @@ public class Transaction implements DBListener {
             getAccount().setValue(getAccount().getValue() - amount);
 
         // Delete empty category
-        if (getCategory().getType() != TransactionCategory.CatType.NONE) {
+        if (getCategory().getType() != TransactionCategory.CatType.TRANSFER) {
             Long res = (Long) session.createQuery("select count(id) from transaction where category = ?")
                     .setEntity(0, getCategory())
                     .uniqueResult();

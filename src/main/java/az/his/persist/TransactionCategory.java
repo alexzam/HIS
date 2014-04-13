@@ -15,7 +15,7 @@ public class TransactionCategory {
     public static final int CAT_REFUND = 2;
 
     public enum CatType {
-        EXP, INC, NONE
+        EXP, INC, TRANSFER, CORRECTION
     }
 
     private int id;
