@@ -7,8 +7,6 @@ body.login {
 .login_user {
     border: 1px solid #999;
     background: #EEE;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
     border-radius: 10px;
     padding: 20px 20px 10px 20px;
     margin: 40px;
@@ -52,12 +50,28 @@ body.login .download_app h1{
     overflow-x: visible;
 }
 
-.acc-transrow-D {
+.acc-transrow-I {
     color: #009900;
 }
 
-.acc-transrow-R {
+.acc-transrow-TI, .acc-transrow-TO {
     color: #0000FF;
+}
+
+.acc-transrow-TI .colCategory {
+    background: url(../img/arrow_left.png) no-repeat left;
+    background-color: inherit;
+    padding-left: 16px;
+}
+
+.acc-transrow-TO .colCategory {
+    background: url(../img/arrow_right.png) no-repeat left;
+    background-color: inherit;
+    padding-left: 16px;
+}
+
+.acc-transrow-C {
+    color: #940002;
 }
 
 .icon-private {

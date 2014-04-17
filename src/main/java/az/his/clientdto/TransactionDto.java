@@ -20,19 +20,35 @@ public class TransactionDto {
     public TransactionDto(Transaction transaction) {
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
 
+        TransactionCategory.CatType catType = transaction.getCategory().getType();
+
         id = transaction.getId();
         amount = ((double) transaction.getAmount()) / 100;
         timestamp = df.format(transaction.getTimestmp());
         actor_id = transaction.getActor().getId();
         actor_name = transaction.getActor().getName();
-        category_name = transaction.getCategory().getName();
+        category_name =
+                (catType == TransactionCategory.CatType.TRANSFER) ?
+                        transaction.getPair().getAccount().getName() :
+                        transaction.getCategory().getName();
+
         category_id = transaction.getCategory().getId();
         comment = transaction.getComment();
 
-        int catId = transaction.getCategory().getId();
-        if (catId == TransactionCategory.CAT_DONATE) type = "D";
-        else if (catId == TransactionCategory.CAT_REFUND) type = "R";
-        else type = "E";
+        switch (catType) {
+            case CORRECTION:
+                type = "C";
+                break;
+            case TRANSFER:
+                type = (amount > 0) ? "TI" : "TO";
+                break;
+            case EXP:
+                type = "E";
+                break;
+            case INC:
+                type = "I";
+                break;
+        }
     }
 
     public int getId() {
