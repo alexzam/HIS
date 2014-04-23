@@ -23,7 +23,27 @@ Ext.define('alexzam.his.view.account.AddTransactionForm', {
     autoScroll: true,
     items: [
         {
-            html: 'тип'
+            xtype: 'button',
+            text: 'Расход',
+            itemId: 'btnType',
+            menu: [
+                {
+                    xtype: 'menucheckitem',
+                    group: 'type',
+                    text: 'Расход',
+                    checked: true
+                },
+                {
+                    xtype: 'menucheckitem',
+                    group: 'type',
+                    text: 'Приход'
+                },
+                {
+                    xtype: 'menucheckitem',
+                    group: 'type',
+                    text: 'Перевод'
+                }
+            ]
         },
         {
             xtype: 'combo',
@@ -103,6 +123,7 @@ Ext.define('alexzam.his.view.account.AddTransactionForm', {
     numAmount: null,
     tbComment: null,
     storeCat: null,
+    btnType: null,
 
     initComponent: function () {
         var me = this;
@@ -113,14 +134,14 @@ Ext.define('alexzam.his.view.account.AddTransactionForm', {
             storeId: 'cat-add'
         });
 
-        Ext.Array.forEach(me.userRadioOptions, function (item) {
-            item.name = 'actor';
-        });
-
 //        me.items[3].items[0].store = me.storeCat;
 
         me.callParent();
 
+        me.btnType = me.getComponent('btnType');
+        Ext.each(me.btnType.menu.items.items, function (item) {
+            item.on('checkchange', me.onTypeChanged, me);
+        });
 //        me.getComponent('rgTrType').on('typechanged', me.onTypeChanged, me);
 
 //        me.cbCategory = me.getComponent('panel3').getComponent('cbCategory');
@@ -131,8 +152,10 @@ Ext.define('alexzam.his.view.account.AddTransactionForm', {
         me.addEvents('transchanged');
     },
 
-    onTypeChanged: function (type) {
-        this.cbCategory.setDisabled(type == 'i' || type == 'r');
+    onTypeChanged: function (item, checked) {
+        if (!checked)return;
+        this.btnType.setText(item.text);
+        console.log('changed');
     },
 
     setCmpValidation: function (cmp, enable) {
