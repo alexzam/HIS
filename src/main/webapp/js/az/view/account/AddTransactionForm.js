@@ -1,5 +1,6 @@
 Ext.define('alexzam.his.view.account.AddTransactionForm', {
     extend: 'Ext.form.Panel',
+    alias: 'widget.his.account.AddTransactionForm',
 
     requires: [
         'Ext.form.RadioGroup',
@@ -26,6 +27,12 @@ Ext.define('alexzam.his.view.account.AddTransactionForm', {
             xtype: 'button',
             text: 'Расход',
             itemId: 'btnType',
+            tdAttrs: {
+                style: {
+                    textAlign: 'center'
+                }
+            },
+
             menu: [
                 {
                     xtype: 'menucheckitem',
@@ -56,6 +63,8 @@ Ext.define('alexzam.his.view.account.AddTransactionForm', {
             lastQuery: '',
             labelWidth: 80,
             allowBlank: true,
+            store: 'cat-add',
+            padding: '0 0 0 5',
             listeners: {
                 blur: function () {
                     var value = this.getValue();
@@ -64,30 +73,40 @@ Ext.define('alexzam.his.view.account.AddTransactionForm', {
             }
         },
         {
-            xtype: 'numberfield',
-            name: 'amount',
-            fieldLabel: 'Сколько',
-            minValue: 0.01,
-            hideTrigger: true,
-            keyNavEnabled: false,
-            mouseWheelEnabled: false,
-            labelWidth: 50,
-            validateOnChange: false,
-            labelAlign: 'left',
-            allowBlank: true,
-            itemId: 'numAmount'
-            /*
-             * {
-             xtype: 'panel',
-             border: 0,
-             html: '<span class="labCurrency">р.</span>'
-             }*/
+            xtype: 'panel',
+            layout: 'hbox',
+            border: false,
+            itemId: 'panel0',
+            items: [
+                {
+                    xtype: 'numberfield',
+                    name: 'amount',
+                    fieldLabel: 'Сколько',
+                    minValue: 0.01,
+                    hideTrigger: true,
+                    keyNavEnabled: false,
+                    mouseWheelEnabled: false,
+                    labelWidth: 50,
+                    validateOnChange: false,
+                    labelAlign: 'left',
+                    allowBlank: true,
+                    itemId: 'numAmount',
+                    padding: '0 0 0 5',
+                    flex: 1
+                },
+                {
+                    html: '<span class="labCurrency">р.</span>',
+                    border: false
+                }
+            ]
         },
         {
             xtype: 'button',
             text: 'Добавить',
             itemId: 'btSubmit',
             rowspan: 2,
+            margin: '0 0 0 10',
+            scale: 'large',
             handler: function () {
                 this.ownerCt.onBtSubmit();
             }
@@ -105,7 +124,11 @@ Ext.define('alexzam.his.view.account.AddTransactionForm', {
             startDay: 1
         },
         {
-            html: 'общий?'
+            xtype: 'checkbox',
+            fieldLabel: 'Общий',
+            name: 'common',
+            padding: '0 0 0 5',
+            labelWidth: 80
         },
         {
             xtype: 'textfield',
@@ -113,6 +136,7 @@ Ext.define('alexzam.his.view.account.AddTransactionForm', {
             name: 'comment',
             itemId: 'tbComment',
             labelWidth: 80,
+            padding: '0 0 0 5',
             maxLength: 255,
             maxLengthText: "Комментарий не должен быть длиннее 255 символов"
         }
@@ -134,20 +158,17 @@ Ext.define('alexzam.his.view.account.AddTransactionForm', {
             storeId: 'cat-add'
         });
 
-//        me.items[3].items[0].store = me.storeCat;
-
         me.callParent();
 
         me.btnType = me.getComponent('btnType');
+        me.dtAdd = me.getComponent('dtAdd');
+        me.cbCategory = me.getComponent('cbCategory');
+        me.numAmount = me.getComponent('panel0').getComponent('numAmount');
+        me.tbComment = me.getComponent('tbComment');
+
         Ext.each(me.btnType.menu.items.items, function (item) {
             item.on('checkchange', me.onTypeChanged, me);
         });
-//        me.getComponent('rgTrType').on('typechanged', me.onTypeChanged, me);
-
-//        me.cbCategory = me.getComponent('panel3').getComponent('cbCategory');
-//        me.dtAdd = me.getComponent('panel1').getComponent('dtAdd');
-//        me.numAmount = me.getComponent('panel1').getComponent('panel0').getComponent('numAmount');
-//        me.tbComment = me.getComponent('panel3').getComponent('tbComment');
 
         me.addEvents('transchanged');
     },

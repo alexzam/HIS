@@ -25,7 +25,7 @@ Ext.define('alexzam.his.view.account.TopPanel', {
             xtype: 'az-accChooser',
             itemId: 'accChooser',
             region: 'north',
-            bubbleEvents:['filterupdate']
+            bubbleEvents: ['filterupdate']
         },
         {
             xtype: 'panel',
@@ -34,6 +34,12 @@ Ext.define('alexzam.his.view.account.TopPanel', {
             layout: 'fit',
             itemId: 'pnlAmount',
             html: '<span id="account_amount"></span>'
+        },
+        {
+            xtype: 'his.account.AddTransactionForm',
+            region: 'center',
+            itemId: 'frmTrans',
+            bubbleEvents: ['transchanged']
         }
     ],
 
@@ -43,22 +49,8 @@ Ext.define('alexzam.his.view.account.TopPanel', {
     initComponent: function () {
         var me = this;
 
-        me.items.push(Ext.create('Ext.panel.Panel', {
-            region: 'center',
-            layout: 'fit',
-            items: [
-                Ext.create('alexzam.his.view.account.AddTransactionForm', {
-                    userRadioOptions: me.userRadioOptions,
-                    rootUrl: me.rootUrl,
-                    uid: me.uid,
-                    itemId: 'frmTrans',
-                    bubbleEvents: ['transchanged']
-                })
-            ]
-        }));
-
         me.callParent();
-        me.frmTrans = me.getComponent(1).getComponent('frmTrans');
+        me.frmTrans = me.getComponent('frmTrans');
     },
 
     setAccAmount: function (val) {

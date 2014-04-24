@@ -55,11 +55,10 @@ Ext.define('alexzam.his.AccountScreen', {
                 userRadioOptions:me.userRadioOptions,
                 uid:me.uid,
                 region:'north',
-                height:200,
+                height: 125,
                 itemId:'panelT',
                 listeners:{
                     transchanged:me.onTransactionsChanged,
-//                    filterupdate:me.onTransReload(),
                     scope:me
                 }
             },
